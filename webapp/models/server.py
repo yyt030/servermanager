@@ -41,25 +41,5 @@ class software(db.Model):
     version = db.Column(db.String(32), nullable=False)
 
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(32), nullable=False)
-    hash_password = db.Column(db.String(128), nullable=False)
-    email = db.Column(db.String(32), nullable=False)
 
 
-class Role(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    rolename = db.Column(db.String(32), nullable=False)
-
-
-class Project(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    projname = db.Column(db.String(64), nullable=False)
-    pm = db.Column(db.String(64))
-
-
-class Operation(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    opertype = db.Column(db.Integer, primary_key=False)
-    operlog = db.Column(db.String)

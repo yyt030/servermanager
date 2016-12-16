@@ -3,10 +3,9 @@
 
 __author__ = 'yueyt'
 
-from flask_admin.contrib.sqla import ModelView
+from flask_admin.contrib import sqla
 
-from webapp import admin
-from webapp import db
-from webapp.models.user import User
+from .user import User
 
-admin.add_view(ModelView(User), db.session())
+class UserAdmin(sqla.ModelView):
+    inline_models = (User,)

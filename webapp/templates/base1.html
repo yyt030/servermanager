@@ -1,0 +1,10 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block navbar %}
+    {% include 'include/_header_nav.html' %}
+{% endblock %}
+{% block content %}
+    MM
+        {% block messages %} {{ layout.messages() }} {% endblock %}
+        {% block body %}{% endblock %}
+{% endblock %}
