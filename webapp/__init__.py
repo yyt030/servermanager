@@ -1,6 +1,7 @@
 # coding: utf8
 
-from flask import Flask, render_template, g
+from flask import Flask, render_template
+from flask_admin import Admin
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
@@ -8,6 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 moment = Moment()
 db = SQLAlchemy()
 bootstrap = Bootstrap()
+admin = Admin(template_mode='bootstrap3')
 
 from config import config
 
@@ -17,25 +19,17 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
+    # init app
     db.init_app(app)
     bootstrap.init_app(app)
     moment.init_app(app)
+    admin.init_app(app)
 
-    # from .controllers import question, site, user, tag
-    # from .api import user as user_api
-
-    # app.register_blueprint(question.bp, url_prefix='/q')
-    # app.register_blueprint(tag.bp, url_prefix='/t')
-    # app.register_blueprint(user_api.bp, url_prefix='/api')
-    # app.register_blueprint(user.bp, url_prefix='/u')
-    # app.register_blueprint(site.bp, url_prefix='')
+    from webapp.controllers import site
+    app.register_blueprint(site.bp, url_prefix='/')
 
     # 注册错误展示页面
     register_error_handle(app)
-
-    # 注册搜索引擎
-    # from .models.question import Question, Answer, Tag
-
 
     return app
 
