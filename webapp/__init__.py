@@ -6,12 +6,14 @@ from flask_admin import Admin
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
+# from flask_login import LoginManager
 
 
 moment = Moment()
 db = SQLAlchemy()
 bootstrap = Bootstrap()
-admin = Admin(base_template="base.html",template_mode='bootstrap3')
+# login_manager = LoginManager()
+admin = Admin(template_mode='bootstrap3')
 
 from config import config
 
@@ -26,6 +28,7 @@ def create_app(config_name):
     bootstrap.init_app(app)
     moment.init_app(app)
     admin.init_app(app)
+    # login_manager.init_app(app)
 
     # admin
     register_admin_view()
@@ -55,7 +58,7 @@ def register_error_handle(app):
     def page_500(error):
         return render_template('500.html'), 500
 
-
+# flask 添加admin视图
 def register_admin_view():
     from flask_admin.contrib.sqla import ModelView
 

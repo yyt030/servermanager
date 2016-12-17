@@ -4,7 +4,7 @@
 __author__ = 'yueyt'
 
 from webapp import db
-
+# from webapp import login_manager
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -23,3 +23,6 @@ class Operation(db.Model):
     opertype = db.Column(db.Integer, primary_key=False)
     operlog = db.Column(db.String)
 
+# @login_manager.user_loader
+def load_user(userid):
+    return User.get(userid)

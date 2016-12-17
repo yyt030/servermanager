@@ -7,6 +7,7 @@ from flask import Blueprint, redirect, url_for
 from flask import render_template
 
 from webapp import db
+from webapp.forms.user import LoginForm
 from webapp.models.user import User
 
 bp = Blueprint('site', __name__)
@@ -28,3 +29,9 @@ def index():
 @bp.route('/search', methods=['GET', 'POST'])
 def search():
     return redirect(url_for('.index'))
+
+
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    return render_template('base.html', form=form)
