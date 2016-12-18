@@ -1,0 +1,62 @@
+<div class="navbar navbar-inverse navbar-static-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Flasky</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Home</a></li>
+                {#                {% if current_user.is_authenticated %}#}
+                {#                    <li><a href="{{ url_for('main.user', username=current_user.username) }}">Profile</a></li>#}
+                {#                {% endif %}#}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {#                {% if current_user.can(Permission.MODERATE_COMMENTS) %}#}
+                {#                    <li><a href="{{ url_for('main.moderate') }}">Moderate Comments</a></li>#}
+                {#                {% endif %}#}
+                {#                {% if current_user.is_authenticated %}#}
+                {#                    <li class="dropdown">#}
+                {#                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">#}
+                {#                            <img src="{{ current_user.gravatar(size=18) }}">#}
+                {#                            Account <b class="caret"></b>#}
+                {#                        </a>#}
+                {#                        <ul class="dropdown-menu">#}
+                {#                            <li><a href="{{ url_for('auth.change_password') }}">Change Password</a></li>#}
+                {#                            <li><a href="{{ url_for('auth.change_email_request') }}">Change Email</a></li>#}
+                {#                            <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>#}
+                {#                        </ul>#}
+                {#                    </li>#}
+                {#                {% else %}#}
+
+                {#                {% endif %}#}
+
+                <li>
+                    <form class="navbar-form" action="/search" accept-charset="UTF-8" method="get">
+                        <div class="input-group input-group"><input id="searchBox" name="q" type="text"
+                                                                    placeholder="输入关键字搜索 ..." class="form-control"
+                                                                    value=""/>
+                            <span class="input-group-btn">
+                                <button class="btn btn-link">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
+                </li>
+                <li>
+                    <p class="navbar-btn">
+                        <a class="btn btn-success" rel="nofollow" href="/login">
+                            <i class="fa fa-github"></i> 注册 / 登录
+                        </a>
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

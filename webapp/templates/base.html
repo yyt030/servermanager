@@ -1,3 +1,26 @@
 {% extends "bootstrap/base.html" %}
 
 {% block title %}Server Manager - a demo{% endblock %}
+{% block head %}
+    {{ super() }}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dashboard.css') }}">
+{% endblock %}
+
+{% block navbar %}
+    {% include 'include/_header_nav.html' %}
+    {% include 'include/_left_nav.html' %}
+{% endblock %}
+
+{% block content %}
+    {#    {% include 'include/_content.html' %}#}
+    {% include 'include/_content_admin.html' %}
+{% endblock %}
