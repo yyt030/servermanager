@@ -15,15 +15,7 @@ bp = Blueprint('site', __name__)
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
-    user = User()
-
-    user.email = 'test@test.com'
-    user.name = 'yueyt'
-    user.username = 'yyt'
-    user.hashpasswd = 'test'
-
-    db.session.add(user)
-    return render_template('base.html')
+    pass
 
 
 @bp.route('/search', methods=['GET', 'POST'])

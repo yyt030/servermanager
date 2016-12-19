@@ -61,8 +61,9 @@ def register_error_handle(app):
 # flask 添加admin视图
 def register_admin_view():
     from flask_admin.contrib.sqla import ModelView
+    from webapp.models.admin import ServerAdmin
 
     from webapp.models.user import User
     from webapp.models.server import Server
-    admin.add_view(ModelView(User, db.session))
-    admin.add_view(ModelView(Server,db.session))
+    #admin.add_view(ModelView(User, db.session))
+    admin.add_view(ServerAdmin(db.session))

@@ -24,3 +24,11 @@
     {#    {% include 'include/_content.html' %}#}
     {% include 'include/_content_admin.html' %}
 {% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='admin/js/actions.js?v=1.0.0') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='admin/js/filters.js?v=1.0.0') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='admin/js/form.js?v=1.0.1') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='vendor/select2/select2.min.js?v=3.5.2') }}"
+            type="text/javascript"></script>
+{% endblock %}
