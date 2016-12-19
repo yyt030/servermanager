@@ -39,7 +39,3 @@ class software(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     softname = db.Column(db.String(32), nullable=False)
     version = db.Column(db.String(32), nullable=False)
-
-
-
-

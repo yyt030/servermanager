@@ -4,98 +4,37 @@
         <th class="list-checkbox-column">
             <input type="checkbox" name="rowtoggle" class="action-rowtoggle" title="Select all records"/>
         </th>
-        <th class="col-md-1">&nbsp;</th>
-        <th class="column-header col-name">
-            <a href="/" title="Sort by Name">Name</a>
-        </th>
-        <th class="column-header col-ip">
-            <a href="/" title="Sort by ip">
-                ip
-            </a>
-        </th>
-        <th class="column-header col-ip">
-            <a href="/" title="Sort by ip">
-                ip2
-            </a>
-        </th>
-        <th class="column-header col-ip">
-            <a href="/" title="Sort by ip">
-                ip3
-            </a>
-        </th>
-        <th class="column-header col-ip">
-            <a href="/" title="Sort by ip">
-                ip4
-            </a>
-        </th>
+        <th class="col-md-1"> </th>
+        <th class="column-header col-ip"><a href="/" title="Sort by ip">ip</a></th>
+        <th class="column-header col-ip"><a href="/" title="Sort by ip">机器类型</a></th>
+        <th class="column-header col-ip"><a href="/" title="Sort by ip">操作系统版本</a></th>
+        <th class="column-header col-ip"><a href="/" title="Sort by ip">所属项目组</a></th>
+        <th class="column-header col-ip"><a href="/" title="Sort by ip">机器所属人</a></th>
     </tr>
     </thead>
-    <tr>
-        <td>
-            <input type="checkbox" name="rowid" class="action-checkbox" value="1" title="Select record"/>
-        </td>
-        <td class="list-buttons-column">
-            <a class="icon" href="#" title="Edit Record">
-                <span class="fa fa-pencil glyphicon glyphicon-pencil"></span>
-            </a>
-            <form class="icon" method="POST" action="#">
-                <input id="id" name="id" type="hidden" value="1">
-                <input id="url" name="url" type="hidden" value="#">
-                <button onclick="return confirm('确定删除?');"
-                        title="删除记录">
-                    <span class="fa fa-trash glyphicon glyphicon-trash"></span>
-                </button>
-            </form>
-        </td>
-        <td class="col-name">
-            YELLOW1
-        </td>
-        <td class="col-name">
-            YELLOW2
-        </td>
-        <td class="col-name">
-            YELLOW3
-        </td>
-        <td class="col-name">
-            YELLOW4
-        </td>
-        <td class="col-name">
-            YELLOW5
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <input type="checkbox" name="rowid" class="action-checkbox" value="1" title="Select record"/>
-        </td>
-        <td class="list-buttons-column">
-            <a class="icon" href="/sqla/simple/admin/tag/edit/?url=%2Fsqla%2Fsimple%2Fadmin%2Ftag%2F&amp;id=1"
-               title="Edit Record">
-                <span class="fa fa-pencil glyphicon glyphicon-pencil"></span>
-            </a>
-            <form class="icon" method="POST" action="/sqla/simple/admin/tag/delete/">
-                <input id="id" name="id" type="hidden" value="1">
-                <input id="url" name="url" type="hidden" value="/sqla/simple/admin/tag/">
-                <button onclick="return confirm('确定删除?');"
-                        title="删除记录">
-                    <span class="fa fa-trash glyphicon glyphicon-trash"></span>
-                </button>
-            </form>
-        </td>
-        <td class="col-name">
-            YELLOW1
-        </td>
-        <td class="col-name">
-            YELLOW2
-        </td>
-        <td class="col-name">
-            YELLOW3
-        </td>
-        <td class="col-name">
-            YELLOW4
-        </td>
-        <td class="col-name">
-            YELLOW5
-        </td>
-    </tr>
-
+    {% for server in servers %}
+        <tr>
+            <td>
+                <input type="checkbox" name="rowid" class="action-checkbox" value="1" title="Select record"/>
+            </td>
+            <td class="list-buttons-column">
+                <a class="icon" href="#" title="Edit Record">
+                    <span class="fa fa-pencil glyphicon glyphicon-pencil"></span>
+                </a>
+                <form class="icon" method="POST" action="#">
+                    <input id="id" name="id" type="hidden" value="1">
+                    <input id="url" name="url" type="hidden" value="#">
+                    <button onclick="return confirm('确定删除?');"
+                            title="删除记录">
+                        <span class="fa fa-trash glyphicon glyphicon-trash"></span>
+                    </button>
+                </form>
+            </td>
+            <td class="col-name">{{ server.ip }}</td>
+            <td class="col-name">{{ server.type }}</td>
+            <td class="col-name">{{ server.oslevel }}</td>
+            <td class="col-name">{{ server.project }}</td>
+            <td class="col-name">{{ server.contract_person }}</td>
+        </tr>
+    {% endfor %}
 </table>
