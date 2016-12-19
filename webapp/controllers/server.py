@@ -14,7 +14,7 @@ def create():
     name = None
     form = ServerForm()
     if form.validate_on_submit():
-        name = form.name.data
+        name = form.ip.data
         pass
 
-    return render_template('create.html', form=form, name=name)
+    return render_template('create.html', active_page='add', form=form, name=name)

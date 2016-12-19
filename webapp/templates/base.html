@@ -1,4 +1,5 @@
 {% extends "bootstrap/base.html" %}
+{% set active_page = active_page|default('index') -%}
 
 {% block title %}Server Manager - a demo{% endblock %}
 {% block head %}
@@ -34,15 +35,9 @@
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 container">
         <h1></h1>
         <div class="table-responsive">
-            {% block content_header %}
-                {% include 'include/_content_header.html' %}
-            {% endblock %}
-            {% block content_table %}
-
-            {% endblock %}
-            {% block content_form %}
-                {% include 'include/_content_form.html' %}
-            {% endblock %}
+            {% block content_header %}{% endblock %}
+            {% block content_table %}{% endblock %}
+            {% block content_form %}{% endblock %}
         </div>
     </div>
 {% endblock %}

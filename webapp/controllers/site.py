@@ -30,7 +30,8 @@ def index():
     query = Server.query
     pagination = query.paginate(page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'], error_out=False)
     servers = pagination.items
-    return render_template('index.html', form=form, servers=servers, pagination=pagination)
+    return render_template('index.html', active_page='index',
+                           form=form, servers=servers, pagination=pagination)
 
 
 @bp.route('/search', methods=['GET', 'POST'])

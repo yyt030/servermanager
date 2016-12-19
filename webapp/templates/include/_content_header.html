@@ -1,16 +1,19 @@
 <ul class="nav nav-tabs actions-nav">
-    <li class="active">
-        <a href="/">全部列表</a>
+    <li{% if active_page == 'index' %} class="active" {% endif %}>
+        <a href="/">列表</a>
     </li>
-    <li>
+    <li{% if active_page == 'add' %} class="active" {% endif %}>
         <a href="/s/create"
-           title="Create New Record">创建</a></li>
-    <li class="dropdown">
-        <a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">批量<b class="caret"></b></a>
-        <ul class="dropdown-menu">
-            <li>
-                <a href="javascript:void(0)" onclick="return modelActions.execute('delete');">Delete</a>
-            </li>
-        </ul>
-    </li>
+           title="Create New Record">创建{{ create_active }}</a></li>
+    {% if active_page == 'add' %}
+    {% else %}
+        <li class="dropdown">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">批量<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="javascript:void(0)" onclick="return modelActions.execute('delete');">Delete</a>
+                </li>
+            </ul>
+        </li>
+    {% endif %}
 </ul>

@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
+
+{% block content_header %}
+    {% include 'include/_content_header.html' %}
+{% endblock %}
 {% block content_table %}
-    {% include 'include/_content_table.html' %}
+    {% include 'include/_server_list.html' %}
+{% endblock %}
+{% block content_form %}
+    {% include 'include/_content_form.html' %}
 {% endblock %}

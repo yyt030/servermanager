@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
 
+{% set create_active = True %}
+{% block content_header %}
+    {% include 'include/_content_header.html' %}
+{% endblock %}
 
 {% block content_table %}
     <h1></h1>
