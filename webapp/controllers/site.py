@@ -6,6 +6,7 @@ __author__ = 'yueyt'
 from flask import Blueprint, redirect, url_for
 from flask import render_template
 
+from webapp.forms.server import ServerForm
 from webapp.forms.user import LoginForm
 
 bp = Blueprint('site', __name__)
@@ -13,7 +14,8 @@ bp = Blueprint('site', __name__)
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('base.html')
+    form = ServerForm()
+    return render_template('index.html', form=form)
 
 
 @bp.route('/search', methods=['GET', 'POST'])
@@ -24,4 +26,4 @@ def search():
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    return render_template('base.html', form=form)
+    return redirect(url_for('.index'))

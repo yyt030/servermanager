@@ -26,16 +26,27 @@
       <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 {% endblock %}
-
 {% block navbar %}
-    {% include 'include/_header_nav.html' %}
-    {% include 'include/_left_nav.html' %}
+    {% include 'include/_nav_header.html' %}
+    {% include 'include/_nav_lefter.html' %}
+{% endblock %}
+{% block content %}
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 container">
+        <h1></h1>
+        <div class="table-responsive">
+            {% block content_header %}
+                {% include 'include/_content_header.html' %}
+            {% endblock %}
+            {% block content_table %}
+                {% include 'include/_content_table.html' %}
+            {% endblock %}
+            {% block content_form %}
+                {% include 'include/_content_form.html' %}
+            {% endblock %}
+        </div>
+    </div>
 {% endblock %}
 
-{% block content %}
-    {#    {% include 'include/_content.html' %}#}
-    {% include 'include/_content.html' %}
-{% endblock %}
 {% block scripts %}
     {{ super() }}
     <script src="{{ url_for('static', filename='js/moment.min.js') }}" type="text/javascript"></script>

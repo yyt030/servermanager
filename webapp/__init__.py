@@ -6,6 +6,7 @@ from flask_admin import Admin
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
+
 # from flask_login import LoginManager
 
 
@@ -33,8 +34,9 @@ def create_app(config_name):
     register_admin_view()
 
     # blueprint
-    from webapp.controllers import site
+    from webapp.controllers import site, server
     app.register_blueprint(site.bp, url_prefix='/')
+    app.register_blueprint(server.bp, url_prefix='/s')
 
     # 注册错误展示页面
     register_error_handle(app)
@@ -57,12 +59,10 @@ def register_error_handle(app):
     def page_500(error):
         return render_template('500.html'), 500
 
+
 # flask 添加admin视图
 def register_admin_view():
-    from flask_admin.contrib.sqla import ModelView
     from webapp.models.admin import ServerAdmin
 
-    from webapp.models.user import User
-    from webapp.models.server import Server
-    #admin.add_view(ModelView(User, db.session))
+    # admin.add_view(ModelView(User, db.session))
     admin.add_view(ServerAdmin(db.session))
