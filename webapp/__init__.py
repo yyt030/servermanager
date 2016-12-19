@@ -14,7 +14,6 @@ db = SQLAlchemy()
 bootstrap = Bootstrap()
 # login_manager = LoginManager()
 admin = Admin(template_mode='bootstrap3')
-
 from config import config
 
 

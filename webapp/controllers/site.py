@@ -6,16 +6,14 @@ __author__ = 'yueyt'
 from flask import Blueprint, redirect, url_for
 from flask import render_template
 
-from webapp import db
 from webapp.forms.user import LoginForm
-from webapp.models.user import User
 
 bp = Blueprint('site', __name__)
 
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
-    pass
+    return render_template('base.html')
 
 
 @bp.route('/search', methods=['GET', 'POST'])
