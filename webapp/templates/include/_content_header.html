@@ -3,10 +3,9 @@
         <a href="/">列表</a>
     </li>
     <li{% if active_page == 'add' %} class="active" {% endif %}>
-        <a href="/s/create"
+        <a href="/s/add"
            title="Create New Record">创建{{ create_active }}</a></li>
-    {% if active_page == 'add' %}
-    {% else %}
+    {% if active_page != 'add' %}
         <li class="dropdown">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">批量<b class="caret"></b></a>
             <ul class="dropdown-menu">
