@@ -16,10 +16,10 @@
         <tr>
             <td>
                 <input type="checkbox" name="rowid" class="action-checkbox" value="{{ server.id }}"
-                       title="Select record"/>
+                       title="选择该记录"/>
             </td>
             <td class="list-buttons-column">
-                <a class="icon" href="#" title="Edit Record">
+                <a class="icon" href="{{ url_for('s.list',id=server.id) }}" title="编辑">
                     <span class="fa fa-pencil glyphicon glyphicon-pencil"></span>
                 </a>
                 <form class="icon" method="POST" action="{{ url_for('s.delete') }}">

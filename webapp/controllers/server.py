@@ -21,11 +21,13 @@ def add():
             return redirect(url_for('.add'))
 
         server = Server(ip=form.ip.data, project=form.project.data, oslevel=form.oslevel.data,
-                        use=form.use.data, status=form.status.data)
+                        use=form.use.data, status=form.status.data, contract_person=form.contract_person.data)
         db.session.add(server)
+        db.session.commit()
+        flash('添加ip成功')
         return redirect(url_for('site.index'))
 
-    return render_template('server_add.html', active_page='add', form=form)
+    return render_template('server_info.html', active_page='add', form=form)
 
 
 @bp.route('/delete', methods=['POST'])
@@ -35,9 +37,33 @@ def delete():
     if rowids:
         db.session.query(Server).filter(Server.id.in_(rowids)).delete(synchronize_session='fetch')
         db.session.commit()
-
     if server_id:
-        print('==' * 10)
         Server.query.filter_by(id=server_id).delete()
         db.session.commit()
+    flash('删除成功')
     return redirect(url_for('site.index'))
+
+
+@bp.route('/<int:id>', methods=['GET', 'POST'])
+def list(id):
+    server = Server.query.get_or_404(id)
+    form = ServerForm()
+    if form.validate_on_submit():
+        server.ip = form.ip.data
+        server.project = form.project.data
+        server.oslevel = form.oslevel.data
+        server.use = form.use.data
+        server.status = form.status.data
+        server.contract_person = form.contract_person.data
+        db.session.add(server)
+        db.session.commit()
+        flash('机器信息已更新')
+        return redirect(url_for('site.index'))
+
+    form.ip.data = server.ip
+    form.project.data = server.project
+    form.oslevel.data = server.oslevel
+    form.use.data = server.use
+    form.status.data = server.status
+    form.contract_person.data = server.contract_person
+    return render_template('server_info.html', active_page='add', server=server, form=form)
