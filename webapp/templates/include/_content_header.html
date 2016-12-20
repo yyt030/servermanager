@@ -6,11 +6,11 @@
         <a href="/s/add"
            title="Create New Record">创建{{ create_active }}</a></li>
     {% if active_page != 'add' %}
-        <li class="dropdown">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">批量<b class="caret"></b></a>
+        <li class="dropdown pull-right">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">批量操作<b class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="javascript:void(0)" onclick="return modelActions.execute('delete');">删除</a>
+                    <a href="javascript:void(0)" onclick="return modelActions.execute('delete');"><span class="fa fa-pencil glyphicon glyphicon-trash"> </span> 删除</a>
                 </li>
             </ul>
         </li>
