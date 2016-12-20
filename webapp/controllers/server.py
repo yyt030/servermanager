@@ -2,7 +2,7 @@
 # coding: utf-8
 
 __author__ = 'yueyt'
-from flask import Blueprint, render_template, flash, redirect, url_for
+from flask import Blueprint, render_template, flash, redirect, url_for, request
 
 from webapp import db
 from webapp.forms.server import ServerForm
@@ -26,3 +26,18 @@ def add():
         return redirect(url_for('site.index'))
 
     return render_template('server_add.html', active_page='add', form=form)
+
+
+@bp.route('/delete', methods=['POST'])
+def delete():
+    rowids = request.form.getlist('rowid')
+    server_id = request.form.get('id')
+    if rowids:
+        db.session.query(Server).filter(Server.id.in_(rowids)).delete(synchronize_session='fetch')
+        db.session.commit()
+
+    if server_id:
+        print('==' * 10)
+        Server.query.filter_by(id=server_id).delete()
+        db.session.commit()
+    return redirect(url_for('site.index'))

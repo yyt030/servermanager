@@ -17,7 +17,7 @@ class Server(db.Model):
     contract_person = db.Column(db.String(32))
 
     def __repr__(self):
-        return '<Server: %s [%s]>'.format(self.ip, self.use)
+        return '<Server: ip:{} use:{}>'.format(self.ip, self.use)
 
 
 class Envinfo(db.Model):
@@ -26,7 +26,7 @@ class Envinfo(db.Model):
     describe = db.Column(db.String(64))
 
     def __repr__(self):
-        return '<Env: %s %s>'.format(self.id, self.envname)
+        return '<Env: {} {}>'.format(self.id, self.envname)
 
 
 class Appinfo(db.Model):
