@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
-</body>
-</html>
+<title>404</title>
+
+{% block content_table %}
+    <div class="text-center">
+        <h2>404错误</h2>
+        <image src="/static/img/404.jpg"></image>
+        <p>抱歉，您访问的页面不存在 <a href="/">去首页看看！</a></p>
+    </div>
+{% endblock %}

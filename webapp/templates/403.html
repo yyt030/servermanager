@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block page_title %}403{% endblock %}
+{% block content_table %}
+    <div class="text-center">
+        <h2>403错误</h2>
+        <p>抱歉，你的权限不够哦！</p>
+    </div>
+{% endblock %}
