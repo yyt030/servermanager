@@ -2,11 +2,10 @@
 
 from flask import Flask, render_template
 from flask_admin import Admin
-
 from flask_bootstrap import Bootstrap
+from flask_login import LoginManager
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
 
 # from flask_login import LoginManager
 
@@ -36,7 +35,7 @@ def create_app(config_name):
 
     # blueprint
     from webapp.controllers import site, server
-    app.register_blueprint(site.bp, url_prefix='/')
+    app.register_blueprint(site.bp)
     app.register_blueprint(server.bp, url_prefix='/s')
 
     # 注册错误展示页面
