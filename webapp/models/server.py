@@ -19,6 +19,16 @@ class Server(db.Model):
     def __repr__(self):
         return '<Server: ip:{} use:{}>'.format(self.ip, self.use)
 
+    @staticmethod
+    def generate_fake():
+        for i in range(1, 185):
+            for j in range(1, 5):
+                for k in range(1, 5):
+                    s = '.'.join([str(i), str(j), str(k), '1'])
+                    s = Server(ip=s, project='bgsp', type='pc', oslevel='aix 7100')
+                    db.session.add(s)
+                    db.session.commit()
+
 
 class Envinfo(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -14,5 +14,13 @@ manager = Manager(app)
 migrate = Migrate(app, db)
 manager.add_command('db', MigrateCommand)
 
+
+@manager.command
+def init_data():
+    """Run init tasks."""
+    from webapp.models.server import Server
+    Server.generate_fake()
+
+
 if __name__ == '__main__':
     manager.run()
