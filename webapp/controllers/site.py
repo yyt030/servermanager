@@ -29,12 +29,12 @@ def index():
 def search():
     q = request.args.get('q').strip()
     page = request.args.get('page', 1, type=int)
-    query = Server.query.filter(Server.ip.like(q))
+    query = Server.query.filter(Server.ip.like('%{}%'.format(q)))
     pagination = query.paginate(page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
                                 error_out=False)
     servers = pagination.items
     flash('有{}条符合条件的记录'.format(query.count()))
-    return render_template('index.html', active_page='index', servers=servers, pagination=pagination)
+    return render_template('search_list.html', active_page='index', servers=servers, pagination=pagination)
 
 
 @bp.route('/login', methods=['GET', 'POST'])
