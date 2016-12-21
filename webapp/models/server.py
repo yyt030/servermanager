@@ -26,8 +26,13 @@ class Server(db.Model):
                 for k in range(1, 5):
                     s = '.'.join([str(i), str(j), str(k), '1'])
                     s = Server(ip=s, project='bgsp', type='pc', oslevel='aix 7100')
-                    db.session.add(s)
-                    db.session.commit()
+                    try:
+                        db.session.add(s)
+                    except:
+                        db.session.rollback()
+                    finally:
+                        db.session.commit()
+                    print('*' * 10, s)
 
 
 class Envinfo(db.Model):
