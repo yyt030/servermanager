@@ -67,3 +67,6 @@ def list(id):
     form.status.data = server.status
     form.contract_person.data = server.contract_person
     return render_template('server_info.html', active_page='add', server=server, form=form)
+
+
+

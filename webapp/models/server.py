@@ -38,6 +38,7 @@ class Server(db.Model):
 class Envinfo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     envname = db.Column(db.String(64), nullable=False)
+    color = db.Column(db.String(10))
     describe = db.Column(db.String(64))
 
     def __repr__(self):

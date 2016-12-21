@@ -1,6 +1,6 @@
 <ul class="nav nav-tabs actions-nav">
     <li{% if active_page == 'index' %} class="active" {% endif %}>
-        <a href="/"><span class="glyphicon glyphicon-list"></span> 列表</a>
+        <a href="/"><span class="glyphicon glyphicon-list"></span> 列表{% if number %}({{ number }}){% endif %}</a>
     </li>
     <li{% if active_page == 'add' %} class="active" {% endif %}>
         <a href="/s/add" title="Create New Record">
