@@ -25,6 +25,7 @@ class ServerForm(FlaskForm):
     oslevel = SelectField('操作系统版本:', choices=_machine_type_list, coerce=str, default='SUSE SLES11 SP3')
     use = TextAreaField('用途:')
     contract_person = StringField('联系人:')
+    envinfo = SelectField('环境',coerce=int)
     status = BooleanField('使用中', default=True)
 
     submit = SubmitField('保存')

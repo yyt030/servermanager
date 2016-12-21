@@ -6,7 +6,7 @@ from flask import Blueprint, render_template, flash, redirect, url_for, request
 
 from webapp import db
 from webapp.forms.server import ServerForm
-from webapp.models.server import Server
+from webapp.models.server import Server, Envinfo
 
 bp = Blueprint('s', __name__)
 
@@ -14,6 +14,7 @@ bp = Blueprint('s', __name__)
 @bp.route('/add', methods=['GET', 'POST'])
 def add():
     form = ServerForm()
+    form.envinfo.choices = [(a.id, a.envname) for a in Envinfo.query.order_by('id')]
     if form.validate_on_submit():
         res = Server.query.filter_by(ip=form.ip.data).first()
         if res:
@@ -67,6 +68,3 @@ def list(id):
     form.status.data = server.status
     form.contract_person.data = server.contract_person
     return render_template('server_info.html', active_page='add', server=server, form=form)
-
-
-

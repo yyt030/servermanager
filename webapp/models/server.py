@@ -15,6 +15,7 @@ class Server(db.Model):
     use = db.Column(db.String(128))
     status = db.Column(db.String(5))
     contract_person = db.Column(db.String(32))
+    envinfo_id = db.Column(db.Integer, db.ForeignKey('envinfo.id'))
 
     def __repr__(self):
         return '<Server: ip:{} use:{}>'.format(self.ip, self.use)
@@ -38,11 +39,23 @@ class Server(db.Model):
 class Envinfo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     envname = db.Column(db.String(64), nullable=False)
+    location = db.Column(db.String(32))
     color = db.Column(db.String(10))
     describe = db.Column(db.String(64))
+    servers = db.relationship('Server', backref='envinfo', lazy='dynamic')
 
     def __repr__(self):
         return '<Env: {} {}>'.format(self.id, self.envname)
+
+    @staticmethod
+    def generate_fake():
+        envnames = ['DEV', 'SIT', 'UAT']
+        locations = ['境内', '海外', '离岸', '港行']
+        for l in locations:
+            for e in envnames:
+                ev = Envinfo(envname=e, location=l)
+                db.session.add(ev)
+                db.session.commit()
 
 
 class Appinfo(db.Model):

@@ -18,8 +18,9 @@ manager.add_command('db', MigrateCommand)
 @manager.command
 def init_data():
     """Run init tasks."""
-    from webapp.models.server import Server
+    from webapp.models.server import Server,Envinfo
     Server.generate_fake()
+    Envinfo.generate_fake()
 
 
 if __name__ == '__main__':
