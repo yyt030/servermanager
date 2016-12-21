@@ -16,10 +16,16 @@ manager.add_command('db', MigrateCommand)
 
 
 @manager.command
-def init_data():
-    """Run init tasks."""
-    from webapp.models.server import Server,Envinfo
+def init_test_data():
+    """初始化相关测试数据"""
+    from webapp.models.server import Server, Envinfo
     Server.generate_fake()
+
+
+@manager.command
+def init_static_data():
+    """初始化相关静态数据"""
+    from webapp.models.server import Envinfo
     Envinfo.generate_fake()
 
 

@@ -22,18 +22,20 @@ class Server(db.Model):
 
     @staticmethod
     def generate_fake():
+        e = Envinfo.query.first()
         for i in range(1, 185):
-            for j in range(1, 5):
-                for k in range(1, 5):
+            for j in range(2, 3):
+                for k in range(3, 4):
                     s = '.'.join([str(i), str(j), str(k), '1'])
                     s = Server(ip=s, project='bgsp', type='pc', oslevel='aix 7100')
+                    s.envinfo_id = e.id
                     try:
                         db.session.add(s)
                     except:
                         db.session.rollback()
-                    finally:
+                    else:
                         db.session.commit()
-                    print('*' * 10, s)
+                        print('*' * 10, s)
 
 
 class Envinfo(db.Model):
@@ -49,13 +51,19 @@ class Envinfo(db.Model):
 
     @staticmethod
     def generate_fake():
-        envnames = ['DEV', 'SIT', 'UAT']
+        envnames = ['DEV', 'SIT', 'UAT', 'TRL', 'QUS']
         locations = ['境内', '海外', '离岸', '港行']
         for l in locations:
             for e in envnames:
-                ev = Envinfo(envname=e, location=l)
-                db.session.add(ev)
-                db.session.commit()
+                ev = Envinfo(envname=e, location=l, describe=' '.join([l, e]))
+                try:
+                    db.session.add(ev)
+                except:
+                    db.session.rollback()
+                else:
+                    db.session.commit()
+
+    __table_args__ = (db.UniqueConstraint('envname', 'location', name='ix_envname_location'),)
 
 
 class Appinfo(db.Model):
@@ -64,7 +72,7 @@ class Appinfo(db.Model):
     describe = db.Column(db.String(128))
 
 
-class software(db.Model):
+class Software(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     softname = db.Column(db.String(32), nullable=False)
     version = db.Column(db.String(32), nullable=False)

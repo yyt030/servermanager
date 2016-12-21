@@ -14,7 +14,7 @@ bp = Blueprint('s', __name__)
 @bp.route('/add', methods=['GET', 'POST'])
 def add():
     form = ServerForm()
-    form.envinfo.choices = [(a.id, a.envname) for a in Envinfo.query.order_by('id')]
+    form.envinfo.choices = [(a.id, ' '.join([a.location, a.envname])) for a in Envinfo.query.order_by('id')]
     if form.validate_on_submit():
         res = Server.query.filter_by(ip=form.ip.data).first()
         if res:
@@ -56,6 +56,7 @@ def list(id):
         server.use = form.use.data
         server.status = form.status.data
         server.contract_person = form.contract_person.data
+        server.envinfo_id = form.envinfo.data
         db.session.add(server)
         db.session.commit()
         flash('机器信息已更新')
@@ -67,4 +68,8 @@ def list(id):
     form.use.data = server.use
     form.status.data = server.status
     form.contract_person.data = server.contract_person
+    # form.envinfo = server.envinfo_id
+    form.envinfo.choices = [(a.id, ' '.join([a.location, a.envname])) for a in Envinfo.query.order_by('id')]
+    form.envinfo.default = server.envinfo_id
+    print('*' * 30, form.envinfo)
     return render_template('server_info.html', active_page='add', server=server, form=form)
