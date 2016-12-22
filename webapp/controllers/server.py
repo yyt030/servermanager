@@ -57,7 +57,6 @@ def list(id):
         server.status = form.status.data
         server.contract_person = form.contract_person.data
         server.envinfo_id = form.envinfo_id.data
-        print('*'*10, server.envinfo_id)
         db.session.add(server)
         db.session.commit()
         flash('机器信息已更新')
@@ -71,4 +70,4 @@ def list(id):
     form.contract_person.data = server.contract_person
     form.envinfo_id.data = server.envinfo_id
 
-    return render_template('server_info.html', active_page='add', server=server, form=form)
+    return render_template('server_info.html', active_page='info', server=server, form=form)

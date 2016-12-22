@@ -4,18 +4,19 @@
 __author__ = 'yueyt'
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, BooleanField, SelectField
+from wtforms import StringField, SubmitField, BooleanField, SelectField, TextAreaField
 from wtforms.validators import ip_address
 
 from webapp.models.server import Envinfo
 
+
 class ServerForm(FlaskForm):
-    ip = StringField('ip:', validators=[ip_address()])
+    ip = StringField('ip:', validators=[ip_address()], render_kw={'placeholder': 'ip: XXX.XXX.XXX.XXX'})
     project = SelectField('所属项目:')
     oslevel = SelectField('操作系统版本:')
-    use = TextAreaField('用途:')
-    contract_person = StringField('联系人:')
-    envinfo_id = SelectField('环境:',coerce=int)
+    use = TextAreaField('用途:', render_kw={'placeholder': '填写该机器主要做什么用？MB应用/MQ网关。。。'})
+    contract_person = StringField('联系人:', render_kw={'placeholder': '填写机器的申请人'})
+    envinfo_id = SelectField('环境:', coerce=int)
     status = BooleanField('使用中', default=True)
     submit = SubmitField('保存')
 

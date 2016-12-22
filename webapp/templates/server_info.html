@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% set create_active = True %}
+{% set create_active = active_page %}
 {% block content_header %}
     {% include 'include/_content_header.html' %}
 {% endblock %}

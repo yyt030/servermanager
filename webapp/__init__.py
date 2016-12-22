@@ -30,8 +30,8 @@ def create_app(config_name):
     admin.init_app(app)
     login_manager.init_app(app)
 
-    # admin
-    register_admin_view()
+    # 注册flask-admin视图
+    # register_admin_view()
 
     # blueprint
     from webapp.controllers import site, server
