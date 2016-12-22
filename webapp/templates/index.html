@@ -11,7 +11,7 @@
     {% include 'include/_content_form.html' %}
     {% if pagination %}
         <div class="pagination">
-            {{ macros.pagination_widget(pagination, '.index') }}
+            {{ macros.pagination_widget(pagination, '.index',sort=request.args.get('sort'),v=request.args.get('v')) }}
         </div>
     {% endif %}
 {% endblock %}

@@ -3,19 +3,41 @@
 
 __author__ = 'yueyt'
 
-from flask import Blueprint, redirect, url_for, request, current_app, flash
+from flask import (Blueprint, redirect, url_for, request, current_app, flash, g, abort)
 from flask import render_template
 
+from webapp import db
 from webapp.forms.user import LoginForm
-from webapp.models.server import Server
+from webapp.models.server import Server, Envinfo
 
 bp = Blueprint('site', __name__)
+
+
+@bp.before_app_request
+def before_request():
+    locations = db.session.query(Envinfo.location.distinct()).order_by(Envinfo.id).all()
+    envnames = db.session.query(Envinfo.envname.distinct()).order_by(Envinfo.id).all()
+    g.locations = [l[0] for l in locations]
+    g.envnames = [e[0] for e in envnames]
 
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
     page = request.args.get('page', 1, type=int)
-    query = Server.query.order_by(Server.envinfo_id)
+    sort = request.args.get('sort', None)
+    if sort:
+        query = None
+        v = request.args.get('v', '')
+        if sort == 'envname':
+            # query = Server.query.filter(Envinfo.envname == v)
+            query = Server.query.join(Envinfo).filter(Envinfo.envname == v).order_by(Envinfo.location)
+        elif sort == 'location':
+            query = Server.query.join(Envinfo).filter(Envinfo.location == v).order_by(Envinfo.envname)
+        else:
+            abort(404)
+    else:
+        query = Server.query.order_by(Server.envinfo_id)
+
     pagination = query.paginate(page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
                                 error_out=False)
 

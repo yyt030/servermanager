@@ -1,14 +1,14 @@
 <div class="col-sm-3 col-md-2 sidebar">
-    <h3>全部</h3>
+    <h4>按流程划分</h4>
     <ul class="nav nav-list ">
-        <li class="select2-active"><a href="/">DEV环境</a></li>
-        <li><a href="/">SIT环境</a></li>
-        <li><a href="/">TRL环境</a></li>
+        {% for envname in g.envnames %}
+            <li><a href="{{ url_for('site.index',sort='envname',v=envname) }}">{{ envname }}环境</a></li>
+        {% endfor %}
     </ul>
-    <h3>区域划分</h3>
+    <h4>按区域划分</h4>
     <ul class="nav nav-list">
-        <li><a href="/">境内环境</a></li>
-        <li><a href="/">港行环境</a></li>
-        <li><a href="/">海外环境</a></li>
+        {% for location in g.locations %}
+            <li><a href="{{ url_for('site.index',sort='location',v=location) }}">{{ location }}环境</a></li>
+        {% endfor %}
     </ul>
 </div>

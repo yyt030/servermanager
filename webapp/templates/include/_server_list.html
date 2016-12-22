@@ -35,9 +35,11 @@
             {#            <td class="col-name">{{ server.use }}</td>#}
             <td class="col-name">{{ server.project }}</td>
             <td class="col-name">{{ server.envinfo.location + server.envinfo.envname }}</td>
-            <td class="col-name">{{ server.ip }}</td>
+            <td class="col-name">
+                <a href="{{ url_for('s.list',id=server.id) }}" data-toggle="tooltip" title="{{ server.use }}"
+                   data-placement="right">{{ server.ip }}</a>
+            </td>
             <td class="col-name">{{ server.oslevel }}</td>
-
             <td class="col-name">{{ server.contract_person }}</td>
         </tr>
     {% endfor %}
