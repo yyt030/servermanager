@@ -7,6 +7,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, BooleanField, SelectField
 from wtforms.validators import ip_address
 
+from webapp.models.server import Envinfo
 
 class ServerForm(FlaskForm):
     ip = StringField('ip:', validators=[ip_address()])
@@ -14,7 +15,7 @@ class ServerForm(FlaskForm):
     oslevel = SelectField('操作系统版本:')
     use = TextAreaField('用途:')
     contract_person = StringField('联系人:')
-    envinfo_id = SelectField('环境:', )
+    envinfo_id = SelectField('环境:',coerce=int)
     status = BooleanField('使用中', default=True)
     submit = SubmitField('保存')
 
@@ -36,6 +37,4 @@ class ServerForm(FlaskForm):
         self.project.coerce = str
         self.oslevel.choices = _machine_type_list
         self.oslevel.coerce = str
-        self.envinfo_id.coerce = int
-
-        #self.envinfo_id.choices = [(a.id, ' '.join([a.location, a.envname])) for a in Envinfo.query.order_by('id')]
+        self.envinfo_id.choices = [(a.id, ' '.join([a.location, a.envname])) for a in Envinfo.query.order_by('id')]
