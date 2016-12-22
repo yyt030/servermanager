@@ -34,7 +34,11 @@
             </td>
             {#            <td class="col-name">{{ server.use }}</td>#}
             <td class="col-name">{{ server.project }}</td>
-            <td class="col-name">{{ server.envinfo.location + server.envinfo.envname }}</td>
+            <td class="col-name">
+                {% if server.envinfo %}{{ server.envinfo.location + server.envinfo.envname }}
+                {% else %}{{ server.use }}
+                {% endif %}
+            </td>
             <td class="col-name">
                 <a href="{{ url_for('s.list',id=server.id) }}" data-toggle="tooltip" title="{{ server.use }}"
                    data-placement="right">{{ server.ip }}</a>
