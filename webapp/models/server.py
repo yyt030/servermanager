@@ -21,13 +21,17 @@ class Server(db.Model):
         return '<Server: ip:{} use:{}>'.format(self.ip, self.use)
 
     @staticmethod
-    def generate_fake():
-        e = Envinfo.query.first()
+    def generate_fake(count=100):
+        import random
+        n = 0
         for i in range(1, 185):
             for j in range(2, 3):
                 for k in range(3, 4):
+                    if n>=count:
+                        break
                     s = '.'.join([str(i), str(j), str(k), '1'])
-                    s = Server(ip=s, project='bgsp', type='pc', oslevel='aix 7100')
+                    s = Server(ip=s, project='BGSP', type='PC', oslevel='AIX 7100')
+                    e = random.choice(Envinfo.query.all())
                     s.envinfo_id = e.id
                     try:
                         db.session.add(s)
@@ -36,6 +40,7 @@ class Server(db.Model):
                     else:
                         db.session.commit()
                         print('*' * 10, s)
+                        n += 1
 
 
 class Envinfo(db.Model):
@@ -47,7 +52,7 @@ class Envinfo(db.Model):
     servers = db.relationship('Server', backref='envinfo', lazy='dynamic')
 
     def __repr__(self):
-        return '<Env: {} {}>'.format(self.id, self.envname)
+        return '<Env: {} {} {}>'.format(self.id, self.location, self.envname)
 
     @staticmethod
     def generate_fake():
@@ -56,6 +61,7 @@ class Envinfo(db.Model):
         for l in locations:
             for e in envnames:
                 ev = Envinfo(envname=e, location=l, describe=' '.join([l, e]))
+                print(ev)
                 try:
                     db.session.add(ev)
                 except:

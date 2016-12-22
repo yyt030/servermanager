@@ -9,23 +9,33 @@ from wtforms.validators import ip_address
 
 
 class ServerForm(FlaskForm):
-    _machine_type_list = [
-        ('SUSE SLES11 SP2', 'SUSE SLES11 SP2'),
-        ('SUSE SLES11 SP3', 'SUSE SLES11 SP3'),
-        ('SUSE SLES11 SP4', 'SUSE SLES11 SP4'),
-        ('AIX 7100', 'AIX 7100'),
-        ('AIX 5100', 'AIX 5100'),
-        ('AIX 6100', 'AIX 6100')
-    ]
-    _project_list = [
-        ('BGSP', 'BGSP'), ('EGSP', 'EGSP')
-    ]
     ip = StringField('ip:', validators=[ip_address()])
-    project = SelectField('所属项目:', choices=_project_list, coerce=str)
-    oslevel = SelectField('操作系统版本:', choices=_machine_type_list, coerce=str)
+    project = SelectField('所属项目:')
+    oslevel = SelectField('操作系统版本:')
     use = TextAreaField('用途:')
     contract_person = StringField('联系人:')
-    envinfo = SelectField('环境', coerce=int)
+    envinfo_id = SelectField('环境:', )
     status = BooleanField('使用中', default=True)
-
     submit = SubmitField('保存')
+
+    def __init__(self, *args, **kwargs):
+        super(ServerForm, self).__init__(*args, **kwargs)
+
+        _machine_type_list = [
+            ('SUSE SLES11 SP2', 'SUSE SLES11 SP2'),
+            ('SUSE SLES11 SP3', 'SUSE SLES11 SP3'),
+            ('SUSE SLES11 SP4', 'SUSE SLES11 SP4'),
+            ('AIX 7100', 'AIX 7100'),
+            ('AIX 5100', 'AIX 5100'),
+            ('AIX 6100', 'AIX 6100')
+        ]
+        _project_list = [
+            ('BGSP', 'BGSP'), ('EGSP', 'EGSP')
+        ]
+        self.project.choices = _project_list
+        self.project.coerce = str
+        self.oslevel.choices = _machine_type_list
+        self.oslevel.coerce = str
+        self.envinfo_id.coerce = int
+
+        #self.envinfo_id.choices = [(a.id, ' '.join([a.location, a.envname])) for a in Envinfo.query.order_by('id')]
