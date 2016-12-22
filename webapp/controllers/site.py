@@ -29,7 +29,6 @@ def index():
         query = None
         v = request.args.get('v', '')
         if sort == 'envname':
-            # query = Server.query.filter(Envinfo.envname == v)
             query = Server.query.join(Envinfo).filter(Envinfo.envname == v).order_by(Envinfo.location)
         elif sort == 'location':
             query = Server.query.join(Envinfo).filter(Envinfo.location == v).order_by(Envinfo.envname)
