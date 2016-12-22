@@ -19,7 +19,7 @@ manager.add_command('db', MigrateCommand)
 def init_test_data():
     """初始化相关测试数据"""
     from webapp.models.server import Server, Envinfo
-    Server.generate_fake(10)
+    Server.generate_fake(100)
 
 
 @manager.command

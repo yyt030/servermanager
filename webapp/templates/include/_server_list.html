@@ -5,11 +5,10 @@
             <input type="checkbox" name="rowtoggle" class="action-rowtoggle" title="Select all records"/>
         </th>
         <th class="col-md-1"></th>
-        {#        <th class="column-header col-ip"><a href="/" title="Sort by ip">环境</a></th>#}
-        <th class="column-header col-ip"><a href="/" title="Sort by ip">ip</a></th>
-        <th class="column-header col-ip"><a href="/" title="Sort by ip">机器类型</a></th>
-        <th class="column-header col-ip"><a href="/" title="Sort by ip">操作系统版本</a></th>
         <th class="column-header col-ip"><a href="/" title="Sort by ip">所属项目组</a></th>
+        <th class="column-header col-ip"><a href="/" title="Sort by ip">环境</a></th>
+        <th class="column-header col-ip"><a href="/" title="Sort by ip">ip</a></th>
+        <th class="column-header col-ip"><a href="/" title="Sort by ip">操作系统版本</a></th>
         <th class="column-header col-ip"><a href="/" title="Sort by ip">机器所属人</a></th>
     </tr>
     </thead>
@@ -34,10 +33,11 @@
                 </form>
             </td>
             {#            <td class="col-name">{{ server.use }}</td>#}
-            <td class="col-name">{{ server.ip }}</td>
-            <td class="col-name">{{ server.type }}</td>
-            <td class="col-name">{{ server.oslevel }}</td>
             <td class="col-name">{{ server.project }}</td>
+            <td class="col-name">{{ server.envinfo.location + server.envinfo.envname }}</td>
+            <td class="col-name">{{ server.ip }}</td>
+            <td class="col-name">{{ server.oslevel }}</td>
+
             <td class="col-name">{{ server.contract_person }}</td>
         </tr>
     {% endfor %}

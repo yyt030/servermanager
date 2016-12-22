@@ -15,7 +15,7 @@ bp = Blueprint('site', __name__)
 @bp.route('/', methods=['GET', 'POST'])
 def index():
     page = request.args.get('page', 1, type=int)
-    query = Server.query
+    query = Server.query.order_by(Server.envinfo_id)
     pagination = query.paginate(page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
                                 error_out=False)
 
