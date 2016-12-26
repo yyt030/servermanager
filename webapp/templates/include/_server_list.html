@@ -15,7 +15,6 @@
     <tbody>
     {% for server in servers %}
         <tr bgcolor="#ffe4c4">
-            {#        <tr bgcolor="#ffe4c4">#}
             <td>
                 <input type="checkbox" name="rowid" class="action-checkbox" value="{{ server.id }}"
                        title="选择该记录"/>
@@ -33,7 +32,6 @@
                     </button>
                 </form>
             </td>
-            {#            <td class="col-name">{{ server.use }}</td>#}
             <td class="col-name">{{ server.project }}</td>
             <td class="col-name">
                 {% if server.envinfo %}{{ server.envinfo.location + server.envinfo.envname }}
@@ -41,7 +39,7 @@
                 {% endif %}
             </td>
             <td class="col-name">
-                <a class="icon" href="{{ url_for('s.list',id=server.id) }}" title="终端">
+                <a class="icon" href="{{ url_for('s.term',id=server.id) }}" title="终端">
                     <span class="glyphicon glyphicon-wrench"></span>
                 </a>
                 <a href="{{ url_for('s.list',id=server.id) }}" data-toggle="tooltip" title="{{ server.use }}"
