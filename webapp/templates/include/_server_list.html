@@ -39,7 +39,7 @@
                 {% endif %}
             </td>
             <td class="col-name">
-                <a class="icon" href="{{ url_for('s.term',id=server.id) }}" title="终端">
+                <a id="iterm" class="icon" href="javascript:openTerm('{{ server.ip }}','mqm','mqm')" title="终端">
                     <span class="glyphicon glyphicon-wrench"></span>
                 </a>
                 <a href="{{ url_for('s.list',id=server.id) }}" data-toggle="tooltip" title="{{ server.use }}"

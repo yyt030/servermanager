@@ -58,5 +58,37 @@
 
         })(jQuery);
     </script>
+    <script>
+        function openTerm(ip, username, password) {
+            var mapForm = document.createElement("form");
+            mapForm.target = "Map";
+            mapForm.method = "GET";
+            mapForm.action = "http://127.0.0.1:9527";
+
+            var ipInput = document.createElement("input");
+            ipInput.value = ip
+
+            var usernameInput = document.createElement("input");
+            usernameInput.value = username
+
+            var passwordInput = document.createElement("input");
+            passwordInput.value = password
+
+
+            mapForm.appendChild(ipInput, usernameInput, passwordInput);
+
+            document.body.appendChild(mapForm);
+
+            //map = window.open("", "Map", "resizable=yes,toolbar=no,location=no,status=no,scrollbars=no,menubar=no,width=760,height=480");
+            map = window.open("", "Map");
+            if (map) {
+                mapForm.submit();
+            } else {
+                alert('You must allow popups for this map to work.');
+            }
+            return true;
+        }
+    </script>
+
 
 {% endblock %}
