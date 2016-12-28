@@ -43,7 +43,7 @@
                     <a data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-new-window"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         {% for serveruser in server.serverusers %}
-                            <li>
+                            <li class="dropdown">
                                 <a class="icon"
                                    href="javascript:openTerm('{{ server.ip }}','{{ serveruser.username }}','{{ serveruser.password }}')">
                                     <span class="glyphicon glyphicon-play"></span>
