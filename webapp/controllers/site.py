@@ -6,7 +6,7 @@ __author__ = 'yueyt'
 from flask import (Blueprint, redirect, url_for, request, current_app, flash, g, abort)
 from flask import render_template
 
-from webapp import db
+from webapp import db, webssh_addr
 from webapp.forms.user import LoginForm
 from webapp.models.server import Server, Envinfo
 
@@ -42,8 +42,9 @@ def index():
 
     servers = pagination.items
     number = query.count()
+
     return render_template('index.html', active_page='index', servers=servers, pagination=pagination,
-                           number=number)
+                           number=number, webssh_addr=webssh_addr)
 
 
 @bp.route('/search', methods=['GET', 'POST'])
@@ -55,7 +56,8 @@ def search():
                                 error_out=False)
     servers = pagination.items
     flash('有{}条符合条件的记录'.format(query.count()))
-    return render_template('search_list.html', active_page='index', servers=servers, pagination=pagination)
+    return render_template('search_list.html', active_page='index', servers=servers, pagination=pagination,
+                           webssh_addr=webssh_addr)
 
 
 @bp.route('/login', methods=['GET', 'POST'])
