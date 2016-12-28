@@ -1,7 +1,7 @@
 {% extends "bootstrap/base.html" %}
 {% set active_page = active_page|default('index') -%}
 
-{% block title %}Server Manager - a demo{% endblock %}
+{% block title %}Server Manager{% endblock %}
 {% block head %}
     {{ super() }}
     <meta charset="utf-8">
@@ -59,36 +59,43 @@
         })(jQuery);
     </script>
     <script>
+
         function openTerm(ip, username, password) {
             var mapForm = document.createElement("form");
             mapForm.target = "Map";
-            mapForm.method = "GET";
+            mapForm.method = "POST";
+            mapForm.id = 'postdata'
             mapForm.action = "http://127.0.0.1:9527";
 
             var ipInput = document.createElement("input");
+            ipInput.type = "hidden"
+            ipInput.name = "ip"
             ipInput.value = ip
 
             var usernameInput = document.createElement("input");
+            usernameInput.type = "hidden"
+            usernameInput.name = "username"
             usernameInput.value = username
 
             var passwordInput = document.createElement("input");
+            passwordInput.type = "hidden"
+            passwordInput.name = "password"
             passwordInput.value = password
 
 
-            mapForm.appendChild(ipInput, usernameInput, passwordInput);
+            mapForm.appendChild(ipInput);
+            mapForm.appendChild(usernameInput)
+            mapForm.appendChild(passwordInput)
 
             document.body.appendChild(mapForm);
 
-            //map = window.open("", "Map", "resizable=yes,toolbar=no,location=no,status=no,scrollbars=no,menubar=no,width=760,height=480");
-            map = window.open("", "Map");
+            map = window.open("", "Map", "resizable=yes,toolbar=no,location=no,status=no,scrollbars=no,menubar=no,width=760,height=480");
             if (map) {
                 mapForm.submit();
             } else {
                 alert('You must allow popups for this map to work.');
             }
-            return true;
+            return false;
         }
     </script>
-
-
 {% endblock %}
