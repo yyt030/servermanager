@@ -45,8 +45,12 @@ class Server(db.Model):
                         n += 1
 
                     s = Server.query.filter_by(ip=s.ip).first()
-                    su = ServerUser(server_id=s.id, username='mqm', password='mqm')
-                    db.session.add(su)
+                    su1 = ServerUser(server_id=s.id, username='root', password='123456')
+                    su2 = ServerUser(server_id=s.id, username='mqm', password='mqm')
+                    su3 = ServerUser(server_id=s.id, username='egspadm', password='egspadm')
+                    db.session.add(su1)
+                    db.session.add(su2)
+                    db.session.add(su3)
                     db.session.commit()
 
 
