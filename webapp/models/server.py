@@ -32,7 +32,7 @@ class Server(db.Model):
                     if n >= count:
                         break
                     s = '.'.join([str(i), str(j), str(k), '1'])
-                    s = Server(ip=s, project='BGSP', type='PC', oslevel='AIX 7100')
+                    s = Server(ip=s, project=random.choice(['EGSP','BGSP']), type='PC', oslevel='AIX 7100')
                     e = random.choice(Envinfo.query.all())
                     s.envinfo_id = e.id
                     try:

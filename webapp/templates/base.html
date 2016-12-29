@@ -5,7 +5,7 @@
 {% block head %}
     {{ super() }}
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -18,8 +18,8 @@
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-      <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+      <script src="{{ url_for('static', filename='js/html5shiv.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/respond.min.js')}}"></script>
     <![endif]-->
 {% endblock %}
 {% block navbar %}
@@ -51,6 +51,51 @@
     </script>
     <script language="javascript">
         (function ($) {
+            $("#searchlist").hide()
+
+            $("#searchBox").keyup(function () {
+
+                var val = $("#searchBox").val();
+                if (val.length > 0) {
+                    $.ajax({
+                        type: 'get',
+                        url: '/dysearch',
+                        data: {
+                            'ip': val
+                        },
+                        success: function (data) {
+
+                            var ipstrarr = new Array()
+                            ipstrarr = data.split(",")
+                            try {
+                                var tipHtml = ""
+                                for (i = 0; i < ipstrarr.length - 1; i++) {
+                                    var width = parseInt($("#searchBox").width());
+                                    tipHtml += "<input readonly='readonly' class='item' type='text' value=" + ipstrarr[i] + ">"
+
+                                }
+
+                                $("#searchlist").html(tipHtml).width(width)
+                                $("#searchlist").show()
+                                $("#searchlist input").click(function () {
+
+                                    $("#searchlist").hide();
+                                    $("#searchBox").val($(this).val());
+                                });
+
+                            } catch (e) {
+                                {#                                alert(e.message)#}
+                            }
+                        },
+                        error: function (err) {
+                            {#                            alert(err.message)#}
+                        }
+                    })
+                }
+                else {
+                    $("#searchlist").hide();
+                }
+            })
             $('[data-role=tooltip]').tooltip({
                 html: true,
                 placement: 'bottom'
