@@ -41,7 +41,7 @@
             <td class="col-name wa">
                 <div class="dropdown col-sm-2">
                     <a data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-new-window"></span></a>
-                    {% if server.serverusers %}
+                    {% if server.serverusers.count() %}
                         <ul class="dropdown-menu" role="menu">
                             {% for serveruser in server.serverusers %}
                                 <li class="dropdown">
