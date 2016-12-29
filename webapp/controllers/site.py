@@ -6,15 +6,21 @@ __author__ = 'yueyt'
 from flask import (Blueprint, redirect, url_for, request, current_app, flash, g, abort)
 from flask import render_template
 
-from webapp import db, webssh_addr
+from webapp import db, webssh_addr, cache
 from webapp.forms.user import LoginForm
 from webapp.models.server import Server, Envinfo
-import json
 
 bp = Blueprint('site', __name__)
 
 
+def make_cache_key():
+    path = request.path
+    args = str(hash(frozenset(request.args.items())))
+    return (path + args).encode('utf-8')
+
+
 @bp.before_app_request
+@cache.cached(timeout=300)
 def before_request():
     locations = db.session.query(Envinfo.location.distinct()).order_by(Envinfo.id).all()
     envnames = db.session.query(Envinfo.envname.distinct()).order_by(Envinfo.id).all()
@@ -23,6 +29,7 @@ def before_request():
 
 
 @bp.route('/', methods=['GET', 'POST'])
+@cache.cached(timeout=120, key_prefix=make_cache_key)
 def index():
     page = request.args.get('page', 1, type=int)
     query = Server.query.order_by(Server.envinfo_id)
@@ -35,6 +42,7 @@ def index():
 
 
 @bp.route('/search', methods=['GET', 'POST'])
+@cache.cached(timeout=120, key_prefix=make_cache_key)
 def search():
     q = request.args.get('q')
     filter = request.args.get('filter')
@@ -73,9 +81,10 @@ def login():
     form = LoginForm()
     return redirect(url_for('.index'))
 
-@bp.route('/Dysearch',methods=['GET','POST'])
-def Dysearch():
 
+@bp.route('/dysearch', methods=['GET', 'POST'])
+@cache.cached(timeout=120,key_prefix=make_cache_key)
+def dysearch():
     q = request.args.get('ip')
     servers = []
     Jsonstr = ""
@@ -87,7 +96,4 @@ def Dysearch():
         Jsonstr += svr.ip
         Jsonstr += ","
     Jsonstr += "1"
-
-
-    print(Jsonstr)
     return Jsonstr

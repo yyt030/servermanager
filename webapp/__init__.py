@@ -7,6 +7,7 @@ from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
+from flask_cache import Cache
 
 webssh_addr = '{}:{}'.format(socket.gethostbyname(socket.gethostname()), 9527)
 
@@ -14,6 +15,7 @@ moment = Moment()
 db = SQLAlchemy()
 bootstrap = Bootstrap()
 login_manager = LoginManager()
+cache = Cache(config={'CACHE_TYPE': 'simple'})
 # admin = Admin(template_mode='bootstrap3')
 from config import config
 
@@ -29,6 +31,7 @@ def create_app(config_name):
     moment.init_app(app)
     # admin.init_app(app)
     login_manager.init_app(app)
+    cache.init_app(app)
 
     # 注册flask-admin视图
     # register_admin_view()

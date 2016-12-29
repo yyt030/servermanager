@@ -50,52 +50,51 @@
         var modelActions = new AdminModelActions("至少选择一条记录.", {"delete": "确定删除?"});
     </script>
     <script language="javascript">
-        (
-            function ($) {
-                $("#searchlist").hide()
+        (function ($) {
+            $("#searchlist").hide()
 
-                $("#searchBox").keyup(function () {
+            $("#searchBox").keyup(function () {
 
-                    var val = $("#searchBox").val();
-                    if(val.length>0){
-                    $.ajax({ 
-                        type : 'get',
-                        url: '/Dysearch',
-                        data:{
-                          'ip' : val
+                var val = $("#searchBox").val();
+                if (val.length > 0) {
+                    $.ajax({
+                        type: 'get',
+                        url: '/dysearch',
+                        data: {
+                            'ip': val
                         },
-                        success : function(data) {
+                        success: function (data) {
 
                             var ipstrarr = new Array()
                             ipstrarr = data.split(",")
                             try {
-                                var tipHtml =""
-                            for (i = 0; i < ipstrarr.length - 1; i++) {
-                                var width = parseInt($("#searchBox").width());
-                                tipHtml += "<input readonly='readonly' class='item' type='text' value=" + ipstrarr[i] + ">"
+                                var tipHtml = ""
+                                for (i = 0; i < ipstrarr.length - 1; i++) {
+                                    var width = parseInt($("#searchBox").width());
+                                    tipHtml += "<input readonly='readonly' class='item' type='text' value=" + ipstrarr[i] + ">"
 
-                            }
+                                }
 
-                            $("#searchlist").html(tipHtml).width(width)
-                            $("#searchlist").show()
-                                $("#searchlist input").click(function(){
+                                $("#searchlist").html(tipHtml).width(width)
+                                $("#searchlist").show()
+                                $("#searchlist input").click(function () {
 
                                     $("#searchlist").hide();
                                     $("#searchBox").val($(this).val());
                                 });
 
-                        }catch (e){
-                                alert(e.message)
+                            } catch (e) {
+                                {#                                alert(e.message)#}
                             }
                         },
-                        error:function (err) {
-                            alert(err.message)
+                        error: function (err) {
+                            {#                            alert(err.message)#}
                         }
                     })
                 }
-                else{
-                        $("#searchlist").hide();
-                    }
+                else {
+                    $("#searchlist").hide();
+                }
             })
             $('[data-role=tooltip]').tooltip({
                 html: true,

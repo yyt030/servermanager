@@ -4,7 +4,7 @@
 __author__ = 'yueyt'
 from flask import Blueprint, render_template, flash, redirect, url_for, request
 
-from webapp import db
+from webapp import db, cache
 from webapp.forms.server import ServerForm
 from webapp.models.server import Server, Envinfo
 
@@ -24,8 +24,9 @@ def add():
         server = Server(ip=form.ip.data, project=form.project.data, oslevel=form.oslevel.data,
                         use=form.use.data, status=form.status.data, contract_person=form.contract_person.data)
         db.session.add(server)
+        cache.clear()
         db.session.commit()
-        flash('添加ip成功')
+        flash('ip:{}添加成功'.format(form.ip.data))
         return redirect(url_for('site.index'))
 
     return render_template('server_info.html', active_page='add', form=form)
@@ -37,9 +38,11 @@ def delete():
     server_id = request.form.get('id')
     if rowids:
         db.session.query(Server).filter(Server.id.in_(rowids)).delete(synchronize_session='fetch')
+        cache.clear()
         db.session.commit()
     if server_id:
         Server.query.filter_by(id=server_id).delete()
+        cache.clear()
         db.session.commit()
     flash('删除成功')
     return redirect(url_for('site.index'))
