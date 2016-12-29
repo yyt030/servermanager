@@ -9,6 +9,7 @@ from flask import render_template
 from webapp import db
 from webapp.forms.user import LoginForm
 from webapp.models.server import Server, Envinfo
+import json
 
 bp = Blueprint('site', __name__)
 
@@ -62,3 +63,22 @@ def search():
 def login():
     form = LoginForm()
     return redirect(url_for('.index'))
+
+@bp.route('/Dysearch',methods=['GET','POST'])
+def Dysearch():
+
+    q = request.args.get('ip')
+    servers = []
+    Jsonstr = ""
+    query = Server.query.filter(Server.ip.like('%{}%'.format(q))).all()
+    for sv in query:
+        servers.append(sv)
+
+    for svr in servers:
+        Jsonstr += svr.ip
+        Jsonstr += ","
+    Jsonstr += "1"
+
+
+    print(Jsonstr)
+    return Jsonstr
