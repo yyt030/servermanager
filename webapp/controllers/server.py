@@ -46,7 +46,7 @@ def delete():
 
 
 @bp.route('/<int:id>', methods=['GET', 'POST'])
-def list(id):
+def detail(id):
     server = Server.query.get_or_404(id)
     form = ServerForm()
     if form.validate_on_submit():

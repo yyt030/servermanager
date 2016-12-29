@@ -21,7 +21,7 @@
             </td>
             <td class="list-buttons-column">
 
-                <a class="icon" href="{{ url_for('s.list',id=server.id) }}" title="编辑">
+                <a class="icon" href="{{ url_for('s.detail',id=server.id) }}" title="编辑">
                     <span class="glyphicon glyphicon-pencil"></span>
                 </a>
                 <form class="icon" method="POST" action="{{ url_for('s.delete') }}">
@@ -32,7 +32,11 @@
                     </button>
                 </form>
             </td>
-            <td class="col-name">{{ server.project }}</td>
+            <td class="col-name">
+                <a href="{{ url_for('site.search',filter='project', v=server.project) }}" data-toggle="tooltip"
+                   title="查询该项目组{{ server.project }}下的所属机器">{{ server.project }}
+                </a>
+            </td>
             <td class="col-name">
                 {% if server.envinfo %}{{ server.envinfo.location + server.envinfo.envname }}
                     {% else %}{{ server.use }}
@@ -55,7 +59,7 @@
                         </ul>
                     {% endif %}
                 </div>
-                <a href="{{ url_for('s.list',id=server.id) }}" data-toggle="tooltip" title="{{ server.use }}"
+                <a href="{{ url_for('s.detail',id=server.id) }}" data-toggle="tooltip" title="{{ server.use }}"
                    data-placement="right">{{ server.ip }}</a>
             </td>
             <td class="col-name">{{ server.oslevel }}</td>
