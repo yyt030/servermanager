@@ -20,7 +20,7 @@ def make_cache_key():
 
 
 @bp.before_app_request
-@cache.cached(timeout=300)
+@cache.cached()
 def before_request():
     locations = db.session.query(Envinfo.location.distinct()).order_by(Envinfo.id).all()
     envnames = db.session.query(Envinfo.envname.distinct()).order_by(Envinfo.id).all()
@@ -29,7 +29,7 @@ def before_request():
 
 
 @bp.route('/', methods=['GET', 'POST'])
-@cache.cached(timeout=120, key_prefix=make_cache_key)
+@cache.cached(key_prefix=make_cache_key)
 def index():
     page = request.args.get('page', 1, type=int)
     query = Server.query.order_by(Server.envinfo_id)
@@ -42,7 +42,7 @@ def index():
 
 
 @bp.route('/search', methods=['GET', 'POST'])
-@cache.cached(timeout=120, key_prefix=make_cache_key)
+@cache.cached(key_prefix=make_cache_key)
 def search():
     q = request.args.get('q')
     filter = request.args.get('filter')
@@ -83,7 +83,7 @@ def login():
 
 
 @bp.route('/dysearch', methods=['GET', 'POST'])
-@cache.cached(timeout=120,key_prefix=make_cache_key)
+@cache.cached(key_prefix=make_cache_key)
 def dysearch():
     q = request.args.get('ip')
     servers = []
