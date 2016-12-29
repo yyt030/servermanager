@@ -17,6 +17,8 @@ class Server(db.Model):
     contract_person = db.Column(db.String(32))
     envinfo_id = db.Column(db.Integer, db.ForeignKey('envinfo.id'))
 
+    serverusers = db.relationship('ServerUser', backref='server', lazy='dynamic')
+
     def __repr__(self):
         return '<Server: ip:{} use:{}>'.format(self.ip, self.use)
 
@@ -27,7 +29,7 @@ class Server(db.Model):
         for i in range(1, 185):
             for j in range(2, 3):
                 for k in range(3, 4):
-                    if n>=count:
+                    if n >= count:
                         break
                     s = '.'.join([str(i), str(j), str(k), '1'])
                     s = Server(ip=s, project='BGSP', type='PC', oslevel='AIX 7100')
@@ -41,6 +43,15 @@ class Server(db.Model):
                         db.session.commit()
                         print('*' * 10, s)
                         n += 1
+
+                    s = Server.query.filter_by(ip=s.ip).first()
+                    su1 = ServerUser(server_id=s.id, username='root', password='123456')
+                    su2 = ServerUser(server_id=s.id, username='mqm', password='mqm')
+                    su3 = ServerUser(server_id=s.id, username='egspadm', password='egspadm')
+                    db.session.add(su1)
+                    db.session.add(su2)
+                    db.session.add(su3)
+                    db.session.commit()
 
 
 class Envinfo(db.Model):
@@ -82,3 +93,11 @@ class Software(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     softname = db.Column(db.String(32), nullable=False)
     version = db.Column(db.String(32), nullable=False)
+
+
+class ServerUser(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(32), nullable=False)
+    password = db.Column(db.String(32), nullable=False)
+    desc = db.Column(db.String(64))
+    server_id = db.Column(db.Integer, db.ForeignKey('server.id'))

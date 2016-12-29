@@ -71,3 +71,8 @@ def list(id):
     form.envinfo_id.data = server.envinfo_id
 
     return render_template('server_info.html', active_page='info', server=server, form=form)
+
+
+@bp.route('/term/<int:id>', methods=['GET', 'POST'])
+def term(id):
+    return redirect('http://localhost:9527')
