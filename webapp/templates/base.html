@@ -1,6 +1,7 @@
 {% extends "bootstrap/base.html" %}
 {% set active_page = active_page|default('index') -%}
 
+{% block html_attribs %} lang="zh-CN" {% endblock %}
 {% block title %}Server Manager{% endblock %}
 {% block head %}
     {{ super() }}
