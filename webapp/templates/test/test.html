@@ -1,0 +1,34 @@
+{% extends 'bootstrap/base.html' %}
+{% block html_attribs %} lang="zh-cn" {% endblock %}
+{% block title %} Bootstrap Test {% endblock %}
+{% block head %}
+    {{ super() }}
+
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <style>
+        body {
+            padding-top: 70px;
+        }
+    </style>
+{% endblock %}
+
+{% block navbar %}
+    {% include 'test/_test_navbar.html' %}
+{% endblock %}
+
+{% block content %}
+    {% block page_header %}
+        {% include 'test/_page_header.html' %}
+    {% endblock %}
+
+    {% block page_body %}
+        {% include 'test/_page_body.html' %}
+    {% endblock %}
+{% endblock %}
+
+{% block script %}
+    {{ super() }}
+{% endblock %}
