@@ -4,12 +4,17 @@ import socket
 
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
+from flask_cache import Cache
 from flask_login import LoginManager
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
-from flask_cache import Cache
 
-webssh_addr = '{}:{}'.format(socket.gethostbyname(socket.gethostname()), 9527)
+try:
+    ip = socket.gethostbyname(socket.gethostname())
+except:
+    ip = '127.0.0.1'
+
+webssh_addr = '{}:{}'.format(ip, 9527)
 
 moment = Moment()
 db = SQLAlchemy()
