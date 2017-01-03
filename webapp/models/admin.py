@@ -5,8 +5,9 @@ __author__ = 'yueyt'
 
 from flask_admin.contrib import sqla
 
-from .user import User
 from .server import Server
+from .user import User
+
 
 class UserAdmin(sqla.ModelView):
     column_labels = {

@@ -3,6 +3,7 @@
 
 __author__ = 'yueyt'
 
+from webapp import cache
 from webapp import db
 
 
@@ -32,7 +33,7 @@ class Server(db.Model):
                     if n >= count:
                         break
                     s = '.'.join([str(i), str(j), str(k), '1'])
-                    s = Server(ip=s, project=random.choice(['EGSP','BGSP']), type='PC', oslevel='AIX 7100')
+                    s = Server(ip=s, project=random.choice(['EGSP', 'BGSP']), type='PC', oslevel='AIX 7100')
                     e = random.choice(Envinfo.query.all())
                     s.envinfo_id = e.id
                     try:
@@ -52,6 +53,7 @@ class Server(db.Model):
                     db.session.add(su2)
                     db.session.add(su3)
                     db.session.commit()
+                    cache.clear()
 
 
 class Envinfo(db.Model):
@@ -72,7 +74,7 @@ class Envinfo(db.Model):
         locations = ['境内', '海外', '离岸', '港行']
         for l in locations:
             for e in envnames:
-                res = Envinfo.query.filter(and_(Envinfo.envname==e,Envinfo.location==l))
+                res = Envinfo.query.filter(and_(Envinfo.envname == e, Envinfo.location == l))
                 if res:
                     continue
                 ev = Envinfo(envname=e, location=l, describe=' '.join([l, e]))

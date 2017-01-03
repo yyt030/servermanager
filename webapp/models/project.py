@@ -10,4 +10,3 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     projname = db.Column(db.String(64), nullable=False)
     pm = db.Column(db.String(64))
-

@@ -5,11 +5,12 @@ __author__ = 'yueyt'
 
 from flask import (Blueprint, redirect, url_for, request, current_app, flash, g, abort)
 from flask import render_template
+from flask_login import current_user
 
 from webapp import db, webssh_addr, cache
 from webapp.forms.user import LoginForm
 from webapp.models.server import Server, Envinfo
-from webapp.models.user import User
+from webapp.models.user import User, Permission
 
 bp = Blueprint('site', __name__)
 
@@ -20,6 +21,11 @@ def make_cache_key():
     return (path + args).encode('utf-8')
 
 
+@bp.app_context_processor
+def inject_permissions():
+    return dict(Permission=Permission)
+
+
 @bp.before_app_request
 @cache.cached()
 def before_request():
@@ -27,6 +33,8 @@ def before_request():
     envnames = db.session.query(Envinfo.envname.distinct()).order_by(Envinfo.id).all()
     g.locations = [l[0] for l in locations]
     g.envnames = [e[0] for e in envnames]
+
+    print('{}'.format(current_user.is_authenticated()))
 
 
 @bp.route('/', methods=['GET', 'POST'])
