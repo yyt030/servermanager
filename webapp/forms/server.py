@@ -6,8 +6,9 @@ __author__ = 'yueyt'
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, BooleanField, SelectField, TextAreaField
 from wtforms.validators import ip_address
+from wtforms import ValidationError
 
-from webapp.models.server import Envinfo
+from webapp.models.server import Envinfo,Server
 
 
 class ServerForm(FlaskForm):
@@ -39,3 +40,7 @@ class ServerForm(FlaskForm):
         self.oslevel.choices = _machine_type_list
         self.oslevel.coerce = str
         self.envinfo_id.choices = [(a.id, ' '.join([a.location, a.envname])) for a in Envinfo.query.order_by('id')]
+
+    def validate_ip(self, field):
+        if Server.query.filter_by(ip = field.data).first():
+            raise ValidationError('该ip已经登记过！')

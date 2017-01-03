@@ -67,18 +67,18 @@ class Envinfo(db.Model):
 
     @staticmethod
     def generate_fake():
+        from sqlalchemy import and_
         envnames = ['DEV', 'SIT', 'UAT', 'TRL', 'QUS']
         locations = ['境内', '海外', '离岸', '港行']
         for l in locations:
             for e in envnames:
+                res = Envinfo.query.filter(and_(Envinfo.envname==e,Envinfo.location==l))
+                if res:
+                    continue
                 ev = Envinfo(envname=e, location=l, describe=' '.join([l, e]))
                 print(ev)
-                try:
-                    db.session.add(ev)
-                except:
-                    db.session.rollback()
-                else:
-                    db.session.commit()
+                db.session.add(ev)
+                db.session.commit()
 
     __table_args__ = (db.UniqueConstraint('envname', 'location', name='ix_envname_location'),)
 

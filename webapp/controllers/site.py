@@ -9,6 +9,7 @@ from flask import render_template
 from webapp import db, webssh_addr, cache
 from webapp.forms.user import LoginForm
 from webapp.models.server import Server, Envinfo
+from webapp.models.user import User
 
 bp = Blueprint('site', __name__)
 
@@ -79,6 +80,7 @@ def search():
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    user = User.query.all()
     return redirect(url_for('.index'))
 
 

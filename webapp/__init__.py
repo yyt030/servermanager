@@ -73,4 +73,4 @@ def register_admin_view():
     from webapp.models.admin import ServerAdmin
 
     # admin.add_view(ModelView(User, db.session))
-    admin.add_view(ServerAdmin(db.session))
+    #admin.add_view(ServerAdmin(db.session))

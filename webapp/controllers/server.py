@@ -16,11 +16,6 @@ def add():
     form = ServerForm()
     form.envinfo_id.choices = [(a.id, ' '.join([a.location, a.envname])) for a in Envinfo.query.order_by('id')]
     if form.validate_on_submit():
-        res = Server.query.filter_by(ip=form.ip.data).first()
-        if res:
-            flash('ip:{}已存在,请确认ip输入是否正确'.format(form.ip.data))
-            return redirect(url_for('.add'))
-
         server = Server(ip=form.ip.data, project=form.project.data, oslevel=form.oslevel.data,
                         use=form.use.data, status=form.status.data, contract_person=form.contract_person.data)
         db.session.add(server)
