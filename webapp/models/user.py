@@ -18,8 +18,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(32))
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
 
-    def __init__(self, *args, **kwargs):
-        super(User, self).__init__(*args, **kwargs)
+    def __init__(self):
+        super().__init__()
         if self.role is None:
             if self.email == current_app.config['FLASKY_ADMIN']:
                 self.role = Role.query.filter_by(permissions=0xff).first()
@@ -95,6 +95,7 @@ login_manager.anonymous_user = AnonymousUser
 
 @login_manager.user_loader
 def load_user(user_id):
+    print('load user {}'.format(user_id))
     return User.query.get(int(user_id))
 
 

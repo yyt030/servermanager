@@ -34,8 +34,6 @@ def before_request():
     g.locations = [l[0] for l in locations]
     g.envnames = [e[0] for e in envnames]
 
-    print('{}'.format(current_user.is_authenticated()))
-
 
 @bp.route('/', methods=['GET', 'POST'])
 @cache.cached(key_prefix=make_cache_key)

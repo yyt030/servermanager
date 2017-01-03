@@ -11,13 +11,16 @@
             <a class="navbar-brand" href="{{ url_for('site.index') }}">服务器管理</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-            {#            <ul class="nav navbar-nav navbar-right">#}
-            {#                <li><a href="#">配置</a></li>#}
-            {#                <li><a href="#">帮助</a></li>#}
-            {#            </ul>#}
+            {% if current_user.is_authenticated %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">配置</a></li>
+                    <li><a href="#">帮助</a></li>
+                </ul>
+            {% endif %}
             <form class="navbar-form navbar-right" action="/search">
-                <input autocomplete="off" id="searchBox" name="q" type="text" class="form-control" placeholder="搜索ip等关键字搜索...">
-                <div style="position: absolute" id="searchlist" visibility="false" ></div>
+                <input autocomplete="off" id="searchBox" name="q" type="text" class="form-control"
+                       placeholder="搜索ip等关键字搜索...">
+                <div style="position: absolute" id="searchlist" visibility="false"></div>
                 <button class="btn btn-link">
                     <span class="glyphicon glyphicon-search"></span>
                 </button>
