@@ -97,8 +97,3 @@ def dysearch():
         Jsonstr += ","
     Jsonstr += "1"
     return Jsonstr
-
-
-@bp.route('/test')
-def test_page():
-    return render_template('test/test.html')
