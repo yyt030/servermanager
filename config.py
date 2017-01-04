@@ -38,14 +38,11 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    # SQLALCHEMY_ECHO = True
-    # SQLALCHEMY_POOL_SIZE = 50
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        # 'DEV_DATABASE_URL') or "mysql+pymysql://root:rootroot@localhost/servermanager"
         'DEV_DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'servermanager.sqlite')
 
     # for redis cache
-    CACHE_REDIS_URL = 'redis://localhost:6379/2'
+    CACHE_TYPE = 'null'
 
 
 config = {

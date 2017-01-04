@@ -85,9 +85,8 @@ def search():
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
-    user = User.query.all()
-    return redirect(url_for('.index'))
+    loginform = LoginForm()
+    return render_template('login.html',loginform=loginform)
 
 
 @bp.route('/dysearch', methods=['GET', 'POST'])

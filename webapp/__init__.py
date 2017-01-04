@@ -20,7 +20,7 @@ moment = Moment()
 db = SQLAlchemy()
 bootstrap = Bootstrap()
 login_manager = LoginManager()
-cache = Cache(config={'CACHE_TYPE': 'simple'})
+cache = Cache()
 # admin = Admin(template_mode='bootstrap3')
 from config import config
 
