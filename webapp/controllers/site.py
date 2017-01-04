@@ -5,7 +5,7 @@ __author__ = 'yueyt'
 
 from flask import (Blueprint, redirect, url_for, request, current_app, flash, g, abort)
 from flask import render_template
-from flask_login import current_user
+from flask_login import login_user, logout_user, current_user
 
 from webapp import db, webssh_addr, cache
 from webapp.forms.user import LoginForm
@@ -86,7 +86,20 @@ def search():
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     loginform = LoginForm()
-    return render_template('login.html',loginform=loginform)
+    if loginform.validate_on_submit():
+        user = User.query.filter(User.email == loginform.email.data).first()
+        if user is not None and user.verify_password(loginform.password.data):
+            login_user(user, loginform.remember_me.data)
+            return redirect(url_for('.index'))
+        flash('无效的用户名或密码')
+    return render_template('login.html', loginform=loginform)
+
+
+@bp.route('/logout', methods=['GET', 'POST'])
+def logout():
+    print('current user: {:}'.format(current_user))
+    logout_user()
+    return redirect(url_for('.index'))
 
 
 @bp.route('/dysearch', methods=['GET', 'POST'])

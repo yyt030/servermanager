@@ -29,9 +29,10 @@ def init_static_data():
         2：插入role相关信息
     """
     from webapp.models.server import Envinfo
-    from webapp.models.user import Role
+    from webapp.models.user import Role,User
     Envinfo.generate_fake()
     Role.insert_roles()
+    User.insert_admin_user()
 
 
 if __name__ == '__main__':

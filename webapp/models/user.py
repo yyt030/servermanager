@@ -18,8 +18,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(32))
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         if self.role is None:
             if self.email == current_app.config['FLASKY_ADMIN']:
                 self.role = Role.query.filter_by(permissions=0xff).first()
@@ -43,6 +43,17 @@ class User(UserMixin, db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    @staticmethod
+    def insert_admin_user():
+        admin = User.query.filter(User.username == 'admin').first()
+        if not admin:
+            admin = User(username='admin', email='test@test.com')
+            admin.password = 'admin'
+            role = Role.query.filter(Role.rolename == 'Adminstrator').first()
+            admin.role_id = role.id
+            db.session.add(admin)
+            db.session.commit()
 
 
 class Role(db.Model):
