@@ -3,6 +3,7 @@
 import socket
 
 from flask import Flask, render_template
+from flask_admin import Admin
 from flask_bootstrap import Bootstrap
 from flask_cache import Cache
 from flask_login import LoginManager
@@ -21,7 +22,7 @@ db = SQLAlchemy()
 bootstrap = Bootstrap()
 login_manager = LoginManager()
 cache = Cache()
-# admin = Admin(template_mode='bootstrap3')
+admin = Admin(template_mode='bootstrap3')
 from config import config
 
 
@@ -34,12 +35,12 @@ def create_app(config_name):
     db.init_app(app)
     bootstrap.init_app(app)
     moment.init_app(app)
-    # admin.init_app(app)
+    admin.init_app(app)
     login_manager.init_app(app)
     cache.init_app(app)
 
     # 注册flask-admin视图
-    # register_admin_view()
+    register_admin_view()
 
     # blueprint
     from webapp.controllers import site, server
@@ -70,7 +71,8 @@ def register_error_handle(app):
 
 # flask 添加admin视图
 def register_admin_view():
-    from webapp.models.admin import ServerAdmin
+    from webapp.models.admin import ServerUserAdmin
+    from webapp.models.admin import UserAdmin
 
-    # admin.add_view(ModelView(User, db.session))
-    #admin.add_view(ServerAdmin(db.session))
+    admin.add_view(ServerUserAdmin(db.session))
+    admin.add_view(UserAdmin(db.session))

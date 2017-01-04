@@ -5,19 +5,19 @@ __author__ = 'yueyt'
 
 from flask_admin.contrib import sqla
 
-from .server import Server
+from .server import Server, ServerUser
 from .user import User
 
 
 class UserAdmin(sqla.ModelView):
     column_labels = {
         'id': u'序号',
-        'title': u'新闻标题',
-        'timestamp': u'发布时间',
-        'count': u'浏览次数',
-        'content': u'新闻内容'
+        'username': u'用户名',
+        'password': u'密码',
+        'email': u'邮箱',
+        'rolename': u'权限id',
     }
-    column_list = ('id', 'title', 'timestamp', 'count', 'content')
+    column_list = ('id', 'username', 'password', 'email，''role.rolename')
 
     def __init__(self, session, **kwargs):
         super(UserAdmin, self).__init__(User, session, **kwargs)
@@ -38,3 +38,16 @@ class ServerAdmin(sqla.ModelView):
 
     def __init__(self, session, **kwargs):
         super(ServerAdmin, self).__init__(Server, session, **kwargs)
+
+
+class ServerUserAdmin(sqla.ModelView):
+    column_labels = {
+        'id': '序号',
+        'username': '用户名',
+        'password': '密码',
+        'role_id': '权限'
+    }
+    column_list = ('ip', 'username', 'password', 'role_id')
+
+    def __init__(self, session, **kwargs):
+        super(ServerUserAdmin, self).__init__(ServerUser, session, **kwargs)
