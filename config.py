@@ -42,7 +42,7 @@ class DevelopmentConfig(Config):
         'DEV_DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'servermanager.sqlite')
 
     # for redis cache
-    CACHE_TYPE = 'null'
+    CACHE_TYPE = 'simple'
 
 
 config = {

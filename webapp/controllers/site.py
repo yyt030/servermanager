@@ -90,6 +90,7 @@ def login():
         user = User.query.filter(User.email == loginform.email.data).first()
         if user is not None and user.verify_password(loginform.password.data):
             login_user(user, loginform.remember_me.data)
+            cache.clear()
             return redirect(url_for('.index'))
         flash('无效的用户名或密码')
     return render_template('login.html', loginform=loginform)
@@ -97,8 +98,8 @@ def login():
 
 @bp.route('/logout', methods=['GET', 'POST'])
 def logout():
-    print('current user: {:}'.format(current_user))
     logout_user()
+    cache.clear()
     return redirect(url_for('.index'))
 
 
