@@ -3,7 +3,9 @@
 
 __author__ = 'yueyt'
 
+from flask import redirect, url_for, request
 from flask_admin.contrib import sqla
+from flask_login import current_user
 
 from .server import Server, ServerUser
 from .user import User
@@ -13,14 +15,20 @@ class UserAdmin(sqla.ModelView):
     column_labels = {
         'id': u'序号',
         'username': u'用户名',
-        'password': u'密码',
+        'password_hash': u'密码',
         'email': u'邮箱',
         'rolename': u'权限id',
     }
-    column_list = ('id', 'username', 'password', 'email，''role.rolename')
+    column_list = ('id', 'username', 'password_hash', 'email', 'role.rolename')
 
-    def __init__(self, session, **kwargs):
-        super(UserAdmin, self).__init__(User, session, **kwargs)
+    def __init__(self, session, *args, **kwargs):
+        super().__init__(User, session, *args, **kwargs)
+
+    def is_accessible(self):
+        return current_user.is_authenticated
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('site.login', next=request.url))
 
 
 class ServerAdmin(sqla.ModelView):
