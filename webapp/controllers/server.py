@@ -5,7 +5,7 @@ __author__ = 'yueyt'
 from flask import Blueprint, render_template, flash, redirect, url_for, request
 
 from webapp import db, cache
-from webapp.forms.server import ServerForm
+from webapp.forms.server import ServerForm, EditServerForm
 from webapp.models.server import Server, Envinfo
 
 bp = Blueprint('s', __name__)
@@ -19,8 +19,8 @@ def add():
         server = Server(ip=form.ip.data, project=form.project.data, oslevel=form.oslevel.data,
                         use=form.use.data, status=form.status.data, contract_person=form.contract_person.data)
         db.session.add(server)
-        cache.clear()
         db.session.commit()
+        cache.clear()
         flash('ip:{}添加成功'.format(form.ip.data))
         return redirect(url_for('site.index'))
 
@@ -46,7 +46,7 @@ def delete():
 @bp.route('/<int:id>', methods=['GET', 'POST'])
 def detail(id):
     server = Server.query.get_or_404(id)
-    form = ServerForm()
+    form = EditServerForm()
     if form.validate_on_submit():
         server.ip = form.ip.data
         server.project = form.project.data
@@ -55,6 +55,7 @@ def detail(id):
         server.status = form.status.data
         server.contract_person = form.contract_person.data
         server.envinfo_id = form.envinfo_id.data
+        cache.clear()
         db.session.add(server)
         db.session.commit()
         flash('机器信息已更新')

@@ -8,8 +8,6 @@ from wtforms.validators import DataRequired, InputRequired, Length, Email
 
 
 class LoginForm(FlaskForm):
-    # email = StringField('邮箱', validators=[DataRequired(), Length(1, 64),
-    #                                       Email()], render_kw={'placeholder': 'hello@xxx.com'})
     username = StringField('用户名',validators=[DataRequired(),Length(1,64)],render_kw={'placeholder':'邮箱的用户名'})
     password = PasswordField('密码', validators=[DataRequired()],
                              render_kw={'placeholder': 'XXXXXX。。。'})

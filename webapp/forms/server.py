@@ -10,6 +10,18 @@ from wtforms.validators import ip_address
 
 from webapp.models.server import Envinfo, Server
 
+MACHINE_TYPE_LIST = [
+    ('SUSE SLES11 SP2', 'SUSE SLES11 SP2'),
+    ('SUSE SLES11 SP3', 'SUSE SLES11 SP3'),
+    ('SUSE SLES11 SP4', 'SUSE SLES11 SP4'),
+    ('AIX 7100', 'AIX 7100'),
+    ('AIX 5100', 'AIX 5100'),
+    ('AIX 6100', 'AIX 6100')
+]
+PROJECT_LIST = [
+    ('BGSP', 'BGSP'), ('EGSP', 'EGSP')
+]
+
 
 class ServerForm(FlaskForm):
     ip = StringField('ip:', validators=[ip_address()], render_kw={'placeholder': 'ip: XXX.XXX.XXX.XXX'})
@@ -24,23 +36,20 @@ class ServerForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(ServerForm, self).__init__(*args, **kwargs)
 
-        _machine_type_list = [
-            ('SUSE SLES11 SP2', 'SUSE SLES11 SP2'),
-            ('SUSE SLES11 SP3', 'SUSE SLES11 SP3'),
-            ('SUSE SLES11 SP4', 'SUSE SLES11 SP4'),
-            ('AIX 7100', 'AIX 7100'),
-            ('AIX 5100', 'AIX 5100'),
-            ('AIX 6100', 'AIX 6100')
-        ]
-        _project_list = [
-            ('BGSP', 'BGSP'), ('EGSP', 'EGSP')
-        ]
-        self.project.choices = _project_list
+        self.project.choices = PROJECT_LIST
         self.project.coerce = str
-        self.oslevel.choices = _machine_type_list
+        self.oslevel.choices = MACHINE_TYPE_LIST
         self.oslevel.coerce = str
         self.envinfo_id.choices = [(a.id, ' '.join([a.location, a.envname])) for a in Envinfo.query.order_by('id')]
 
     def validate_ip(self, field):
         if Server.query.filter_by(ip=field.data).first():
             raise ValidationError('该ip已经登记过！')
+
+
+class EditServerForm(ServerForm):
+    def __init__(self, *args, **kwargs):
+        super(EditServerForm, self).__init__(*args, **kwargs)
+
+    def validate_ip(self, field):
+        pass
