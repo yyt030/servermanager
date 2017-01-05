@@ -19,20 +19,35 @@ manager.add_command('db', MigrateCommand)
 def init_test_data():
     """初始化相关测试数据"""
     from webapp.models.server import Server
-    Server.generate_fake(100)
+    from webapp.models.user import Project, Subproject
+    print('insert Project...')
+    Project.generate_fake()
+    print('insert Subproject...')
+    Subproject.generate_fake()
+    print('insert Server...')
+    Server.generate_fake()
 
 
 @manager.command
 def init_static_data():
     """初始化相关静态数据
-        1: 插入环境相关信息
-        2：插入role相关信息
+        1: 环境
+        2：角色
+        3: 用户
+        4：项目
+        5：子项目
+        6：服务器
     """
     from webapp.models.server import Envinfo
-    from webapp.models.user import Role,User
-    Envinfo.generate_fake()
+    from webapp.models.user import Role, User
+    print('insert Envinfo...')
+    Envinfo.insert_envinfo()
+    print('insert Role...')
     Role.insert_roles()
+    print('insert admin...')
     User.insert_admin_user()
+    print('insert User...')
+    User.generate_fake(10)
 
 
 if __name__ == '__main__':

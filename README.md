@@ -1,28 +1,28 @@
-#°²×°python3.5.2½âÊÍÆ÷£¬°²×°Ê±Ìí¼ÓÏµÍ³»·¾³±äÁ¿
-xp¿ÉÒÔ°²×°3.4°æ±¾
+#å®‰è£…python3.5.2è§£é‡Šå™¨ï¼Œå®‰è£…æ—¶æ·»åŠ ç³»ç»Ÿç¯å¢ƒå˜é‡
+xpå¯ä»¥å®‰è£…3.4ç‰ˆæœ¬
 
 
-#´´½¨projectĞéÄâ»·¾³
+#åˆ›å»ºprojectè™šæ‹Ÿç¯å¢ƒ
 1: cd servermanager
 2: pyvenv venv
 3: venv\Scripts\activate
 
 
-#°²×°¹¤³ÌÒÀÀµµÄwhl°ü
+#å®‰è£…å·¥ç¨‹ä¾èµ–çš„whlåŒ…
 4: cd install
 5: pip install --no-index -f . -r requirements.txt
 
 
-#³õÊ¼»¯¹¤³ÌdbºÍ±í½á¹¹
+#åˆå§‹åŒ–å·¥ç¨‹dbå’Œè¡¨ç»“æ„
 6: cd servermanager
 7: python -m manager db init 
    python -m manager db migrate
    python -m manager db upgrade
 
 
-#³õÊ¼»¯¹¤³Ì²âÊÔÊı¾İ
+#åˆå§‹åŒ–å·¥ç¨‹æµ‹è¯•æ•°æ®
 8: python -m manager init_static_data && python -m manager init_test_data
 
 
-#ÔÚpycharmÆô¶¯app
-9: ½«¸Ã¹¤³ÌÏÂÃæµÄvenvÉèÖÃÎª¸Ã¹¤³ÌÄ¬ÈÏµÄ½âÊÍÆ÷£¬start app
+#åœ¨pycharmå¯åŠ¨app
+9: å°†è¯¥å·¥ç¨‹ä¸‹é¢çš„venvè®¾ç½®ä¸ºè¯¥å·¥ç¨‹é»˜è®¤çš„è§£é‡Šå™¨ï¼Œstart app

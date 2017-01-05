@@ -19,13 +19,15 @@ class Server(db.Model):
     envinfo_id = db.Column(db.Integer, db.ForeignKey('envinfo.id'))
 
     serverusers = db.relationship('ServerUser', backref='server', lazy='dynamic')
+    subproject_id = db.Column(db.Integer, db.ForeignKey('subproject.id'))
 
     def __repr__(self):
         return '<Server: ip:{} use:{}>'.format(self.ip, self.use)
 
     @staticmethod
     def generate_fake(count=100):
-        import random
+        print('insert Server records:{}'.format(count))
+        from random import randint, choice
         n = 0
         for i in range(1, 185):
             for j in range(2, 3):
@@ -33,8 +35,8 @@ class Server(db.Model):
                     if n >= count:
                         break
                     s = '.'.join([str(i), str(j), str(k), '1'])
-                    s = Server(ip=s, project=random.choice(['EGSP', 'BGSP']), type='PC', oslevel='AIX 7100')
-                    e = random.choice(Envinfo.query.all())
+                    s = Server(ip=s, project=choice(['EGSP', 'BGSP']), type='PC', oslevel='AIX 7100')
+                    e = Envinfo.query.offset(randint(0, 5)).first()
                     s.envinfo_id = e.id
                     try:
                         db.session.add(s)
@@ -57,6 +59,7 @@ class Server(db.Model):
 
 
 class Envinfo(db.Model):
+    '''环境信息'''
     id = db.Column(db.Integer, primary_key=True)
     envname = db.Column(db.String(64), nullable=False)
     location = db.Column(db.String(32))
@@ -68,7 +71,7 @@ class Envinfo(db.Model):
         return '<Env: {} {} {}>'.format(self.id, self.location, self.envname)
 
     @staticmethod
-    def generate_fake():
+    def insert_envinfo():
         from sqlalchemy import and_
         envnames = ['DEV', 'SIT', 'UAT', 'TRL', 'QUS']
         locations = ['境内', '海外', '离岸', '港行']
@@ -98,6 +101,7 @@ class Software(db.Model):
 
 
 class ServerUser(db.Model):
+    '''服务器登录用户信息'''
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), nullable=False)
     password = db.Column(db.String(32), nullable=False)

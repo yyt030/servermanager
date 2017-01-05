@@ -12,11 +12,13 @@ from webapp import login_manager
 
 
 class User(UserMixin, db.Model):
+    '''用户信息'''
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), nullable=False)
     password_hash = db.Column(db.String(128))
     email = db.Column(db.String(32))
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+    projects = db.relationship('Project', backref='user', lazy='dynamic')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -55,8 +57,27 @@ class User(UserMixin, db.Model):
             db.session.add(admin)
             db.session.commit()
 
+            u = User(username='test', email='test@test.com')
+            u.password = 'admin'
+            admin.role_id = role.id
+            db.session.add(u)
+            db.session.commit()
+
+    @staticmethod
+    def generate_fake(count=300):
+        from random import choice
+
+        for i in range(count):
+            u = User(username='user{}'.format(i), email='test{}@test.com'.format(i))
+            u.password = 'test'
+            role = choice(Role.query.all())
+            u.role_id = role.id
+            db.session.add(u)
+            db.session.commit()
+
 
 class Role(db.Model):
+    '''角色信息'''
     id = db.Column(db.Integer, primary_key=True)
     rolename = db.Column(db.String(32), nullable=False)
     default = db.Column(db.Boolean, default=False, index=True)
@@ -86,6 +107,7 @@ class Role(db.Model):
 
 
 class Permission(object):
+    '''权限信息'''
     ADD = 0b00000001  # 添加
     DELETE = 0b00000010  # 删除
     EDITOR = 0b00000100  # 编辑
@@ -110,6 +132,49 @@ def load_user(user_id):
 
 
 class Operation(db.Model):
+    '''操作信息'''
     id = db.Column(db.Integer, primary_key=True)
     opertype = db.Column(db.Integer, primary_key=False)
     operlog = db.Column(db.String)
+
+
+class Project(db.Model):
+    '''项目组信息'''
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    name_en = db.Column(db.String(4), nullable=False)
+    pm_userid = db.Column(db.Integer, db.ForeignKey('user.id'))
+    desc = db.Column(db.Text)
+    subprojects = db.relationship('Subproject', backref='project', lazy='dynamic')
+
+    @staticmethod
+    def generate_fake(count=100):
+        from random import choice
+        print('insert project record:{}'.format(count))
+        for i in range(count):
+            proj = Project(name='项目组{}'.format(i), name_en='p{}'.format(i), desc='项目组')
+            u = choice(User.query.all())
+            proj.pm_userid = u.id
+            db.session.add(proj)
+            db.session.commit()
+
+
+class Subproject(db.Model):
+    '''子项目信息'''
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    name_en = db.Column(db.String(4), nullable=False)
+    desc = db.Column(db.Text)
+    project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
+    servers = db.relationship('Server', backref='subproject', lazy='dynamic')
+
+    @staticmethod
+    def generate_fake(count=200):
+        from random import choice
+        print('insert subproject record:{}'.format(count))
+        for i in range(count):
+            subproj = Subproject(name='子项目组{}'.format(i), name_en='s{}'.format(i), desc='子项目组')
+            p = choice(Project.query.all())
+            subproj.project_id = p.id
+            db.session.add(subproj)
+            db.session.commit()
