@@ -25,7 +25,7 @@ class UserAdmin(sqla.ModelView):
         super().__init__(User, session, *args, **kwargs)
 
     def is_accessible(self):
-        return current_user.is_authenticated
+        return current_user.is_authenticated and current_user.is_administrator()
 
     def inaccessible_callback(self, name, **kwargs):
         return redirect(url_for('site.login', next=request.url))

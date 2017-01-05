@@ -4,8 +4,8 @@
 __author__ = 'yueyt'
 
 from flask import (Blueprint, redirect, url_for, request, current_app, flash, g, abort)
-from flask import render_template
-from flask_login import login_user, logout_user, current_user
+from flask import render_template, session
+from flask_login import login_user, logout_user
 
 from webapp import db, webssh_addr, cache
 from webapp.forms.user import LoginForm
@@ -17,7 +17,7 @@ bp = Blueprint('site', __name__)
 
 def make_cache_key():
     path = request.path
-    args = str(hash(frozenset(request.args.items())))
+    args = str(hash('{}{}'.format(frozenset(request.args.items()), session.get('_flashes'))))
     return (path + args).encode('utf-8')
 
 
@@ -87,7 +87,7 @@ def search():
 def login():
     loginform = LoginForm()
     if loginform.validate_on_submit():
-        user = User.query.filter(User.email == loginform.email.data).first()
+        user = User.query.filter(User.username == loginform.username.data).first()
         if user is not None and user.verify_password(loginform.password.data):
             login_user(user, loginform.remember_me.data)
             cache.clear()

@@ -14,7 +14,6 @@
             {% if current_user.is_authenticated %}
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">配置</a></li>
-                    <li><a href="#">帮助</a></li>
                     <li><a href="{{ url_for('site.logout') }}">退出</a></li>
                 </ul>
             {% else %}
@@ -22,7 +21,7 @@
                     <li><a href="{{ url_for('site.login') }}">登录</a></li>
                 </ul>
             {% endif %}
-            <form class="navbar-form navbar-right" action="/search">
+            <form class="navbar-form navbar-right" action="{{ url_for('site.search') }}">
                 <input autocomplete="off" id="searchBox" name="q" type="text" class="form-control"
                        placeholder="搜索ip等关键字搜索...">
                 <div style="position: absolute" id="searchlist" visibility="false"></div>
