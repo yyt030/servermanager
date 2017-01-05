@@ -25,13 +25,13 @@ class Server(db.Model):
         return '<Server: ip:{} use:{}>'.format(self.ip, self.use)
 
     @staticmethod
-    def generate_fake(count=100):
+    def generate_fake(count=1000):
         print('insert Server records:{}'.format(count))
         from random import randint, choice
         n = 0
-        for i in range(1, 185):
-            for j in range(2, 3):
-                for k in range(3, 4):
+        for i in range(1, 254):
+            for j in range(1, 254):
+                for k in range(1, 254):
                     if n >= count:
                         break
                     s = '.'.join([str(i), str(j), str(k), '1'])
@@ -44,7 +44,6 @@ class Server(db.Model):
                         db.session.rollback()
                     else:
                         db.session.commit()
-                        print('*' * 10, s)
                         n += 1
 
                     s = Server.query.filter_by(ip=s.ip).first()
