@@ -74,7 +74,7 @@ class Envinfo(db.Model):
         locations = ['境内', '海外', '离岸', '港行']
         for l in locations:
             for e in envnames:
-                res = Envinfo.query.filter(and_(Envinfo.envname == e, Envinfo.location == l))
+                res = Envinfo.query.filter(and_(Envinfo.envname == e, Envinfo.location == l)).all()
                 if res:
                     continue
                 ev = Envinfo(envname=e, location=l, describe=' '.join([l, e]))

@@ -4,7 +4,7 @@
 __author__ = 'yueyt'
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, BooleanField, SelectField, TextAreaField
+from wtforms import StringField, SubmitField, BooleanField, SelectField, TextAreaField,PasswordField
 from wtforms import ValidationError
 from wtforms.validators import ip_address
 
@@ -44,3 +44,10 @@ class ServerForm(FlaskForm):
     def validate_ip(self, field):
         if Server.query.filter_by(ip=field.data).first():
             raise ValidationError('该ip已经登记过！')
+
+
+class ServerUserForm(FlaskForm):
+    username = StringField('用户名')
+    password = PasswordField('密码')
+    submit_add = SubmitField('保存密码')
+    submit_delete = SubmitField('删除密码')

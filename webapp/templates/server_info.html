@@ -10,6 +10,38 @@
     <h1></h1>
 
     <div class="container col-md-10">
+        <legend>服务器详情</legend>
         {{ wtf.quick_form(form,form_type='horizontal') }}
+        <h1 class=""></h1>
+        <legend>服务器登录用户信息 <span class="glyphicon glyphicon-plus btn" id="user_add"></legend>
+        <form class="form-inline">
+            <input id="serverid" type="hidden" value="{{ server.id }}">
+            <table id="userstable" class="table table-striped">
+                <thead></thead>
+                <tbody>
+                {% for serveruser in server.serverusers %}
+                    <tr>
+                        <td class="list-buttons-column">
+                            <input class="id" type="hidden" value="{{ serveruser.id }}">
+                            <div class="form-group "><label class="control-label" for="username">用户名</label>
+                                <input class="form-control" id="username" name="username" type="text"
+                                       value="{{ serveruser.username }}">
+                            </div>
+                        </td>
+                        <td class="list-buttons-column">
+                            <div class="form-group "><label class="control-label" for="password">密码</label>
+                                <input class="form-control" id="password" name="password" type="password"
+                                       value="{{ serveruser.password }}">
+                            </div>
+                        </td>
+                        <td class="list-buttons-column">
+                            <button type='button' class='btn btn-success' onclick='addline(this)'>保存</button>
+                            <button type='button' class='btn btn-warning' onclick='deleteline(this)'>删除</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+        </form>
     </div>
 {% endblock %}

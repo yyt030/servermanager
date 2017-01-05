@@ -6,7 +6,9 @@ from flask import Blueprint, render_template, flash, redirect, url_for, request
 
 from webapp import db, cache
 from webapp.forms.server import ServerForm
-from webapp.models.server import Server, Envinfo
+from webapp.models.server import Server, Envinfo, ServerUser
+
+from sqlalchemy import and_
 
 bp = Blueprint('s', __name__)
 
@@ -43,6 +45,37 @@ def delete():
     return redirect(url_for('site.index'))
 
 
+@bp.route('/deleteuser', methods=['GET', 'POST'])
+def deleteuser():
+    server_user_id = request.form.get('id', type=int)
+    if server_user_id:
+        db.session.query(ServerUser).filter(ServerUser.id == server_user_id).delete(synchronize_session='fetch')
+        cache.clear()
+        db.session.commit()
+        flash('删除用户id{}成功'.format(server_user_id))
+    return redirect(url_for('site.index'))
+
+
+@bp.route('/adduser', methods=['GET', 'POST'])
+def adduser():
+    server_id = request.form.get('serverid', type=int)
+    username = request.form.get('username')
+    password = request.form.get('userpasswd')
+    print(server_id,username,password)
+    Server.query.filter(Server.id == server_id).first_or_404()
+    su = ServerUser.query.filter(and_(ServerUser.username == username,
+                                      ServerUser.server_id == server_id)).first()
+    if su:
+        su.password = password
+        db.session.add(su)
+        db.session.commit()
+    else:
+        serveruser = ServerUser(username=username, password=password, server_id=server_id)
+        db.session.add(serveruser)
+        db.session.commit()
+    return redirect(url_for('site.index'))
+
+
 @bp.route('/<int:id>', methods=['GET', 'POST'])
 def detail(id):
     server = Server.query.get_or_404(id)
@@ -68,7 +101,8 @@ def detail(id):
     form.contract_person.data = server.contract_person
     form.envinfo_id.data = server.envinfo_id
 
-    return render_template('server_info.html', active_page='info', server=server, form=form)
+    return render_template('server_info.html', active_page='info',
+                           server=server, form=form)
 
 
 @bp.route('/term/<int:id>', methods=['GET', 'POST'])

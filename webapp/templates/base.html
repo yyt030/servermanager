@@ -53,6 +53,22 @@
     </script>
     <script language="javascript">
         (function ($) {
+            $("#user_add").click(function () {
+                var x = document.getElementById('userstable').insertRow(0);
+                var h1 = x.insertCell(0)
+                var h2 = x.insertCell(1)
+                var h3 = x.insertCell(2)
+                h1.innerHTML = "<input class='id' type='hidden' value='#' /><div class='form-group'><label class='control-label' for='username'>用户名</label> <input class='form-control' id='username' name='username' type='text'></div>"
+                h2.innerHTML = "<div class='form-group'><label class='control-label' for='password'>密码</label> <input class='form-control' id='password' name='password' type='password'> </div>"
+                h3.innerHTML = "<button type='button' class='btn btn-success' onclick='addline(this)'>保存</button> <button type='button' class='btn btn-warning' onclick='deleteline(this)'>删除</button>"
+                $(".form-control").keyup(function () {
+                $(this).css("background-color","#ee9c72");
+                })
+            })
+
+            $(".form-control").keyup(function () {
+                $(this).css("background-color","#ee9c72");
+            })
             $("#searchlist").hide()
 
             $("#searchBox").keyup(function () {
@@ -74,7 +90,6 @@
                                 for (i = 0; i < ipstrarr.length - 1; i++) {
                                     var width = parseInt($("#searchBox").width());
                                     tipHtml += "<input readonly='readonly' class='item' type='text' value=" + ipstrarr[i] + ">"
-
                                 }
 
                                 $("#searchlist").html(tipHtml).width(width)
@@ -107,6 +122,48 @@
     </script>
     <script>
 
+        function addline(btn) {
+            try {
+                username = btn.parentNode.parentNode.cells[0].getElementsByTagName("INPUT")[1].value;
+                userpasswd = btn.parentNode.parentNode.cells[1].getElementsByTagName("INPUT")[0].value;
+                $.ajax({
+                    type: 'post',
+                    url: '{{ url_for("s.adduser") }}',
+                    data: {
+                        'username':username,
+                        'userpasswd':userpasswd,
+                        'serverid':$("#serverid").val()
+                    },
+                    success: function(){
+                        var inputusr=btn.parentNode.parentNode.cells[0].getElementsByTagName("INPUT")[1]
+                        var inputpad=btn.parentNode.parentNode.cells[1].getElementsByTagName("INPUT")[0]
+                        inputusr.style.background="#ffffff"
+                        inputpad.style.background="#ffffff"
+                    }
+                })
+            }catch(e){
+                alert(e.message)
+            }
+
+        }
+
+        function deleteline(btn) {
+            var id = username = btn.parentNode.parentNode.cells[0].getElementsByTagName("INPUT")[0].value;
+            $.ajax({
+                type: 'post',
+                url: '{{ url_for("s.deleteuser") }}',
+                data: {
+                    'id':id
+                },
+                success: function (data) {
+
+                },
+                error: function (err) {
+                }
+            })
+            var table = btn.parentNode.parentNode.parentNode.deleteRow(btn.parentNode.parentNode)
+
+        }
         function openTerm(ip, username, password) {
             var mapForm = document.createElement("form");
             mapForm.target = "Map";
