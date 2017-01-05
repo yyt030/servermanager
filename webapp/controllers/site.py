@@ -87,7 +87,7 @@ def search():
 def login():
     loginform = LoginForm()
     if loginform.validate_on_submit():
-        user = User.query.filter(User.email == loginform.email.data).first()
+        user = User.query.filter(User.username == loginform.username.data).first()
         if user is not None and user.verify_password(loginform.password.data):
             login_user(user, loginform.remember_me.data)
             cache.clear()
