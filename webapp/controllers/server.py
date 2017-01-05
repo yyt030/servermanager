@@ -48,7 +48,7 @@ def detail(id):
     server = Server.query.get_or_404(id)
     form = EditServerForm()
     if form.validate_on_submit():
-        server.ip = form.ip.data
+        #server.ip = form.ip.data
         server.project = form.project.data
         server.oslevel = form.oslevel.data
         server.use = form.use.data

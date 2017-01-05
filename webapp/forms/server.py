@@ -34,7 +34,7 @@ class ServerForm(FlaskForm):
     submit = SubmitField('保存')
 
     def __init__(self, *args, **kwargs):
-        super(ServerForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.project.choices = PROJECT_LIST
         self.project.coerce = str
@@ -47,9 +47,20 @@ class ServerForm(FlaskForm):
             raise ValidationError('该ip已经登记过！')
 
 
-class EditServerForm(ServerForm):
-    def __init__(self, *args, **kwargs):
-        super(EditServerForm, self).__init__(*args, **kwargs)
+class EditServerForm(FlaskForm):
+    ip = StringField('ip:', render_kw={'readonly': 'readonly'})
+    project = SelectField('所属项目:')
+    oslevel = SelectField('操作系统版本:')
+    use = TextAreaField('用途:', render_kw={'placeholder': '填写该机器主要做什么用？MB应用/MQ网关。。。'})
+    contract_person = StringField('联系人:', render_kw={'placeholder': '填写机器的申请人'})
+    envinfo_id = SelectField('环境:', coerce=int)
+    status = BooleanField('使用中', default=True)
+    submit = SubmitField('保存')
 
-    def validate_ip(self, field):
-        pass
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.project.choices = PROJECT_LIST
+        self.project.coerce = str
+        self.oslevel.choices = MACHINE_TYPE_LIST
+        self.oslevel.coerce = str
+        self.envinfo_id.choices = [(a.id, ' '.join([a.location, a.envname])) for a in Envinfo.query.order_by('id')]
