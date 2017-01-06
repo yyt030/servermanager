@@ -61,7 +61,9 @@ def adduser():
     server_id = request.form.get('serverid', type=int)
     username = request.form.get('username')
     password = request.form.get('userpasswd')
-    print(server_id, username, password)
+
+    if not username or not password:
+        return '无效的用户名或密码'
     Server.query.filter(Server.id == server_id).first_or_404()
     su = ServerUser.query.filter(and_(ServerUser.username == username,
                                       ServerUser.server_id == server_id)).first()
