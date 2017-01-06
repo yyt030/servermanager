@@ -23,7 +23,7 @@ def add():
         db.session.commit()
         cache.clear()
         flash('ip:{}添加成功'.format(form.ip.data))
-        return redirect(url_for('s.detail',id=server.id))
+        return redirect(url_for('s.detail', id=server.id))
 
     return render_template('server_info.html', active_page='add', form=form)
 
