@@ -41,8 +41,8 @@
                 </td>
             {% endif %}
             <td class="col-name">
-                <a href="{{ url_for('site.search',filter='project', v=server.project) }}" data-toggle="tooltip"
-                   title="查询该项目组{{ server.project }}下的所属机器">{{ server.project }}
+                <a href="{{ url_for('site.search',filter='project', v=server.subproject.name) }}" data-toggle="tooltip"
+                   title="查询该项目组{{ server.subproject.name }}下的所属机器">{{ server.subproject.name }}
                 </a>
             </td>
             <td class="col-name">

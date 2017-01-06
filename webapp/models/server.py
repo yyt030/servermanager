@@ -3,21 +3,22 @@
 
 __author__ = 'yueyt'
 
-from webapp import cache
 from webapp import db
+
+from .user import Subproject
 
 
 class Server(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ip = db.Column(db.String(15), unique=True, nullable=False)
-    project = db.Column(db.String(128))
     type = db.Column(db.String(128))
     oslevel = db.Column(db.String(32))
     use = db.Column(db.String(128))
     status = db.Column(db.String(5))
     contract_person = db.Column(db.String(32))
-    envinfo_id = db.Column(db.Integer, db.ForeignKey('envinfo.id'))
 
+    # 关联表
+    envinfo_id = db.Column(db.Integer, db.ForeignKey('envinfo.id'))
     serverusers = db.relationship('ServerUser', backref='server', lazy='dynamic')
     subproject_id = db.Column(db.Integer, db.ForeignKey('subproject.id'))
 
@@ -27,34 +28,22 @@ class Server(db.Model):
     @staticmethod
     def generate_fake(count=1000):
         print('insert Server records:{}'.format(count))
-        from random import randint, choice
-        n = 0
-        for i in range(1, 254):
-            for j in range(1, 254):
-                for k in range(1, 254):
-                    if n >= count:
-                        break
-                    s = '.'.join([str(i), str(j), str(k), '1'])
-                    s = Server(ip=s, project=choice(['EGSP', 'BGSP']), type='PC', oslevel='AIX 7100')
-                    e = Envinfo.query.offset(randint(0, 5)).first()
-                    s.envinfo_id = e.id
-                    try:
-                        db.session.add(s)
-                    except:
-                        db.session.rollback()
-                    else:
-                        db.session.commit()
-                        n += 1
+        from random import choice
+        envinfos = Envinfo.query.all()
+        subprojects = Subproject.query.all()
+        ip_sublist = [str(i) for i in range(1, 254)]
+        for i in range(count):
+            s = '.'.join([choice(ip_sublist), choice(ip_sublist), choice(ip_sublist), choice(ip_sublist)])
+            s = Server(ip=s, type='PC', oslevel='AIX 7100')
+            s.envinfo_id = choice(envinfos).id
+            s.subproject_id = choice(subprojects).id
 
-                    s = Server.query.filter_by(ip=s.ip).first()
-                    su1 = ServerUser(server_id=s.id, username='root', password='123456')
-                    su2 = ServerUser(server_id=s.id, username='mqm', password='mqm')
-                    su3 = ServerUser(server_id=s.id, username='egspadm', password='egspadm')
-                    db.session.add(su1)
-                    db.session.add(su2)
-                    db.session.add(su3)
-                    db.session.commit()
-                    cache.clear()
+            try:
+                db.session.add(s)
+            except:
+                db.session.rollback()
+            else:
+                db.session.commit()
 
 
 class Envinfo(db.Model):
@@ -106,3 +95,15 @@ class ServerUser(db.Model):
     password = db.Column(db.String(32), nullable=False)
     desc = db.Column(db.String(64))
     server_id = db.Column(db.Integer, db.ForeignKey('server.id'))
+
+    @staticmethod
+    def generate_fake():
+        servers = Server.query.all()
+        for s in servers:
+            su1 = ServerUser(server_id=s.id, username='root', password='123456')
+            su2 = ServerUser(server_id=s.id, username='mqm', password='mqm')
+            su3 = ServerUser(server_id=s.id, username='egspadm', password='egspadm')
+            db.session.add(su1)
+            db.session.add(su2)
+            db.session.add(su3)
+        db.session.commit()

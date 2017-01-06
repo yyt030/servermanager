@@ -66,7 +66,11 @@ def search():
         elif filter == 'location':
             query = Server.query.join(Envinfo).filter(Envinfo.location == v).order_by(Envinfo.envname)
         elif filter == 'project':
-            query = Server.query.filter(Server.project == v).order_by(Server.id)
+            # print(Server.query.filter(Server.))
+            from webapp.models.user import Subproject
+            #query = db.session.query(Server).join(Subproject).filter(Subproject.name == v).order_by(Server.id)
+            # query = Server.query.filter(Server.subproject.name == v).order_by(Server.id)
+            query = Server.query.join(Subproject).filter(Subproject.name == v).order_by(Server.id)
         elif filter == 'contract':
             query = Server.query.filter(Server.contract_person == v).order_by(Server.id)
         else:

@@ -18,7 +18,7 @@ manager.add_command('db', MigrateCommand)
 @manager.command
 def init_test_data():
     """初始化相关测试数据"""
-    from webapp.models.server import Server
+    from webapp.models.server import Server, ServerUser
     from webapp.models.user import Project, Subproject
     print('insert Project...')
     Project.generate_fake()
@@ -26,6 +26,8 @@ def init_test_data():
     Subproject.generate_fake()
     print('insert Server...')
     Server.generate_fake()
+    print('insert ServerUser...')
+    ServerUser.generate_fake()
 
 
 @manager.command

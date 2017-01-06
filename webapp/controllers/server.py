@@ -3,12 +3,11 @@
 
 __author__ = 'yueyt'
 from flask import Blueprint, render_template, flash, redirect, url_for, request
+from sqlalchemy import and_
 
 from webapp import db, cache
 from webapp.forms.server import ServerForm, EditServerForm
 from webapp.models.server import Server, Envinfo, ServerUser
-
-from sqlalchemy import and_
 
 bp = Blueprint('s', __name__)
 
@@ -17,14 +16,14 @@ bp = Blueprint('s', __name__)
 def add():
     form = ServerForm()
     form.envinfo_id.choices = [(a.id, ' '.join([a.location, a.envname])) for a in Envinfo.query.order_by('id')]
-    if form.validate_on_submit():
-        server = Server(ip=form.ip.data, project=form.project.data, oslevel=form.oslevel.data,
+    if request.method == 'POST' and form.validate_on_submit():
+        server = Server(ip=form.ip.data, subproject_id=form.subproject_id.data, oslevel=form.oslevel.data,
                         use=form.use.data, status=form.status.data, contract_person=form.contract_person.data)
         db.session.add(server)
         db.session.commit()
         cache.clear()
         flash('ip:{}添加成功'.format(form.ip.data))
-        return redirect(url_for('site.index'))
+        return redirect(url_for('s.detail',id=server.id))
 
     return render_template('server_info.html', active_page='add', form=form)
 
@@ -83,7 +82,7 @@ def detail(id):
     server = Server.query.get_or_404(id)
     form = EditServerForm()
     if form.validate_on_submit():
-        server.project = form.project.data
+        server.subproject_id = form.subproject_id.data
         server.oslevel = form.oslevel.data
         server.use = form.use.data
         server.status = form.status.data
@@ -96,7 +95,7 @@ def detail(id):
         return redirect(url_for('site.index'))
 
     form.ip.data = server.ip
-    form.project.data = server.project
+    form.subproject_id.data = server.subproject_id
     form.oslevel.data = server.oslevel
     form.use.data = server.use
     form.status.data = server.status

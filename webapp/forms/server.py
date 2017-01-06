@@ -9,6 +9,7 @@ from wtforms import ValidationError
 from wtforms.validators import ip_address
 
 from webapp.models.server import Envinfo, Server
+from webapp.models.user import Subproject
 
 MACHINE_TYPE_LIST = [
     ('SUSE SLES11 SP2', 'SUSE SLES11 SP2'),
@@ -18,14 +19,11 @@ MACHINE_TYPE_LIST = [
     ('AIX 5100', 'AIX 5100'),
     ('AIX 6100', 'AIX 6100')
 ]
-PROJECT_LIST = [
-    ('BGSP', 'BGSP'), ('EGSP', 'EGSP')
-]
 
 
 class ServerForm(FlaskForm):
     ip = StringField('ip:', validators=[ip_address()], render_kw={'placeholder': 'ip: XXX.XXX.XXX.XXX'})
-    project = SelectField('所属项目:')
+    subproject_id = SelectField('所属项目:',coerce=int)
     oslevel = SelectField('操作系统版本:')
     use = TextAreaField('用途:', render_kw={'placeholder': '填写该机器主要做什么用？MB应用/MQ网关。。。'})
     contract_person = StringField('联系人:', render_kw={'placeholder': '填写机器的申请人'})
@@ -36,8 +34,7 @@ class ServerForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.project.choices = PROJECT_LIST
-        self.project.coerce = str
+        self.subproject_id.choices = [(a.id, ' '.join([a.name, a.name_en])) for a in Subproject.query.order_by('id')]
         self.oslevel.choices = MACHINE_TYPE_LIST
         self.oslevel.coerce = str
         self.envinfo_id.choices = [(a.id, ' '.join([a.location, a.envname])) for a in Envinfo.query.order_by('id')]
@@ -49,7 +46,7 @@ class ServerForm(FlaskForm):
 
 class EditServerForm(FlaskForm):
     ip = StringField('ip:', render_kw={'readonly': 'readonly'})
-    project = SelectField('所属项目:')
+    subproject_id = SelectField('所属项目:',coerce=int)
     oslevel = SelectField('操作系统版本:')
     use = TextAreaField('用途:', render_kw={'placeholder': '填写该机器主要做什么用？MB应用/MQ网关。。。'})
     contract_person = StringField('联系人:', render_kw={'placeholder': '填写机器的申请人'})
@@ -59,8 +56,7 @@ class EditServerForm(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.project.choices = PROJECT_LIST
-        self.project.coerce = str
+        self.subproject_id.choices = [(a.id, ' '.join([a.name, a.name_en])) for a in Subproject.query.order_by('id')]
         self.oslevel.choices = MACHINE_TYPE_LIST
         self.oslevel.coerce = str
         self.envinfo_id.choices = [(a.id, ' '.join([a.location, a.envname])) for a in Envinfo.query.order_by('id')]
