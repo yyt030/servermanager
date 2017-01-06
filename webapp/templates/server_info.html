@@ -22,11 +22,11 @@
             {{ wtf.form_field(form.contract_person,form_type='horizontal') }}
             {{ wtf.form_field(form.envinfo_id,form_type='horizontal') }}
             {{ wtf.form_field(form.status,form_type='horizontal') }}
-            {% if current_user.can(Permission.ADD) or current_user.can(Permission.EDITOR) %}
+            {% if current_user.can(Permission.SERVER_ADD) or current_user.can(Permission.SERVER_EDIT) %}
                 {{ wtf.form_field(form.submit,form_type='horizontal',button_map={'submit':'success'}) }}
             {% endif %}
         </form>
-        {% if (current_user.can(Permission.ADD) or current_user.can(Permission.EDITOR)) and server %}
+        {% if (current_user.can(Permission.SERVER_ADD) or current_user.can(Permission.SERVER_EDIT)) and server %}
             <h1 class=""></h1>
             <legend>服务器登录用户信息 <span class="glyphicon glyphicon-plus btn" id="user_add"></span></legend>
             <form class="form-inline">

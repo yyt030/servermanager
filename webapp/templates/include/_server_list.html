@@ -1,7 +1,7 @@
 <table class="table table-striped table-bordered table-hover model-list">
     <thead>
     <tr>
-        {% if current_user.can(Permission.EDITOR) or current_user.can(Permission.EDITOR) %}
+        {% if current_user.can(Permission.SERVER_DELETE) %}
             <th class="list-checkbox-column">
                 <input type="checkbox" name="rowtoggle" class="action-rowtoggle" title="Select all records"/>
             </th>
@@ -18,18 +18,18 @@
     <tbody>
     {% for server in servers %}
         <tr bgcolor="#ffe4c4">
-            {% if current_user.can(Permission.EDITOR) or current_user.can(Permission.DELETE) %}
+            {% if current_user.can(Permission.SERVER_EDIT) or current_user.can(Permission.DELETE) %}
                 <td>
                     <input type="checkbox" name="rowid" class="action-checkbox" value="{{ server.id }}"
                            title="选择该记录"/>
                 </td>
                 <td class="list-buttons-column">
-                    {% if current_user.can(Permission.EDITOR) %}
+                    {% if current_user.can(Permission.SERVER_EDIT) %}
                         <a class="icon" href="{{ url_for('s.detail',id=server.id) }}" title="编辑">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </a>
                     {% endif %}
-                    {% if current_user.can(Permission.DELETE) %}
+                    {% if current_user.can(Permission.SERVER_DELETE) %}
                         <form class="icon" method="POST" action="{{ url_for('s.delete') }}">
                             <input id="id" name="id" type="hidden" value={{ server.id }}>
                             <button onclick="return confirm('确定删除ip:{{ server.ip }}?');"
@@ -51,7 +51,7 @@
                 {% endif %}
             </td>
             <td class="col-name wa">
-                {% if server.serverusers.count() and current_user.can(Permission.LOGIN) %}
+                {% if server.serverusers.count() and current_user.can(Permission.SERVER_LOGIN) %}
                     <div class="dropdown col-sm-2">
                         <a data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-new-window"></span></a>
                         <ul class="dropdown-menu" role="menu">

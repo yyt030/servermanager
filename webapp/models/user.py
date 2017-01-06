@@ -87,9 +87,18 @@ class Role(db.Model):
     @staticmethod
     def insert_roles():
         roles = {
-            'User': (Permission.LOGIN, True),
-            'Moderator': (Permission.LOGIN | Permission.ADD | Permission.EDITOR, False),
-            'PM': (Permission.LOGIN | Permission.ADD | Permission.EDITOR | Permission.LOGIN | Permission.DELETE, False),
+            'User': (Permission.SERVER_LOGIN, True),
+            'Moderator': (Permission.SERVER_LOGIN
+                          | Permission.SERVER_ADD
+                          | Permission.SERVER_EDIT,
+                          False),
+            'PM': (
+                Permission.SERVER_LOGIN |
+                Permission.SERVER_ADD |
+                Permission.SERVER_EDIT |
+                Permission.SERVER_LOGIN |
+                Permission.SERVER_DELETE,
+                False),
             'Adminstrator': (0xff, False)
         }
         for r in roles:
@@ -108,11 +117,17 @@ class Role(db.Model):
 
 class Permission(object):
     '''权限信息'''
-    ADD = 0b00000001  # 添加
-    DELETE = 0b00000010  # 删除
-    EDITOR = 0b00000100  # 编辑
-    LOGIN = 0b00001000  # 远程登录
-    ADMINISTER = 0b10000000  # 管理
+    # Server
+    SERVER_ADD = 0b00000001  # 添加server与server_user
+    SERVER_DELETE = 0b00000010  # 删除server
+    SERVER_EDIT = 0b00000100  # 编辑server与server_user
+    SERVER_LOGIN = 0b00001000  # 远程登录server
+
+    # User
+    USER_GROUP_MANAGER = 0b00010000  # 管理本组的成员以及付权限
+    USER_EDIT = 0b00100000  # 编辑用户信息
+
+    ADMINISTER = 0b10000000  # 管理员
 
 
 class AnonymousUser(AnonymousUserMixin):

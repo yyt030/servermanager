@@ -2,7 +2,7 @@
     <li{% if active_page == 'index' %} class="active" {% endif %}>
         <a href="/"><span class="glyphicon glyphicon-list"></span> 列表{% if number %}({{ number }}){% endif %}</a>
     </li>
-    {% if current_user.can(Permission.ADD) %}
+    {% if current_user.can(Permission.SERVER_ADD) %}
         <li{% if active_page == 'add' %} class="active" {% endif %}>
             <a href="/s/add" title="Create New Record">
                 <span class="glyphicon glyphicon-plus"></span> 新建
@@ -16,7 +16,7 @@
             </a>
         </li>
     {% endif %}
-    {% if current_user.can(Permission.DELETE) %}
+    {% if current_user.can(Permission.SERVER_DELETE) %}
         {% if active_page == 'index' %}
             <li class="dropdown pull-right">
                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">批量操作<b
