@@ -3,8 +3,10 @@
 __author__ = 'yueyt'
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import DataRequired, InputRequired, Length, Email
+
+from webapp.models.user import Role
 
 
 class LoginForm(FlaskForm):
@@ -21,3 +23,16 @@ class RegisterForm(FlaskForm):
                                           Email()], description='hello@xxx.com')
     password = PasswordField('密码', validators=[InputRequired(), Length(1, 64)], description='不少于 6 位')
     submit = SubmitField('注册')
+
+
+class ProfileForm(FlaskForm):
+    username = StringField('用户名', validators=[InputRequired(), Length(1, 64)])
+    email = StringField('邮箱', validators=[InputRequired(), Length(1, 64),
+                                          Email()], description='hello@xxx.com')
+    role_id = SelectField('权限', validators=[InputRequired()])
+    sumit = SubmitField('修改')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.role_id.choices = [(r.id, ' '.join([r.rolename, str(r.permissions)])) for r in Role.query.order_by('id')]
+        print([(r.id, ' '.join([r.rolename, str(r.permissions)])) for r in Role.query.order_by('id')])

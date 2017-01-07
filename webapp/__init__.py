@@ -43,9 +43,10 @@ def create_app(config_name):
     register_admin_view()
 
     # blueprint
-    from webapp.controllers import site, server
+    from webapp.controllers import site, server, user
     app.register_blueprint(site.bp)
     app.register_blueprint(server.bp, url_prefix='/s')
+    app.register_blueprint(user.bp, url_prefix='/u')
 
     # 注册错误展示页面
     register_error_handle(app)
