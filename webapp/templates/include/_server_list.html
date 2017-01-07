@@ -18,7 +18,7 @@
     <tbody>
     {% for server in servers %}
         <tr bgcolor="#ffe4c4">
-            {% if current_user.can(Permission.SERVER_EDIT) or current_user.can(Permission.DELETE) %}
+            {% if current_user.can(Permission.SERVER_EDIT) or current_user.can(Permission.SERVER_DELETE) %}
                 <td>
                     <input type="checkbox" name="rowid" class="action-checkbox" value="{{ server.id }}"
                            title="选择该记录"/>
