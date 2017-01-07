@@ -1,22 +1,18 @@
 {% extends 'base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-
 {% block navbar %}
     {% include 'include/_nav_header.html' %}
 {% endblock %}
-{% block content_header %}
-    <div class="col-md-8">
-        <div class="modal-dialog" style="margin-bottom:0">
-            <div class="modal-content">
-                <div class="panel-heading">
-                    <h3 class="panel-title">登录</h3>
-                </div>
-                <div class="panel-body">
-                    {{ wtf.quick_form(profileform) }}
-                </div>
+{% block content %}
+    <div class="container">
+        <h1></h1>
+        {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
             </div>
-        </div>
+        {% endfor %}
+        {{ wtf.quick_form(profileform) }}
     </div>
 {% endblock %}
-

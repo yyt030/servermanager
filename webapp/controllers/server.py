@@ -15,7 +15,7 @@ bp = Blueprint('s', __name__)
 @bp.route('/add', methods=['GET', 'POST'])
 def add():
     form = ServerForm()
-    form.envinfo_id.choices = [(a.id, ' '.join([a.location, a.envname])) for a in Envinfo.query.order_by('id')]
+    #form.envinfo_id.choices = [(a.id, ' '.join([a.location, a.envname])) for a in Envinfo.query.order_by('id')]
     if request.method == 'POST' and form.validate_on_submit():
         server = Server(ip=form.ip.data, subproject_id=form.subproject_id.data, oslevel=form.oslevel.data,
                         use=form.use.data, status=form.status.data, contract_person=form.contract_person.data)

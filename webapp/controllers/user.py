@@ -4,18 +4,26 @@
 __author__ = 'yueyt'
 
 from flask import Blueprint, render_template
-from webapp.forms.user import ProfileForm
-from webapp.models.user import User
 from flask_login import current_user
+
+from webapp import db
+from webapp.forms.user import ProfileForm
 
 bp = Blueprint('u', __name__)
 
 
-@bp.route('/profile')
+@bp.route('/profile', methods=['GET', 'POST'])
 def profile():
     profileform = ProfileForm()
+    if profileform.validate_on_submit():
+        current_user.email = profileform.email.data
+        current_user.role_id = profileform.role_id.data
 
-    print(current_user.username, current_user.id)
+        db.session.add(current_user)
+        db.session.commit()
+    profileform.email.data = current_user.email
+    profileform.username.data = current_user.username
+    profileform.role_id.data = current_user.role_id
 
     return render_template('profile.html', profileform=profileform)
 
