@@ -13,6 +13,11 @@
                 {{ message }}
             </div>
         {% endfor %}
-        {{ wtf.quick_form(profileform) }}
+        <h4>当前用户信息</h4>
+        <div>
+            <div class="col-md-2 col-md-offset-1">
+                {{ wtf.quick_form(profileform) }}
+            </div>
+        </div>
     </div>
 {% endblock %}
