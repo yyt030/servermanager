@@ -5,10 +5,15 @@
     {% include 'include/_nav_header.html' %}
     <div class="col-sm-3 col-md-2 sidebar">
         <ul class="nav nav-list">
-            <li><a href="#">我的用户</a></li>
+            <li><a href="{{ url_for('u.user',username=current_user.username) }}">关于我</a></li>
         </ul>
+        {% if current_user.can(Permission.USER_GROUP_MANAGER) %}
+            <ul class="nav nav-list">
+                <li><a href="{{ url_for('u.user',username=current_user.username) }}">我的项目组</a></li>
+            </ul>
+        {% endif %}
         <ul class="nav nav-list">
-            <li><a href="#">我的服务器</a></li>
+            <li><a href="">我的服务器</a></li>
         </ul>
     </div>
 {% endblock %}
@@ -21,11 +26,7 @@
                 {{ message }}
             </div>
         {% endfor %}
-        <legend>我的用户</legend>
-        <div>
-            {{ wtf.quick_form(profileform,form_type='horizontal') }}
-        </div>
-        <legend>用户管理</legend>
-        {% include 'include/_user_list.html' %}
+        {% block page_content %}
+        {% endblock %}
     </div>
 {% endblock %}

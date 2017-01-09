@@ -25,7 +25,7 @@ class RegisterForm(FlaskForm):
     submit = SubmitField('注册')
 
 
-class ProfileForm(FlaskForm):
+class EditProfileForm(FlaskForm):
     username = StringField('用户名', validators=[InputRequired(), Length(1, 64)])
     email = StringField('邮箱', validators=[InputRequired(), Length(1, 64),
                                           Email()], render_kw={'placeholder': 'hello@xxx.com'})
@@ -35,4 +35,5 @@ class ProfileForm(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.role_id.choices = [(r.id, ' '.join([r.rolename, str(r.permissions)])) for r in Role.query.order_by('id')]
+        self.role_id.choices = [(r.id, ' '.join([r.rolename, str(r.permissions)])) for r in
+                                Role.query.order_by('id').all()]

@@ -83,23 +83,26 @@ class Role(db.Model):
     default = db.Column(db.Boolean, default=False, index=True)
     permissions = db.Column(db.Integer)
     users = db.relationship('User', backref='role', lazy='dynamic')
+    desc = db.Column(db.String(128))
 
     @staticmethod
     def insert_roles():
         roles = {
-            'User': (Permission.SERVER_LOGIN, True),
+            'User': (Permission.SERVER_LOGIN, True, '普通用户，只有登录远程服务器功能'),
             'Moderator': (Permission.SERVER_LOGIN
                           | Permission.SERVER_ADD
                           | Permission.SERVER_EDIT,
-                          False),
+                          False, '普通用户，只有登录,添加，修改服务器功能'),
             'PM': (
                 Permission.SERVER_LOGIN |
                 Permission.SERVER_ADD |
                 Permission.SERVER_EDIT |
                 Permission.SERVER_LOGIN |
-                Permission.SERVER_DELETE,
-                False),
-            'Adminstrator': (0xff, False)
+                Permission.SERVER_DELETE |
+                Permission.USER_GROUP_MANAGER |
+                Permission.USER_EDIT,
+                False, '有当前project下的所有机器和用户具有全部操作'),
+            'Adminstrator': (0xff, False, '系统管理功能')
         }
         for r in roles:
             role = Role.query.filter_by(rolename=r).first()
@@ -107,6 +110,7 @@ class Role(db.Model):
                 role = Role(rolename=r)
             role.permissions = roles[r][0]
             role.default = roles[r][1]
+            role.desc = roles[r][2]
             db.session.add(role)
             print('insert data {}'.format(role))
         db.session.commit()

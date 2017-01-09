@@ -3,32 +3,46 @@
 
 __author__ = 'yueyt'
 
-from flask import Blueprint, render_template, flash
+from flask import Blueprint, render_template, flash, abort
 from flask_login import current_user
 
-from webapp import db
-from webapp.forms.user import ProfileForm
+from webapp import db, cache
+from webapp.forms.user import EditProfileForm
+from webapp.models.user import User
 
 bp = Blueprint('u', __name__)
 
 
-@bp.route('/profile', methods=['GET', 'POST'])
-def profile():
-    profileform = ProfileForm()
-    if profileform.validate_on_submit():
-        current_user.email = profileform.email.data
-        current_user.role_id = profileform.role_id.data
+@bp.route('/<username>')
+def user(username):
+    user = User.query.filter(User.username == username).first()
+    if user is None:
+        abort(404)
 
-        db.session.add(current_user)
+    return render_template('user.html', user=user)
+
+
+@bp.route('/edit/<int:id>', methods=['GET', 'POST'])
+def profile(id):
+    user = User.query.get_or_404(id)
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        user.email = form.email.data
+        user.role_id = form.role_id.data
+
+        db.session.add(user)
         db.session.commit()
+        cache.clear()
+
         flash('信息已经更新')
-    profileform.email.data = current_user.email
-    profileform.username.data = current_user.username
-    profileform.role_id.data = current_user.role_id
+    form.email.data = user.email
+    form.username.data = user.username
+    form.role_id.data = user.role_id
+    return render_template('edit_user.html', form=form)
 
-    return render_template('layout_profile.html', profileform=profileform, users=[current_user])
 
-
-@bp.route('/edit')
-def edit_profile():
-    pass
+@bp.route('/projects')
+def project():
+    user = current_user
+    print(user.projects)
+    return 'ok'
