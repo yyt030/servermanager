@@ -10,6 +10,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from webapp import db
 from webapp import login_manager
 
+user_subproject = db.Table('user_subproject',
+                           db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                           db.Column('subproject_id', db.Integer, db.ForeignKey('subproject.id'))
+                           )
+
 
 class User(UserMixin, db.Model):
     '''用户信息'''
@@ -19,6 +24,9 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(32))
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
     projects = db.relationship('Project', backref='user', lazy='dynamic')
+
+    user_subproject = db.relationship('Subproject', secondary=user_subproject,
+                                      backref=db.backref('users', lazy='dynamic'))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
