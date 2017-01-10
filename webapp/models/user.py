@@ -26,7 +26,7 @@ class User(UserMixin, db.Model):
     projects = db.relationship('Project', backref='user', lazy='dynamic')
 
     user_subproject = db.relationship('Subproject', secondary=user_subproject,
-                                      backref=db.backref('users', lazy='dynamic'))
+                                      backref=db.backref('users', lazy='dynamic'), lazy='dynamic')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -66,7 +66,7 @@ class User(UserMixin, db.Model):
             db.session.commit()
 
             u = User(username='test', email='test@test.com')
-            u.password = 'admin'
+            u.password = 'test'
             admin.role_id = role.id
             db.session.add(u)
             db.session.commit()
@@ -77,11 +77,15 @@ class User(UserMixin, db.Model):
 
         for i in range(count):
             u = User(username='user{}'.format(i), email='test{}@test.com'.format(i))
-            u.password = 'test'
+            u.password = 'user{}'.format(i)
             role = choice(Role.query.all())
             u.role_id = role.id
+
             db.session.add(u)
             db.session.commit()
+
+    def __repr__(self):
+        return '<User=>id:{},username:{}>'.format(self.id, self.username)
 
 
 class Role(db.Model):
@@ -203,5 +207,10 @@ class Subproject(db.Model):
             subproj = Subproject(name='子项目组{}'.format(i), name_en='s{}'.format(i), desc='子项目组')
             p = choice(Project.query.all())
             subproj.project_id = p.id
+            u = choice(User.query.all())
+            subproj.users.append(u)
             db.session.add(subproj)
             db.session.commit()
+
+    def __repr__(self):
+        return '<Subproject=>id:{},name:{}>'.format(self.id, self.name)

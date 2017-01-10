@@ -5,7 +5,6 @@ __author__ = 'yueyt'
 
 from flask import Blueprint, render_template, flash, abort
 from flask_login import current_user
-from sqlalchemy import and_
 
 from webapp import db, cache
 from webapp.forms.user import EditProfileForm
@@ -45,8 +44,8 @@ def profile(id):
 @bp.route('/projects')
 def project():
     user = current_user
-
-    s = [p.id for p in Project.query.join(Subproject).filter(Project.pm_userid == user.id).all()]
-
-    User.query.filter(User.user_subproject.any())
-    return 'ok'
+    subp = Subproject.query.join(Project).filter(Project.pm_userid == user.id).all()
+    users = []
+    for sb in subp:
+        users.append(*sb.users.all())
+    return render_template('include/_user_list.html', users=users)

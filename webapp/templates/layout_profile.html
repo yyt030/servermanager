@@ -9,7 +9,7 @@
         </ul>
         {% if current_user.can(Permission.USER_GROUP_MANAGER) %}
             <ul class="nav nav-list">
-                <li><a href="{{ url_for('u.user',username=current_user.username) }}">我的项目组</a></li>
+                <li><a href="{{ url_for('u.project',username=current_user.username) }}">我的项目组</a></li>
             </ul>
         {% endif %}
         <ul class="nav nav-list">

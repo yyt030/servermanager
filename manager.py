@@ -19,7 +19,9 @@ manager.add_command('db', MigrateCommand)
 def init_test_data():
     """初始化相关测试数据"""
     from webapp.models.server import Server, ServerUser
-    from webapp.models.user import Project, Subproject
+    from webapp.models.user import Project, Subproject, User
+    print('insert User...')
+    User.generate_fake(10)
     print('insert Project...')
     Project.generate_fake()
     print('insert Subproject...')
@@ -48,8 +50,6 @@ def init_static_data():
     Role.insert_roles()
     print('insert admin...')
     User.insert_admin_user()
-    print('insert User...')
-    User.generate_fake(10)
 
 
 if __name__ == '__main__':
