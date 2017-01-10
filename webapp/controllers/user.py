@@ -19,7 +19,7 @@ def user(username):
     if user is None:
         abort(404)
 
-    return render_template('user.html', user=user)
+    return render_template('user_info.html', user=user)
 
 
 @bp.route('/edit/<int:id>', methods=['GET', 'POST'])
@@ -48,4 +48,4 @@ def project():
     users = []
     for sb in subp:
         users.append(*sb.users.all())
-    return render_template('include/_user_list.html', users=users)
+    return render_template('user_list.html', users=users)
