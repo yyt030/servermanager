@@ -38,7 +38,7 @@ def profile(id):
     form.email.data = user.email
     form.username.data = user.username
     form.role_id.data = user.role_id
-    return render_template('edit_user.html', form=form)
+    return render_template('user_edit.html', form=form)
 
 
 @bp.route('/projects')
