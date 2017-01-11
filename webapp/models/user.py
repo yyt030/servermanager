@@ -30,7 +30,7 @@ class User(UserMixin, db.Model):
     projects = db.relationship('Project', backref='user', lazy='dynamic')
 
     user_subproject = db.relationship('Subproject', secondary=user_subproject,
-                                      backref=db.backref('users', lazy='dynamic'), lazy='dynamic')
+                                      backref=db.backref('user_subproject', lazy='dynamic'), lazy='dynamic')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -90,6 +90,13 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User=>id:{},username:{}>'.format(self.id, self.username)
+
+    @property
+    def get_subproject_name(self):
+        return ' '.join(sb.name for sb in self.user_subproject.all())
+
+    def get_subproject_id(self):
+        return [sb.id for sb in self.user_subproject.all()]
 
 
 class Role(db.Model):
@@ -220,3 +227,6 @@ class Subproject(db.Model):
 
     def __repr__(self):
         return '<Subproject=>id:{},name:{}>'.format(self.id, self.name)
+
+    def get_my_project(self):
+        pass

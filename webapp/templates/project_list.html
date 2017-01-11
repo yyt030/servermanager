@@ -8,38 +8,38 @@
             {% if current_user.can(Permission.USER_GROUP_MANAGER) or current_user.can(Permission.USER_EDIT) %}
                 <th class="col-md-1"></th>
             {% endif %}
-            <th class="column-header col-ip">用户名</th>
-            <th class="column-header col-ip">邮箱</th>
-            <th class="column-header col-ip">当前权限</th>
-            <th class="column-header col-ip">密码</th>
-            <th class="column-header col-ip">所属项目组</th>
+            <th class="column-header col-ip">系统</th>
+            <th class="column-header col-ip">系统名称</th>
+            <th class="column-header col-ip">系统描述</th>
+            <th class="column-header col-ip">项目成员</th>
         </tr>
         </thead>
         <tbody>
-        {% for user in users %}
+        {% for sb in subprojects %}
             <tr bgcolor="#ffe4c4">
                 {% if current_user.can(Permission.USER_GROUP_MANAGER) or current_user.can(Permission.USER_EDIT) %}
                     <td class="col-md-1">
-                        <a class="icon" href="{{ url_for('u.profile',id=user.id) }}" title="编辑">
+                        <a class="icon" href="{{ url_for('u.project',id=sb.id) }}" title="编辑">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </a>
                     </td>
                 {% endif %}
-                <td class=""> {{ user.username }} </td>
-                <td class=""> {{ user.email }} </td>
-                <td class=""> {{ user.role.rolename }} </td>
-                <td class=""> {{ user.role.desc }} </td>
-                <td class=""> {{ user.get_subproject_name }} </td>
+                <td class=""> {{ sb.name }} </td>
+                <td class=""> {{ sb.name_en }} </td>
+                <td class=""> {{ sb.desc }} </td>
+                <td class=""><a class="icon" href="{{ url_for('u.project_users',id=sb.id) }}" title="编辑"><span
+                        class="glyphicon glyphicon-user"></span> </a></td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
     {% if pagination %}
         <div class="pagination">
-            {{ macros.pagination_widget(pagination, '.project_users') }}
+            {{ macros.pagination_widget(pagination, '.project') }}
         </div>
     {% endif %}
 {% endblock %}
+
 
 
 

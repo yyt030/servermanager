@@ -3,7 +3,7 @@
 
 __author__ = 'yueyt'
 
-from flask import Blueprint, render_template, flash, abort
+from flask import Blueprint, render_template, flash, abort, request, current_app
 from flask_login import current_user
 
 from webapp import db, cache
@@ -41,15 +41,22 @@ def profile(id):
     return render_template('user_edit.html', form=form)
 
 
-@bp.route('/projects')
+@bp.route('/project')
 def project():
     user = current_user
-    subp = Subproject.query.join(Project).filter(Project.pm_userid == user.id).all()
-    users = []
-    for sb in subp:
-        users.append(*sb.users.all())
-    return render_template('user_list.html', users=users)
+    page = request.args.get('page', 1, type=int)
+    query = Subproject.query.join(Project).filter(Project.pm_userid == user.id)
+    pagination = query.paginate(page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
+                                error_out=False)
+    subprojects = pagination.items
+    flash('有{}条符合条件的记录'.format(query.count()))
+    return render_template('project_list.html', active_page='index',
+                           subprojects=subprojects, pagination=pagination)
 
-@bp.route('/servers')
-def servers():
-    user = current_user
+
+@bp.route('/project/users')
+def project_users():
+    subproject_id = request.args.get('id')
+    sb = Subproject.query.get_or_404(subproject_id)
+    users = sb.user_subproject.all()
+    return render_template('user_list.html', users=users)

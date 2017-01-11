@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% import "include/_macros.html" as macros %}
 
 {% block navbar %}
     {% include 'include/_nav_header.html' %}
@@ -29,4 +30,5 @@
         {% block page_content %}
         {% endblock %}
     </div>
+
 {% endblock %}
