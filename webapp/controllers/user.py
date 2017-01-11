@@ -49,3 +49,7 @@ def project():
     for sb in subp:
         users.append(*sb.users.all())
     return render_template('user_list.html', users=users)
+
+@bp.route('/servers')
+def servers():
+    user = current_user

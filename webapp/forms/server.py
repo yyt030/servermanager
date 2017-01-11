@@ -4,7 +4,8 @@
 __author__ = 'yueyt'
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, BooleanField, SelectField, TextAreaField, PasswordField
+from wtforms import StringField, SubmitField, BooleanField, SelectField, TextAreaField, PasswordField, \
+    SelectMultipleField
 from wtforms import ValidationError
 from wtforms.validators import ip_address
 
@@ -23,7 +24,7 @@ MACHINE_TYPE_LIST = [
 
 class ServerForm(FlaskForm):
     ip = StringField('ip:', validators=[ip_address()], render_kw={'placeholder': 'ip: XXX.XXX.XXX.XXX'})
-    subproject_id = SelectField('所属项目:',coerce=int)
+    subproject_id = SelectMultipleField('所属项目:', coerce=int)
     oslevel = SelectField('操作系统版本:')
     use = TextAreaField('用途:', render_kw={'placeholder': '填写该机器主要做什么用？MB应用/MQ网关。。。'})
     contract_person = StringField('联系人:', render_kw={'placeholder': '填写机器的申请人'})
@@ -46,7 +47,7 @@ class ServerForm(FlaskForm):
 
 class EditServerForm(FlaskForm):
     ip = StringField('ip:', render_kw={'readonly': 'readonly'})
-    subproject_id = SelectField('所属项目:',coerce=int)
+    subproject_id = SelectMultipleField('所属项目:', coerce=int)
     oslevel = SelectField('操作系统版本:')
     use = TextAreaField('用途:', render_kw={'placeholder': '填写该机器主要做什么用？MB应用/MQ网关。。。'})
     contract_person = StringField('联系人:', render_kw={'placeholder': '填写机器的申请人'})

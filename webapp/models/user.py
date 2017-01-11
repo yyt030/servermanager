@@ -14,6 +14,10 @@ user_subproject = db.Table('user_subproject',
                            db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
                            db.Column('subproject_id', db.Integer, db.ForeignKey('subproject.id'))
                            )
+server_subproject = db.Table('server_subproject',
+                             db.Column('server_id', db.Integer, db.ForeignKey('server.id')),
+                             db.Column('subproject_id', db.Integer, db.ForeignKey('subproject.id'))
+                             )
 
 
 class User(UserMixin, db.Model):
@@ -197,7 +201,9 @@ class Subproject(db.Model):
     name_en = db.Column(db.String(4), nullable=False)
     desc = db.Column(db.Text)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
-    servers = db.relationship('Server', backref='subproject', lazy='dynamic')
+
+    servers = db.relationship('Server', secondary=server_subproject, backref=db.backref('subprojects', lazy='dynamic'),
+                              lazy='dynamic')
 
     @staticmethod
     def generate_fake(count=200):

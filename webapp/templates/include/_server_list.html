@@ -41,9 +41,7 @@
                 </td>
             {% endif %}
             <td class="col-name">
-                <a href="{{ url_for('site.search',filter='project', v=server.subproject.name) }}" data-toggle="tooltip"
-                   title="查询该项目组{{ server.subproject.name }}下的所属机器">{{ server.subproject.name }}
-                </a>
+                {{ server.get_subproject_name }}
             </td>
             <td class="col-name">
                 {% if server.envinfo %}{{ server.envinfo.location + server.envinfo.envname }}

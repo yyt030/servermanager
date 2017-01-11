@@ -7,7 +7,8 @@ from sqlalchemy import and_
 
 from webapp import db, cache
 from webapp.forms.server import ServerForm, EditServerForm
-from webapp.models.server import Server, Envinfo, ServerUser
+from webapp.models.server import Server, ServerUser
+from webapp.models.user import Subproject
 
 bp = Blueprint('s', __name__)
 
@@ -15,10 +16,12 @@ bp = Blueprint('s', __name__)
 @bp.route('/add', methods=['GET', 'POST'])
 def add():
     form = ServerForm()
-    #form.envinfo_id.choices = [(a.id, ' '.join([a.location, a.envname])) for a in Envinfo.query.order_by('id')]
     if request.method == 'POST' and form.validate_on_submit():
-        server = Server(ip=form.ip.data, subproject_id=form.subproject_id.data, oslevel=form.oslevel.data,
+        server = Server(ip=form.ip.data, oslevel=form.oslevel.data,
                         use=form.use.data, status=form.status.data, contract_person=form.contract_person.data)
+        sbs = Subproject.query.filter(Subproject.id.in_(form.subproject_id.data)).all()
+        for sb in sbs:
+            server.subprojects.append(sb)
         db.session.add(server)
         db.session.commit()
         cache.clear()
@@ -82,7 +85,10 @@ def detail(id):
     server = Server.query.get_or_404(id)
     form = EditServerForm()
     if form.validate_on_submit():
-        server.subproject_id = form.subproject_id.data
+        sbs = Subproject.query.filter(Subproject.id.in_(form.subproject_id.data)).all()
+        server.subprojects = []
+        for sb in sbs:
+            server.subprojects.append(sb)
         server.oslevel = form.oslevel.data
         server.use = form.use.data
         server.status = form.status.data
@@ -95,7 +101,7 @@ def detail(id):
         return redirect(url_for('site.index'))
 
     form.ip.data = server.ip
-    form.subproject_id.data = server.subproject_id
+    form.subproject_id.data = server.get_subproject_id
     form.oslevel.data = server.oslevel
     form.use.data = server.use
     form.status.data = server.status

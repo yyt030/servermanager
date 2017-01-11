@@ -4,7 +4,6 @@
 __author__ = 'yueyt'
 
 from webapp import db
-
 from .user import Subproject
 
 
@@ -20,7 +19,6 @@ class Server(db.Model):
     # 关联表
     envinfo_id = db.Column(db.Integer, db.ForeignKey('envinfo.id'))
     serverusers = db.relationship('ServerUser', backref='server', lazy='dynamic')
-    subproject_id = db.Column(db.Integer, db.ForeignKey('subproject.id'))
 
     def __repr__(self):
         return '<Server: ip:{} use:{}>'.format(self.ip, self.use)
@@ -29,14 +27,16 @@ class Server(db.Model):
     def generate_fake(count=1000):
         print('insert Server records:{}'.format(count))
         from random import choice
+
         envinfos = Envinfo.query.all()
-        subprojects = Subproject.query.all()
+        subprojects_list = Subproject.query.all()
         ip_sublist = [str(i) for i in range(1, 254)]
         for i in range(count):
             s = '.'.join([choice(ip_sublist), choice(ip_sublist), choice(ip_sublist), choice(ip_sublist)])
             s = Server(ip=s, type='PC', oslevel='AIX 7100')
             s.envinfo_id = choice(envinfos).id
-            s.subproject_id = choice(subprojects).id
+            sb = choice(subprojects_list)
+            s.subprojects.append(sb)
 
             try:
                 db.session.add(s)
@@ -44,6 +44,18 @@ class Server(db.Model):
                 db.session.rollback()
             else:
                 db.session.commit()
+
+    @property
+    def get_subproject(self):
+        return [self.subprojects]
+
+    @property
+    def get_subproject_id(self):
+        return [sb.id for sb in self.subprojects]
+
+    @property
+    def get_subproject_name(self):
+        return ''.join([sb.name for sb in self.subprojects])
 
 
 class Envinfo(db.Model):
