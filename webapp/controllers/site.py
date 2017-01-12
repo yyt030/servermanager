@@ -11,6 +11,9 @@ from webapp import db, webssh_addr, cache
 from webapp.forms.user import LoginForm
 from webapp.models.server import Server, Envinfo
 from webapp.models.user import User, Permission,Subproject
+from flask_login import login_required
+from webapp.utils.decorators import permission_required
+
 
 bp = Blueprint('site', __name__)
 
@@ -36,6 +39,7 @@ def before_request():
 
 
 @bp.route('/', methods=['GET', 'POST'])
+@login_required
 @cache.cached(key_prefix=make_cache_key)
 def index():
     page = request.args.get('page', 1, type=int)
@@ -49,6 +53,7 @@ def index():
 
 
 @bp.route('/search', methods=['GET', 'POST'])
+@login_required
 @cache.cached(key_prefix=make_cache_key)
 def search():
     q = request.args.get('q')
@@ -97,6 +102,7 @@ def login():
 
 
 @bp.route('/logout', methods=['GET', 'POST'])
+@login_required
 def logout():
     logout_user()
     cache.clear()
@@ -104,6 +110,7 @@ def logout():
 
 
 @bp.route('/dysearch', methods=['GET', 'POST'])
+@login_required
 @cache.cached(key_prefix=make_cache_key)
 def dysearch():
     q = request.args.get('ip')

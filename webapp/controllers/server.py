@@ -8,12 +8,16 @@ from sqlalchemy import and_
 from webapp import db, cache
 from webapp.forms.server import ServerForm, EditServerForm
 from webapp.models.server import Server, ServerUser
-from webapp.models.user import Subproject
+from webapp.models.user import Subproject, Permission
+from webapp.utils.decorators import permission_required
+from flask_login import login_required
 
 bp = Blueprint('s', __name__)
 
 
 @bp.route('/add', methods=['GET', 'POST'])
+@login_required
+@permission_required(Permission.SERVER_ADD)
 def add():
     form = ServerForm()
     if request.method == 'POST' and form.validate_on_submit():
@@ -32,6 +36,8 @@ def add():
 
 
 @bp.route('/delete', methods=['POST'])
+@login_required
+@permission_required(Permission.SERVER_DELETE)
 def delete():
     rowids = request.form.getlist('rowid')
     server_id = request.form.get('id')
@@ -48,6 +54,8 @@ def delete():
 
 
 @bp.route('/deleteuser', methods=['GET', 'POST'])
+@login_required
+@permission_required(Permission.SERVER_EDIT)
 def deleteuser():
     server_user_id = request.form.get('id', type=int)
     if server_user_id:
@@ -59,6 +67,8 @@ def deleteuser():
 
 
 @bp.route('/adduser', methods=['GET', 'POST'])
+@login_required
+@permission_required(Permission.SERVER_EDIT)
 def adduser():
     server_id = request.form.get('serverid', type=int)
     username = request.form.get('username')
@@ -81,6 +91,8 @@ def adduser():
 
 
 @bp.route('/<int:id>', methods=['GET', 'POST'])
+@login_required
+@permission_required(Permission.SERVER_EDIT)
 def detail(id):
     server = Server.query.get_or_404(id)
     form = EditServerForm()
@@ -113,5 +125,7 @@ def detail(id):
 
 
 @bp.route('/term/<int:id>', methods=['GET', 'POST'])
+@login_required
+@permission_required(Permission.SERVER_LOGIN)
 def term(id):
     return redirect('http://localhost:9527')

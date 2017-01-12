@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
 <title>404</title>
-
+{% block navbar %}
+    {% include 'include/_nav_header.html' %}
+{% endblock %}
 {% block content_table %}
     <div class="text-center">
         <h2>404错误</h2>

@@ -56,6 +56,11 @@ def create_app(config_name):
 
 def register_error_handle(app):
     """添加HTTP错误页面"""
+    from flask import redirect, url_for
+    @app.errorhandler(401)
+    def page_401(error):
+        # return render_template('site..html'), 401
+        return redirect(url_for('site.login'))
 
     @app.errorhandler(403)
     def page_403(error):
@@ -72,7 +77,7 @@ def register_error_handle(app):
 
 # flask 添加admin视图
 def register_admin_view():
-    from webapp.models.admin import ServerUserAdmin, UserAdmin
+    from webapp.models.admin import UserAdmin
 
     # admin.add_view(ServerUserAdmin(db.session))
     admin.add_view(UserAdmin(db.session))

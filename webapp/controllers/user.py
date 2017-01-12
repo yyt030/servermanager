@@ -5,8 +5,9 @@ __author__ = 'yueyt'
 
 from flask import Blueprint, render_template, flash, abort, request, current_app
 from flask_login import current_user
+from flask_login import login_required
 
-from webapp import db, cache, webssh_addr
+from webapp import db, cache
 from webapp.forms.user import EditProfileForm
 from webapp.models.user import User, Project, Subproject
 
@@ -14,6 +15,7 @@ bp = Blueprint('u', __name__)
 
 
 @bp.route('/<username>')
+@login_required
 def user(username):
     user = User.query.filter(User.username == username).first()
     if user is None:
@@ -23,6 +25,7 @@ def user(username):
 
 
 @bp.route('/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
 def profile(id):
     user = User.query.get_or_404(id)
     form = EditProfileForm()
@@ -42,6 +45,7 @@ def profile(id):
 
 
 @bp.route('/project')
+@login_required
 def project():
     user = current_user
     page = request.args.get('page', 1, type=int)
@@ -55,6 +59,7 @@ def project():
 
 
 @bp.route('/project/users')
+@login_required
 def project_users():
     subproject_id = request.args.get('id')
     sb = Subproject.query.get_or_404(subproject_id)
