@@ -1,4 +1,4 @@
-<table class="table table-striped table-bordered table-hover model-list">
+<table class="table table-striped table-bordered table-hover model-list text-center">
     <thead>
     <tr>
         {% if current_user.can(Permission.SERVER_EDIT) or current_user.can(Permission.SERVER_DELETE) %}
@@ -8,11 +8,11 @@
 
             <th class="col-md-1"></th>
         {% endif %}
-        <th class="column-header col-ip">所属项目组</th>
-        <th class="column-header col-ip">环境</th>
-        <th class="column-header col-ip">ip</th>
-        <th class="column-header col-ip">操作系统版本</th>
-        <th class="column-header col-ip">机器所属人</th>
+        <th class="text-center">所属项目组</th>
+        <th class="text-center">环境</th>
+        <th class="text-center">ip</th>
+        <th class="text-center">操作系统版本</th>
+        <th class="text-center">机器所属人</th>
     </tr>
     </thead>
     <tbody>

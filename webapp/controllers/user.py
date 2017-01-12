@@ -6,7 +6,7 @@ __author__ = 'yueyt'
 from flask import Blueprint, render_template, flash, abort, request, current_app
 from flask_login import current_user
 
-from webapp import db, cache
+from webapp import db, cache, webssh_addr
 from webapp.forms.user import EditProfileForm
 from webapp.models.user import User, Project, Subproject
 
