@@ -43,7 +43,7 @@ def profile(id):
         cache.clear()
 
         flash('信息已经更新')
-        return redirect(url_for('.project', id=current_user.id))
+        return redirect(url_for('.project_users', id=current_user.id))
     form.email.data = user.email
     form.username.data = user.username
     form.role_id.data = user.role_id

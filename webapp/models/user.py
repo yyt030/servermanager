@@ -205,6 +205,9 @@ class Project(db.Model):
             db.session.add(proj)
             db.session.commit()
 
+    def __repr__(self):
+        return '{}[{}]'.format(self.name, self.name_en)
+
 
 class Subproject(db.Model):
     '''子项目信息'''
@@ -231,7 +234,4 @@ class Subproject(db.Model):
             db.session.commit()
 
     def __repr__(self):
-        return '<Subproject=>id:{},name:{}>'.format(self.id, self.name)
-
-    def get_my_project(self):
-        pass
+        return '{}[{}]'.format(self.name, self.name_en)
