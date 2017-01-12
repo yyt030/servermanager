@@ -65,3 +65,19 @@ def project_users():
     sb = Subproject.query.get_or_404(subproject_id)
     users = sb.user_subproject.all()
     return render_template('user_list.html', users=users)
+
+
+@bp.route('/project/servers')
+@login_required
+def project_servers():
+    subproject_id = request.args.get('id')
+    sb = Subproject.query.get_or_404(subproject_id)
+
+    page = request.args.get('page', 1, type=int)
+    query = sb.servers
+    pagination = query.paginate(page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
+                                error_out=False)
+    servers = pagination.items
+    number = query.count()
+    return render_template('project_servers.html', servers=servers, pagination=pagination,
+                           number=number, webssh_addr='12')

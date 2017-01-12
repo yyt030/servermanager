@@ -3,6 +3,8 @@
 
 __author__ = 'yueyt'
 from flask import Blueprint, render_template, flash, redirect, url_for, request
+from flask_login import current_user
+from flask_login import login_required
 from sqlalchemy import and_
 
 from webapp import db, cache
@@ -10,7 +12,6 @@ from webapp.forms.server import ServerForm, EditServerForm
 from webapp.models.server import Server, ServerUser
 from webapp.models.user import Subproject, Permission
 from webapp.utils.decorators import permission_required
-from flask_login import login_required
 
 bp = Blueprint('s', __name__)
 
@@ -92,11 +93,10 @@ def adduser():
 
 @bp.route('/<int:id>', methods=['GET', 'POST'])
 @login_required
-@permission_required(Permission.SERVER_EDIT)
 def detail(id):
     server = Server.query.get_or_404(id)
     form = EditServerForm()
-    if form.validate_on_submit():
+    if form.validate_on_submit() and current_user.can(Permission.SERVER_EDIT):
         sbs = Subproject.query.filter(Subproject.id.in_(form.subproject_id.data)).all()
         server.subprojects = []
         for sb in sbs:

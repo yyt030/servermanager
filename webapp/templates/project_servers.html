@@ -1,0 +1,57 @@
+{% extends 'layout_profile.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+{#    <table class="table table-striped table-bordered table-hover model-list text-center">#}
+{#        <thead>#}
+{#        <tr>#}
+{#            {% if current_user.can(Permission.USER_GROUP_MANAGER) or current_user.can(Permission.USER_EDIT) %}#}
+{#                <th class="col-md-1"></th>#}
+{#            {% endif %}#}
+{#            <th class="text-center">系统</th>#}
+{#            <th class="text-center">系统名称</th>#}
+{#            <th class="text-center">系统描述</th>#}
+{#            <th class="text-center">项目成员</th>#}
+{#            <th class="text-center">服务器</th>#}
+{#        </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+{#        {% for sb in subprojects %}#}
+{#            <tr bgcolor="#ffe4c4">#}
+{#                {% if current_user.can(Permission.USER_GROUP_MANAGER) or current_user.can(Permission.USER_EDIT) %}#}
+{#                    <td class="col-md-1">#}
+{#                        <a class="icon" href="{{ url_for('u.project',id=sb.id) }}" title="编辑" data-toggle="编辑">#}
+{#                            <span class="glyphicon glyphicon-pencil"></span>#}
+{#                        </a>#}
+{#                    </td>#}
+{#                {% endif %}#}
+{#                <td class=""> {{ sb.name }} </td>#}
+{#                <td class=""> {{ sb.name_en }} </td>#}
+{#                <td class=""> {{ sb.desc }} </td>#}
+{#                <td>#}
+{#                    <a class="icon" href="{{ url_for('u.project_users',id=sb.id) }}"#}
+{#                       title="{{ sb.user_subproject.count() }}个用户" data-toggle="{{ sb.user_subproject.count() }}个用户">#}
+{#                        <span class="glyphicon glyphicon-user"></span></a>#}
+{#                </td>#}
+{#                <td>#}
+{#                    <a class="icon" href="{{ url_for('u.project_users',id=sb.id) }}"#}
+{#                       title="{{ sb.servers.count() }}个服务器" data-toggle="{{ sb.servers.count() }}个服务器">#}
+{#                        <span class="glyphicon glyphicon-hdd"></span>#}
+{#                    </a>#}
+{#                </td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+{#        </tbody>#}
+{#    </table>#}
+    {% include 'include/_server_list.html' %}
+    {% if pagination %}
+        <div class="pagination">
+            {{ macros.pagination_widget(pagination, '.project') }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+
+
+
