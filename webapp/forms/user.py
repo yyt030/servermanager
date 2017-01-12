@@ -3,10 +3,10 @@
 __author__ = 'yueyt'
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, SelectMultipleField
 from wtforms.validators import DataRequired, InputRequired, Length, Email
 
-from webapp.models.user import Role
+from webapp.models.user import Role, Subproject
 
 
 class LoginForm(FlaskForm):
@@ -30,6 +30,7 @@ class EditProfileForm(FlaskForm):
     email = StringField('邮箱', validators=[InputRequired(), Length(1, 64),
                                           Email()], render_kw={'placeholder': 'hello@xxx.com'})
     role_id = SelectField('权限', validators=[InputRequired()], coerce=int)
+    subproject_id = SelectMultipleField('所属项目:', coerce=int)
 
     sumit = SubmitField('修改')
 
@@ -37,3 +38,4 @@ class EditProfileForm(FlaskForm):
         super().__init__(*args, **kwargs)
         self.role_id.choices = [(r.id, ' '.join([r.rolename, str(r.permissions)])) for r in
                                 Role.query.order_by('id').all()]
+        self.subproject_id.choices = [(a.id, ' '.join([a.name, a.name_en])) for a in Subproject.query.order_by('id')]

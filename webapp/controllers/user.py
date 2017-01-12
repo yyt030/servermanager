@@ -3,11 +3,11 @@
 
 __author__ = 'yueyt'
 
-from flask import Blueprint, render_template, flash, abort, request, current_app
+from flask import Blueprint, render_template, flash, abort, request, current_app, redirect, url_for
 from flask_login import current_user
 from flask_login import login_required
 
-from webapp import db, cache
+from webapp import db, cache, webssh_addr
 from webapp.forms.user import EditProfileForm
 from webapp.models.user import User, Project, Subproject
 
@@ -33,14 +33,21 @@ def profile(id):
         user.email = form.email.data
         user.role_id = form.role_id.data
 
+        sbs = Subproject.query.filter(Subproject.id.in_(form.subproject_id.data)).all()
+        user.user_subproject = []
+        for sb in sbs:
+            user.user_subproject.append(sb)
+
         db.session.add(user)
         db.session.commit()
         cache.clear()
 
         flash('信息已经更新')
+        return redirect(url_for('.project', id=current_user.id))
     form.email.data = user.email
     form.username.data = user.username
     form.role_id.data = user.role_id
+    form.subproject_id.data = user.get_subproject_id
     return render_template('user_edit.html', form=form)
 
 
@@ -80,4 +87,4 @@ def project_servers():
     servers = pagination.items
     number = query.count()
     return render_template('project_servers.html', servers=servers, pagination=pagination,
-                           number=number, webssh_addr='12')
+                           number=number, webssh_addr=webssh_addr)

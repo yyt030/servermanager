@@ -92,9 +92,14 @@ class User(UserMixin, db.Model):
         return '<User=>id:{},username:{}>'.format(self.id, self.username)
 
     @property
+    def get_subproject(self):
+        return [self.user_subproject]
+
+    @property
     def get_subproject_name(self):
         return ' '.join(sb.name for sb in self.user_subproject.all())
 
+    @property
     def get_subproject_id(self):
         return [sb.id for sb in self.user_subproject.all()]
 

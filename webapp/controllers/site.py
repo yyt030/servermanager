@@ -5,15 +5,13 @@ __author__ = 'yueyt'
 
 from flask import (Blueprint, redirect, url_for, request, current_app, flash, g, abort)
 from flask import render_template, session
+from flask_login import login_required
 from flask_login import login_user, logout_user
 
 from webapp import db, webssh_addr, cache
 from webapp.forms.user import LoginForm
 from webapp.models.server import Server, Envinfo
-from webapp.models.user import User, Permission,Subproject
-from flask_login import login_required
-from webapp.utils.decorators import permission_required
-
+from webapp.models.user import User, Permission, Subproject
 
 bp = Blueprint('site', __name__)
 
@@ -65,7 +63,7 @@ def search():
         query = Server.query.filter(Server.ip.like('%{}%'.format(q.strip())))
     # 首页左侧菜单查询和列表链接查询
     if filter:
-        v = request.args.get('v',type=str)
+        v = request.args.get('v', type=str)
         if filter == 'envname':
             query = Server.query.join(Envinfo).filter(Envinfo.envname == v).order_by(Envinfo.location)
         elif filter == 'location':
