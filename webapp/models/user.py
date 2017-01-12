@@ -229,7 +229,7 @@ class Subproject(db.Model):
             p = choice(Project.query.all())
             subproj.project_id = p.id
             u = choice(User.query.all())
-            subproj.users.append(u)
+            subproj.user_subproject.append(u)
             db.session.add(subproj)
             db.session.commit()
 

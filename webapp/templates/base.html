@@ -17,6 +17,9 @@
     <!-- Custom styles for this template -->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dashboard.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin.css') }}">
+{#    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/select2/bootstrap-select.min.css') }}">#}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/select2/select2.min.css') }}">
+
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,9 +51,17 @@
 {% block scripts %}
     {{ super() }}
     <script src="{{ url_for('static', filename='js/actions.js') }}" type="text/javascript"></script>
+{#    <script src="{{ url_for('static', filename='vendor/select2/bootstrap-select.min.js') }}"#}
+    {#            type="text/javascript"></script>#}
+    <script src="{{ url_for('static', filename='vendor/select2/select2.min.js') }}" type="text/javascript"></script>
     <script language="javascript">
-        var modelActions = new AdminModelActions("至少选择一条记录.", {"delete": "确定删除?"});
+        $(document).ready(function () {
+            // https://select2.github.io/examples.html
+            $("select").select2({});
+            var modelActions = new AdminModelActions("至少选择一条记录.", {"delete": "确定删除?"});
+        })
     </script>
+
     <script language="javascript">
         (function ($) {
             $("#user_add").click(function () {
@@ -62,12 +73,12 @@
                 h2.innerHTML = "<div class='form-group'><label class='control-label' for='password'>密码</label> <input class='form-control' id='password' name='password' type='password'> </div>"
                 h3.innerHTML = "<button type='button' class='btn btn-success' onclick='addline(this)'>保存</button> <button type='button' class='btn btn-warning' onclick='deleteline(this)'>删除</button>"
                 $(".form-control").keyup(function () {
-                $(this).css("background-color","#ee9c72");
+                    $(this).css("background-color", "#ee9c72");
                 })
             })
 
             $(".form-control").keyup(function () {
-                $(this).css("background-color","#ee9c72");
+                $(this).css("background-color", "#ee9c72");
             })
             $("#searchlist").hide()
 
@@ -130,18 +141,18 @@
                     type: 'post',
                     url: '{{ url_for("s.adduser") }}',
                     data: {
-                        'username':username,
-                        'userpasswd':userpasswd,
-                        'serverid':$("#serverid").val()
+                        'username': username,
+                        'userpasswd': userpasswd,
+                        'serverid': $("#serverid").val()
                     },
-                    success: function(){
-                        var inputusr=btn.parentNode.parentNode.cells[0].getElementsByTagName("INPUT")[1]
-                        var inputpad=btn.parentNode.parentNode.cells[1].getElementsByTagName("INPUT")[0]
-                        inputusr.style.background="#ffffff"
-                        inputpad.style.background="#ffffff"
+                    success: function () {
+                        var inputusr = btn.parentNode.parentNode.cells[0].getElementsByTagName("INPUT")[1]
+                        var inputpad = btn.parentNode.parentNode.cells[1].getElementsByTagName("INPUT")[0]
+                        inputusr.style.background = "#ffffff"
+                        inputpad.style.background = "#ffffff"
                     }
                 })
-            }catch(e){
+            } catch (e) {
                 alert(e.message)
             }
 
@@ -153,7 +164,7 @@
                 type: 'post',
                 url: '{{ url_for("s.deleteuser") }}',
                 data: {
-                    'id':id
+                    'id': id
                 },
                 success: function (data) {
 
