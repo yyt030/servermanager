@@ -1,0 +1,7 @@
+{% extends 'layout_profile.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+    <legend>编辑项目信息</legend>
+    {{ wtf.quick_form(form,form_type='horizontal',button_map={'submit':'success'}) }}
+{% endblock %}

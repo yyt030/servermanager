@@ -8,7 +8,7 @@ from flask_login import current_user
 from flask_login import login_required
 
 from webapp import db, cache, webssh_addr
-from webapp.forms.user import EditProfileForm
+from webapp.forms.user import EditProfileForm, EditSubjectForm
 from webapp.models.user import User, Project, Subproject
 
 bp = Blueprint('u', __name__)
@@ -63,6 +63,32 @@ def project():
     flash('有{}条符合条件的记录'.format(query.count()))
     return render_template('project_list.html', active_page='index',
                            subprojects=subprojects, pagination=pagination)
+
+
+@bp.route('/sb/<int:id>', methods=['GET', 'POST'])
+@login_required
+def subproject(id):
+    subproject = Subproject.query.get_or_404(id)
+    form = EditSubjectForm()
+    if form.validate_on_submit():
+        subproject.name = form.name.data
+        subproject.name_en = form.name_en.data
+        subproject.desc = form.desc.data
+
+        users = User.query.filter(User.id.in_(form.user_id.data)).all()
+        subproject.user_subproject = []
+        for u in users:
+            subproject.user_subproject.append(u)
+        db.session.add(subproject)
+        db.session.commit()
+        flash('项目组信息已更新')
+
+    form.name_en.data = subproject.name_en
+    form.name.data = subproject.name
+    form.desc.data = subproject.desc
+    form.user_id.data = subproject.get_user_id
+
+    return render_template('subproject_edit.html', form=form)
 
 
 @bp.route('/project/users')

@@ -20,7 +20,7 @@
             <tr bgcolor="#ffe4c4">
                 {% if current_user.can(Permission.USER_GROUP_MANAGER) or current_user.can(Permission.USER_EDIT) %}
                     <td class="col-md-1">
-                        <a class="icon" href="{{ url_for('u.project',id=sb.id) }}" title="编辑" data-toggle="编辑">
+                        <a class="icon" href="{{ url_for('u.subproject',id=sb.id) }}" title="编辑" data-toggle="编辑">
                             <span class="glyphicon glyphicon-pencil"></span>
                         </a>
                     </td>

@@ -235,3 +235,7 @@ class Subproject(db.Model):
 
     def __repr__(self):
         return '{}[{}]'.format(self.name, self.name_en)
+
+    @property
+    def get_user_id(self):
+        return [u.id for u in self.user_subproject.all()]
