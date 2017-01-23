@@ -129,4 +129,4 @@ def dysearch():
 def test_select2():
     from webapp.forms.server import ServerForm
     form = ServerForm()
-    return render_template('select2.html', form=form)
+    return render_template('test.html', form=form)
