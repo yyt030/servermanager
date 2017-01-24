@@ -74,6 +74,12 @@
         $(document).ready(function () {
             $('#dataTables-example').DataTable({
                 responsive: true,
+                //服务器后台分页
+                serverSide: true,
+                ajax: {
+                    url: '{{ url_for('test.datatable') }}',
+                    type: 'GET'
+                },
                 "language": {
                     "paginate": {
                         "previous": "上一页",
