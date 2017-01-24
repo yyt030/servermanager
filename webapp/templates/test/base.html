@@ -11,6 +11,8 @@
     <!-- Custom Fonts -->
     <link href="{{ url_for('static',filename='vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet"
           type="text/css">
+    {% block styles_extend %}
+    {% endblock %}
     {{ macro.ie8() }}
 {% endblock %}
 
@@ -35,7 +37,9 @@
             <div id="page-wrapper">
                 <div class="container-fluid">
                     <div class="row">
-                        {% include 'test/common/_page_content.html' %}
+                        {% block page_content %}
+                            {% include 'test/common/_page_content.html' %}
+                        {% endblock %}
                         <!-- /.col-lg-12 -->
                     </div>
                     <!-- /.row -->
@@ -53,4 +57,6 @@
     <script src="{{ url_for('static',filename='vendor/metisMenu/metisMenu.min.js') }}"></script>
     <!-- Custom Theme JavaScript -->
     <script src="{{ url_for('static',filename='vendor/dist/js/sb-admin-2.js') }}"></script>
+    {% block scripts_extend %}
+    {% endblock %}
 {% endblock %}

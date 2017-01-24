@@ -1,0 +1,35 @@
+{% extends 'test/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block styles_extend %}
+    <!-- select 2 -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/select2/select2.min.css') }}">
+{% endblock %}
+
+{% block page_content %}
+    <div class="col-lg-12">
+        <h4 class="page-header">服务器详情</h4>
+        <form action="" method="post" class="form form-horizontal" role="form">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_errors(form,hiddens="only") }}
+
+            {{ wtf.form_field(form.ip,form_type='horizontal') }}
+            {{ wtf.form_field(form.subproject_id, form_type='horizontal') }}
+            {{ wtf.form_field(form.oslevel,form_type='horizontal') }}
+            {{ wtf.form_field(form.use,form_type='horizontal') }}
+            {{ wtf.form_field(form.contract_person,form_type='horizontal') }}
+            {{ wtf.form_field(form.envinfo_id,form_type='horizontal') }}
+            {{ wtf.form_field(form.status,form_type='horizontal') }}
+            {% if current_user.can(Permission.SERVER_ADD) or current_user.can(Permission.SERVER_EDIT) %}
+                {{ wtf.form_field(form.submit,form_type='horizontal',button_map={'submit':'success'}) }}
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts_extend %}
+    <script src="{{ url_for('static', filename='vendor/select2/select2.min.js') }}" type="text/javascript"></script>
+    <script type="text/javascript">
+        $('select').select2();
+    </script>
+{% endblock %}

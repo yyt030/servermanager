@@ -2,9 +2,11 @@
 # coding: utf-8
 
 __author__ = 'yueyt'
-from flask import Blueprint, render_template, request, current_app, jsonify
+from flask import (Blueprint, render_template, request, current_app, jsonify, flash, redirect, url_for)
 
-from webapp.models.server import Server
+from webapp import db, cache
+from webapp.forms.server import ServerForm
+from webapp.models.server import Server, Subproject
 
 bp = Blueprint('test', __name__)
 
@@ -56,3 +58,21 @@ def serverlist_api():
              server.contract_person] for server in servers]
     }
     return jsonify(result)
+
+
+@bp.route('/serveradd')
+def serveradd():
+    form = ServerForm()
+    if request.method == 'POST' and form.validate_on_submit():
+        server = Server(ip=form.ip.data, oslevel=form.oslevel.data,
+                        use=form.use.data, status=form.status.data, contract_person=form.contract_person.data)
+        sbs = Subproject.query.filter(Subproject.id.in_(form.subproject_id.data)).all()
+        for sb in sbs:
+            server.subprojects.append(sb)
+        db.session.add(server)
+        db.session.commit()
+        cache.clear()
+        flash('ip:{}添加成功'.format(form.ip.data))
+        return redirect(url_for('s.detail', id=server.id))
+
+    return render_template('test/server_add.html', form=form)

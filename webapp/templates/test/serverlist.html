@@ -1,7 +1,6 @@
 {% extends 'test/base.html' %}
 
-{% block  styles %}
-    {{ super() }}
+{% block  styles_extend %}
     <!-- DataTables CSS -->
     <link href="{{ url_for('static', filename='vendor/datatables-plugins/dataTables.bootstrap.css') }}"
           rel="stylesheet">
@@ -63,8 +62,7 @@
     </div>
 {% endblock %}
 
-{% block scripts %}
-    {{ super() }}
+{% block scripts_extend %}
     <script src="{{ url_for('static',filename='vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ url_for('static',filename='vendor/datatables-plugins/dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static',filename='vendor/datatables-responsive/dataTables.responsive.js') }}"></script>
