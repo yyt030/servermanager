@@ -32,15 +32,19 @@ def serverlist():
                            number=number)
 
 
-@bp.route('/datatable')
-def datatable():
+@bp.route('/api/serverlist')
+def serverlist_api():
     draw = request.args.get('draw', 1, type=int)
     start = request.args.get('start', 0, type=int)
     length = request.args.get('length', current_app.config['FLASKY_POSTS_PER_PAGE'], type=int)
-    search = request.args.get('search')
+    search_value = request.args.get('search[value]')
+
+    if search_value:
+        pass
 
     query = Server.query.order_by(Server.envinfo_id)
     pagination = query.paginate((start / length), per_page=length, error_out=False)
+
     servers = pagination.items
     record_total = query.count()
     result = {
