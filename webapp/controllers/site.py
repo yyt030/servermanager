@@ -123,10 +123,3 @@ def dysearch():
         Jsonstr += ","
     Jsonstr += "1"
     return Jsonstr
-
-
-@bp.route('/test')
-def test_select2():
-    from webapp.forms.server import ServerForm
-    form = ServerForm()
-    return render_template('test.html', form=form)
