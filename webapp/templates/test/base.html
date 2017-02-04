@@ -1,5 +1,5 @@
 {% extends 'bootstrap/base.html' %}
-{% import 'bootstrap/fixes.html' as macro %}
+{% import 'bootstrap/fixes.html' as fixes %}
 
 {% block title %} this is test {% endblock %}
 {% block styles %}
@@ -13,7 +13,7 @@
           type="text/css">
     {% block styles_extend %}
     {% endblock %}
-    {{ macro.ie8() }}
+    {{ fixes.ie8() }}
 {% endblock %}
 
 {% block metas %}
