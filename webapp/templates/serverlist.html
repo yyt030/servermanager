@@ -1,4 +1,4 @@
-{% extends 'v2/base.html' %}
+{% extends 'base.html' %}
 
 {% block  styles_extend %}
     <!-- DataTables CSS -->
@@ -61,7 +61,7 @@
                 //服务器后台分页
                 serverSide: true,
                 ajax: {
-                    url: '{{ url_for('v2.serverlist_api') }}',
+                    url: '{{ url_for('site.serverlist_api') }}',
                     type: 'GET'
                 },
                 "language": {
