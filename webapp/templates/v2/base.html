@@ -28,9 +28,9 @@
     <div id="wrapper">
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top navbar-inverse" role="navigation" style="margin-bottom: 0">
-            {% include 'test/common/_navbar_header.html' %}
-            {% include 'test/common/_navbar_top_links.html' %}
-            {% include 'test/common/_navbar_static_side.html' %}
+            {% include 'v2/common/_navbar_header.html' %}
+            {% include 'v2/common/_navbar_top_links.html' %}
+            {% include 'v2/common/_navbar_static_side.html' %}
         </nav>
         <!-- Page Content -->
         {% block page_wrapper %}
@@ -38,7 +38,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         {% block page_content %}
-                            {% include 'test/common/_page_content.html' %}
+                            {% include 'v2/common/_page_content.html' %}
                         {% endblock %}
                         <!-- /.col-lg-12 -->
                     </div>

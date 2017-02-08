@@ -8,30 +8,22 @@ from webapp import db, cache
 from webapp.forms.server import ServerForm
 from webapp.models.server import Server, Subproject
 
-bp = Blueprint('test', __name__)
+bp = Blueprint('v2', __name__)
 
 
 @bp.route('/login')
 def login():
-    return render_template('test/login.html')
+    return render_template('v2/login.html')
 
 
 @bp.route('/')
 def index():
-    return render_template('test/base.html')
+    return render_template('v2/base.html')
 
 
 @bp.route('/serverlist')
 def serverlist():
-    page = request.args.get('page', 1, type=int)
-    request_per_page = request.args.get('length', None, type=int)
-    query = Server.query.order_by(Server.envinfo_id)
-    pagination = query.paginate(page, per_page=request_per_page or current_app.config['FLASKY_POSTS_PER_PAGE'],
-                                error_out=False)
-    servers = pagination.items
-    number = query.count()
-    return render_template('test/serverlist.html', active_page='index', servers=servers, pagination=pagination,
-                           number=number)
+    return render_template('v2/serverlist.html')
 
 
 @bp.route('/api/serverlist')
@@ -75,4 +67,4 @@ def serveradd():
         flash('ip:{}添加成功'.format(form.ip.data))
         return redirect(url_for('s.detail', id=server.id))
 
-    return render_template('test/server_add.html', form=form)
+    return render_template('v2/serveradd.html', form=form)

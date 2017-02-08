@@ -1,4 +1,4 @@
-{% extends 'test/base.html' %}
+{% extends 'v2/base.html' %}
 
 {% block  styles_extend %}
     <!-- DataTables CSS -->
@@ -13,7 +13,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Tables</h1>
+                <h3 class="page-header">主机列表</h3>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -35,20 +35,6 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for server in servers %}
-                                <tr class="">
-                                    <td>{{ server.get_subproject_name }}</td>
-                                    <td>
-                                        {% if server.envinfo %}
-                                            {{ server.envinfo.location + server.envinfo.envname }}
-                                            {% else %}{{ server.use }}
-                                        {% endif %}
-                                    </td>
-                                    <td>{{ server.ip }}</td>
-                                    <td class="center">{{ server.oslevel }}</td>
-                                    <td class="center">{{ server.contract_person }}</td>
-                                </tr>
-                            {% endfor %}
                             </tbody>
                         </table>
                         <!-- /.table-responsive -->
@@ -75,7 +61,7 @@
                 //服务器后台分页
                 serverSide: true,
                 ajax: {
-                    url: '{{ url_for('test.serverlist_api') }}',
+                    url: '{{ url_for('v2.serverlist_api') }}',
                     type: 'GET'
                 },
                 "language": {
