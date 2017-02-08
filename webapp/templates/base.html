@@ -1,9 +1,10 @@
 {% extends 'bootstrap/base.html' %}
 {% import 'bootstrap/fixes.html' as macro %}
 
-{% block title %} this is test {% endblock %}
+{% block title %} 服务器管理v2.0 {% endblock %}
 {% block styles %}
     {{ super() }}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <!-- MetisMenu CSS -->
     <link href="{{ url_for('static',filename='vendor/metisMenu/metisMenu.min.css') }}" rel="stylesheet">
     <!-- Custom CSS -->
@@ -20,8 +21,8 @@
     {{ super() }}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="yueyt">
+    <meta name="author" content="yueyt">
 {% endblock %}
 
 {% block content %}
