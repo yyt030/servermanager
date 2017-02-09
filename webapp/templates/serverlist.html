@@ -22,15 +22,6 @@
                     <div class="panel-body">
                         <table width="100%" class="table table-striped table-bordered table-hover"
                                id="serverlist" data-toggle="table">
-                            <thead>
-                            <tr>
-                                <th>所属项目组</th>
-                                <th>环境</th>
-                                <th>ip</th>
-                                <th>操作系统版本</th>
-                                <th>机器所属人</th>
-                            </tr>
-                            </thead>
                         </table>
                         <!-- /.table-responsive -->
                     </div>
@@ -57,8 +48,24 @@
                 processing: true,
                 ajax: {
                     url: '{{ url_for('site.serverlist_api') }}',
-                    type: 'GET'
+                    type: 'GET',
+                    error: function () {
+                        alert("服务器未正常响应，请重试");
+                    }
                 },
+                "columns": [
+                    {"data": "subproject", "title": "所属项目组", "defaultContent": ""},
+                    {"data": "envinfo", "title": "环境", "defaultContent": ""},
+                    {"data": "ip", "title": "ip", "defaultContent": ""},
+                    {"data": "oslevel", "title": "操作系统版本", "defaultContent": ""},
+                    {"data": "owner", "title": "机器所属人", "defaultContent": ""},
+                    {
+                        "data": null,
+                        "title": "操作",
+                        "defaultContent": '<a href="#"><span class="glyphicon glyphicon-pencil"></span></a>' +
+                        '<a href="#"><span class="glyphicon glyphicon-trash"></span></a>'
+                    }
+                ],
                 "language": {
                     "sProcessing": "处理中...",
                     "sLengthMenu": "显示 _MENU_ 项结果",
