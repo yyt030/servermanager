@@ -8,6 +8,7 @@ from flask_bootstrap import Bootstrap
 from flask_cache import Cache
 from flask_login import LoginManager
 from flask_moment import Moment
+from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
 
 try:
@@ -44,10 +45,13 @@ def create_app(config_name):
 
     # blueprint
     from webapp.controllers import site
-    # app.register_blueprint(site.bp)
-    # app.register_blueprint(server.bp, url_prefix='/s')
-    # app.register_blueprint(user.bp, url_prefix='/u')
     app.register_blueprint(site.bp)
+
+    # restful api
+    from webapp.controllers import api
+    restful_api = Api(api.api_bp)
+    restful_api.add_resource(api.FooApi, '/foo')
+    app.register_blueprint(api.api_bp, url_prefix='/api')
 
     # 注册错误展示页面
     register_error_handle(app)

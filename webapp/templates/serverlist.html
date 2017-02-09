@@ -4,9 +4,6 @@
     <!-- DataTables CSS -->
     <link href="{{ url_for('static', filename='vendor/datatables/css/dataTables.bootstrap.css') }}"
           rel="stylesheet">
-    <!-- DataTables Responsive CSS -->
-    <link href="{{ url_for('static', filename='vendor/datatables-responsive/dataTables.responsive.css') }}"
-          rel="stylesheet">
 {% endblock %}
 
 {% block page_wrapper %}
@@ -48,8 +45,7 @@
 
 {% block scripts_extend %}
     <script src="{{ url_for('static',filename='vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ url_for('static',filename='vendor/datatables-plugins/dataTables.bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static',filename='vendor/datatables-responsive/dataTables.responsive.js') }}"></script>
+    <script src="{{ url_for('static',filename='vendor/datatables/js/dataTables.bootstrap.min.js') }}"></script>
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
@@ -63,10 +59,28 @@
                     url: '{{ url_for('site.serverlist_api') }}',
                     type: 'GET'
                 },
-                language: {
-                    paginate: {
-                        previous: "上一页",
-                        next: "下一页"
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
                     }
                 }
             });
