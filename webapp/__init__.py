@@ -43,11 +43,11 @@ def create_app(config_name):
     register_admin_view()
 
     # blueprint
-    from webapp.controllers import site, server, user, test
+    from webapp.controllers import site
+    # app.register_blueprint(site.bp)
+    # app.register_blueprint(server.bp, url_prefix='/s')
+    # app.register_blueprint(user.bp, url_prefix='/u')
     app.register_blueprint(site.bp)
-    app.register_blueprint(server.bp, url_prefix='/s')
-    app.register_blueprint(user.bp, url_prefix='/u')
-    app.register_blueprint(test.bp, url_prefix='/t')
 
     # 注册错误展示页面
     register_error_handle(app)
