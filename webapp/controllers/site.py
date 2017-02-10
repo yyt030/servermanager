@@ -47,7 +47,7 @@ def serverlist_api():
         "recordsFiltered": record_total,
         "data": [
             [server.get_subproject_name, server.envinfo.location + server.envinfo.envname, server.ip, server.oslevel,
-             server.contract_person] for server in servers]
+             server.owner] for server in servers]
     }
     return jsonify(result)
 
@@ -57,7 +57,7 @@ def serveradd():
     form = ServerForm()
     if request.method == 'POST' and form.validate_on_submit():
         server = Server(ip=form.ip.data, oslevel=form.oslevel.data,
-                        use=form.use.data, status=form.status.data, contract_person=form.contract_person.data)
+                        use=form.use.data, status=form.status.data, owner=form.owner.data)
         sbs = Subproject.query.filter(Subproject.id.in_(form.subproject_id.data)).all()
         for sb in sbs:
             server.subprojects.append(sb)

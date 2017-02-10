@@ -40,9 +40,9 @@ class ServerAdmin(sqla.ModelView):
         'oslevel': '操作系统版本',
         'use': '用途',
         'status': '状态',
-        'contract_person': '联系人'
+        'owner': '联系人'
     }
-    column_list = ('ip', 'project', 'type', 'oslevel', 'use', 'status', 'contract_person')
+    column_list = ('ip', 'project', 'type', 'oslevel', 'use', 'status', 'owner')
 
     def __init__(self, session, **kwargs):
         super(ServerAdmin, self).__init__(Server, session, **kwargs)

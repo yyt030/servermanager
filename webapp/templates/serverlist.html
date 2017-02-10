@@ -2,13 +2,7 @@
 
 {% block  styles_extend %}
     <!-- DataTables CSS -->
-<<<<<<< HEAD
-    {#    <link href="{{ url_for('static', filename='vendor/datatables/css/jquery.dataTables.css') }}" rel="stylesheet">#}
     <link href="{{ url_for('static', filename='vendor/datatables/css/dataTables.bootstrap.css') }}" rel="stylesheet">
-=======
-    <link href="{{ url_for('static', filename='vendor/datatables/css/dataTables.bootstrap.css') }}"
-          rel="stylesheet">
->>>>>>> refs/remotes/origin/master
 {% endblock %}
 
 {% block page_wrapper %}
@@ -52,18 +46,18 @@
                 serverSide: true,
                 processing: true,
                 ajax: {
-                    url: '{{ url_for('site.serverlist_api') }}',
+                    url: '{{ url_for('api.servers') }}',
                     type: 'GET',
                     error: function () {
                         alert("服务器未正常响应，请重试");
                     }
                 },
                 "columns": [
-                    {"data": "id", "title": "所属项目组", "defaultContent": ""},
-                    {"data": "username", "title": "环境", "defaultContent": ""},
-                    {"data": "name", "title": "ip", "defaultContent": ""},
-                    {"data": "phone", "title": "操作系统版本", "defaultContent": ""},
-                    {"data": "phone1", "title": "机器所属人", "defaultContent": ""},
+                    {"data": "subprojects", "title": "所属项目组", "defaultContent": ""},
+                    {"data": "envinfo", "title": "环境", "defaultContent": ""},
+                    {"data": "ip", "title": "ip", "defaultContent": ""},
+                    {"data": "oslevle", "title": "操作系统版本", "defaultContent": ""},
+                    {"data": "owner", "title": "机器所属人", "defaultContent": ""},
                     {
                         "data": null,
                         "title": "操作",

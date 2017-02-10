@@ -14,7 +14,7 @@ class Server(db.Model):
     oslevel = db.Column(db.String(32))
     use = db.Column(db.String(128))
     status = db.Column(db.String(5))
-    contract_person = db.Column(db.String(32))
+    owner = db.Column(db.String(32))
 
     # 关联表
     envinfo_id = db.Column(db.Integer, db.ForeignKey('envinfo.id'))
@@ -56,6 +56,16 @@ class Server(db.Model):
     @property
     def get_subproject_name(self):
         return ''.join([sb.name for sb in self.subprojects])
+
+    def to_json(self):
+        json_server = {
+            'subprojects': self.get_subproject_name,
+            'envinfo': ' '.join([self.envinfo.location, self.envinfo.envname]),
+            'ip': self.ip,
+            'oslevel': self.oslevel,
+            'owner': self.owner
+        }
+        return json_server
 
 
 class Envinfo(db.Model):

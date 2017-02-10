@@ -50,7 +50,9 @@ def create_app(config_name):
     # restful api
     from webapp.controllers import api
     restful_api = Api(api.bp)
-    restful_api.add_resource(api.FooApi, '/foo', endpoint='foo')
+    restful_api.add_resource(api.ServerListApi, '/servers', endpoint='servers')
+    restful_api.add_resource(api.ServerApi, '/servers/<int:id>', endpoint='server')
+
     app.register_blueprint(api.bp, url_prefix='/api')
 
     # 注册错误展示页面

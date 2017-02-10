@@ -17,7 +17,7 @@
             {{ wtf.form_field(form.subproject_id, form_type='horizontal') }}
             {{ wtf.form_field(form.oslevel,form_type='horizontal') }}
             {{ wtf.form_field(form.use,form_type='horizontal') }}
-            {{ wtf.form_field(form.contract_person,form_type='horizontal') }}
+            {{ wtf.form_field(form.owner,form_type='horizontal') }}
             {{ wtf.form_field(form.envinfo_id,form_type='horizontal') }}
             {{ wtf.form_field(form.status,form_type='horizontal') }}
             {% if current_user.can(Permission.SERVER_ADD) or current_user.can(Permission.SERVER_EDIT) %}

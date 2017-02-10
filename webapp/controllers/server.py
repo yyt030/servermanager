@@ -23,7 +23,7 @@ def add():
     form = ServerForm()
     if request.method == 'POST' and form.validate_on_submit():
         server = Server(ip=form.ip.data, oslevel=form.oslevel.data,
-                        use=form.use.data, status=form.status.data, contract_person=form.contract_person.data)
+                        use=form.use.data, status=form.status.data, owner=form.owner.data)
         sbs = Subproject.query.filter(Subproject.id.in_(form.subproject_id.data)).all()
         for sb in sbs:
             server.subprojects.append(sb)
@@ -104,7 +104,7 @@ def detail(id):
         server.oslevel = form.oslevel.data
         server.use = form.use.data
         server.status = form.status.data
-        server.contract_person = form.contract_person.data
+        server.owner = form.owner.data
         server.envinfo_id = form.envinfo_id.data
         cache.clear()
         db.session.add(server)
@@ -117,7 +117,7 @@ def detail(id):
     form.oslevel.data = server.oslevel
     form.use.data = server.use
     form.status.data = server.status
-    form.contract_person.data = server.contract_person
+    form.owner.data = server.owner
     form.envinfo_id.data = server.envinfo_id
 
     return render_template('server_info.html', active_page='info',

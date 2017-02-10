@@ -71,7 +71,7 @@ def search():
         elif filter == 'project':
             query = Server.query.join(Subproject).filter(Subproject.name == v).order_by(Server.id)
         elif filter == 'contract':
-            query = Server.query.filter(Server.contract_person == v).order_by(Server.id)
+            query = Server.query.filter(Server.owner == v).order_by(Server.id)
         else:
             abort(404)
 
