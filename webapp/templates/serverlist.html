@@ -38,7 +38,26 @@
     <script src="{{ url_for('static',filename='vendor/datatables/js/dataTables.bootstrap.min.js') }}"></script>
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-    <script>
+    <script type="text/javascript">
+        function del(id) {
+            alert("this is test")
+            $.ajax({
+                url: "{{ url_for('api.servers')}}",
+                //在后台接受id这个参数
+                data: {
+                    id: id
+                },
+                type: 'DELETE',
+                success: function (data) {
+                    if (data.flag) {
+                        //如果后台删除成功，则刷新表格，并提示用户删除成功
+                        //保留分页信息
+                        table.ajax.reload(null, false);
+                        alert(name + data.msg);
+                    }
+                }
+            })
+        }
         $(document).ready(function () {
             var table = $('#serverlist').DataTable({
                 responsive: true,
@@ -85,7 +104,7 @@
                         //指定第最后一列
                         targets: -1,
                         render: function (data, type, row, meta) {
-                            return '<a type="button"  href="#" onclick="del("' + row.ip + '")" ><span class="glyphicon glyphicon-trash"></a>';
+                            return '<a type="button"  href="#" onclick="return del("' + row.ip + '")" ><span class="glyphicon glyphicon-trash"></a>';
                         }
                     }
                 ],
@@ -141,25 +160,7 @@
             {#                });#}
             {#            });#}
             //删除方法
-            function del(id) {
-                $.ajax({
-                    url: "{{ url_for('api.servers')}}",
-                    //在后台接受id这个参数
-                    data: {
-                        id: id
-                    },
-                    type: 'DELETE',
-                    success: function (data) {
-                        if (data.flag) {
-                            //如果后台删除成功，则刷新表格，并提示用户删除成功
-                            //保留分页信息
-                            table.ajax.reload(null, false);
-                            alert(name + data.msg);
-                        }
-                    }
-                })
-            }
-        });
 
+        });
     </script>
 {% endblock %}
