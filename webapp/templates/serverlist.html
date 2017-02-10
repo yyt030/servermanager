@@ -2,8 +2,13 @@
 
 {% block  styles_extend %}
     <!-- DataTables CSS -->
+<<<<<<< HEAD
     {#    <link href="{{ url_for('static', filename='vendor/datatables/css/jquery.dataTables.css') }}" rel="stylesheet">#}
     <link href="{{ url_for('static', filename='vendor/datatables/css/dataTables.bootstrap.css') }}" rel="stylesheet">
+=======
+    <link href="{{ url_for('static', filename='vendor/datatables/css/dataTables.bootstrap.css') }}"
+          rel="stylesheet">
+>>>>>>> refs/remotes/origin/master
 {% endblock %}
 
 {% block page_wrapper %}
@@ -36,7 +41,8 @@
 
 {% block scripts_extend %}
     <script src="{{ url_for('static',filename='vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ url_for('static',filename='vendor/datatables-plugins/dataTables.bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='vendor/datatables/js/dataTables.bootstrap.min.js') }}"></script>
+
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script>
         $(document).ready(function () {
@@ -47,7 +53,10 @@
                 processing: true,
                 ajax: {
                     url: '{{ url_for('site.serverlist_api') }}',
-                    type: 'GET'
+                    type: 'GET',
+                    error: function () {
+                        alert("服务器未正常响应，请重试");
+                    }
                 },
                 "columns": [
                     {"data": "id", "title": "所属项目组", "defaultContent": ""},

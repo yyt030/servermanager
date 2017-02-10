@@ -26,6 +26,3 @@ class FooApi(Resource):
     @marshal_with(resource_fields)
     def get(self, **kwargs):
         return TodoDao(todo_id='my_todo', task='Remember the milk')
-
-    def post(self):
-        return 'post ok'
