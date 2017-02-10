@@ -42,6 +42,8 @@
         $(document).ready(function () {
             var table = $('#serverlist').DataTable({
                 responsive: true,
+                fixedHeader: true,
+                rowReorder: true,
                 //服务器后台分页
                 serverSide: true,
                 processing: true,
@@ -53,18 +55,41 @@
                     }
                 },
                 "columns": [
+                    {"data": null, "title": "", "defaultContent": ""},
                     {"data": "subprojects", "title": "所属项目组", "defaultContent": ""},
                     {"data": "envinfo", "title": "环境", "defaultContent": ""},
                     {"data": "ip", "title": "ip", "defaultContent": ""},
-                    {"data": "oslevle", "title": "操作系统版本", "defaultContent": ""},
+                    {"data": "oslevel", "title": "操作系统版本", "defaultContent": ""},
                     {"data": "owner", "title": "机器所属人", "defaultContent": ""},
+                    {#                    {#}
+                    {#                        "data": null,#}
+                    {#                        "title": "操作",#}
+                    {#                        "defaultContent": '<a class="icon" href="#" > <span class="glyphicon glyphicon-pencil"></span>' +#}
+                    {#                        '<a class="icon" href="#" onclick=""> <span class="glyphicon glyphicon-trash"></span ></a>'#}
+                    {#                    }#}
+                ],
+                "columnDefs": [
                     {
-                        "data": null,
-                        "title": "操作",
-                        "defaultContent": '<a class="icon" href="#"> <span class="glyphicon glyphicon-pencil"></span>' +
-                        '<a class="icon" href="#"> <span class="glyphicon glyphicon-trash"></span ></a>'
+                        "searchable": false,
+                        "orderable": false,
+                        "targets": 0
+                    },
+                    {
+                        //指定第一列，从0开始，0表示第一列，1表示第二列……
+                        targets: 0,
+                        render: function (data, type, row, meta) {
+                            return '<input type="checkbox" name="checklist" value="' + row.id + '" />'
+                        }
+                    },
+                    {
+                        //指定第最后一列
+                        targets: -1,
+                        render: function (data, type, row, meta) {
+                            return '<a type="button"  href="#" onclick="del("' + row.ip + '")" ><span class="glyphicon glyphicon-trash"></a>';
+                        }
                     }
                 ],
+                "order": [[1, 'asc']],
                 "language": {
                     "sProcessing": "处理中...",
                     "sLengthMenu": "显示 _MENU_ 项结果",
@@ -88,12 +113,53 @@
                         "sSortAscending": ": 以升序排列此列",
                         "sSortDescending": ": 以降序排列此列"
                     }
-                }
+                },
+                //改变每页显示的条数
+                "lengthMenu": [10, 20, 30, 40, 50, 100],
             });
             //选择行
             $('#serverlist tbody').on('click', 'tr', function () {
                 $(this).toggleClass('bg-info');
             });
+            //添加序号
+            //不管是排序，还是分页，还是搜索最后都会重画，这里监听draw事件即可
+            {#            table.on('draw.dt', function () {#}
+            {#                table.column(0, {#}
+            {#                    search: 'applied',#}
+            {#                    order: 'applied'#}
+            {#                }).nodes().each(function (cell, i) {#}
+            {#                    //i 从0开始，所以这里先加1#}
+            {#                    i = i + 1;#}
+            {#                    //服务器模式下获取分页信息，使用 DT 提供的 API 直接获取分页信息#}
+            {#                    var page = table.page.info();#}
+            {#                    //当前第几页，从0开始#}
+            {#                    var pageno = page.page;#}
+            {#                    //每页数据#}
+            {#                    var length = page.length;#}
+            {#                    //行号等于 页数*每页数据长度+行号#}
+            {#                    cell.innerHTML = (i + pageno * length);#}
+            {#                });#}
+            {#            });#}
+            //删除方法
+            function del(id) {
+                $.ajax({
+                    url: "{{ url_for('api.servers')}}",
+                    //在后台接受id这个参数
+                    data: {
+                        id: id
+                    },
+                    type: 'DELETE',
+                    success: function (data) {
+                        if (data.flag) {
+                            //如果后台删除成功，则刷新表格，并提示用户删除成功
+                            //保留分页信息
+                            table.ajax.reload(null, false);
+                            alert(name + data.msg);
+                        }
+                    }
+                })
+            }
         });
+
     </script>
 {% endblock %}

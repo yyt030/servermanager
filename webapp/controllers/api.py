@@ -12,16 +12,14 @@ from webapp.models.server import Server
 
 class ServerListApi(Resource):
     def get(self):
-        draw = request.args.get('draw', 1, type=int)
         start = request.args.get('start', 0, type=int)
-        length = request.args.get('length', current_app.config['FLASKY_POSTS_PER_PAGE'], type=int)
-        search_value = request.args.get('search[value]')
+        page_size = request.args.get('length', current_app.config['FLASKY_POSTS_PER_PAGE'], type=int)
 
         query = Server.query.order_by(Server.envinfo_id)
-        pagination = query.paginate((start / length), per_page=length, error_out=False)
-
+        pagination = query.paginate((start + 1) / page_size, per_page=page_size, error_out=False)
         servers = pagination.items
         record_total = query.count()
+
         result = {
             "draw": request.args.get('draw', 1, type=int),
             "recordsTotal": record_total,
@@ -34,3 +32,7 @@ class ServerListApi(Resource):
 class ServerApi(Resource):
     def get(self, id):
         pass
+
+    def delete(self, id):
+        id = request.args.get('id')
+        print('>>>' * 10, id)
