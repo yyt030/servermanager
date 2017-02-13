@@ -29,6 +29,13 @@ class ServerListApi(Resource):
         }
         return jsonify(result)
 
+    def delete(self):
+        serverlist = request.form.get('ips')
+        servers = Server.query.filter(Server.ip.in_(serverlist.split(',')))
+        for s in servers:
+            db.session.delete(s)
+        db.session.commit()
+
 
 class ServerApi(Resource):
     def get(self, id):
