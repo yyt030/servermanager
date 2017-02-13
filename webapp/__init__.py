@@ -51,7 +51,7 @@ def create_app(config_name):
     from webapp.controllers import api
     restful_api = Api(api.bp)
     restful_api.add_resource(api.ServerListApi, '/servers', endpoint='servers')
-    restful_api.add_resource(api.ServerApi, '/servers/<int:id>', endpoint='server')
+    restful_api.add_resource(api.ServerApi, '/servers/<string:ip>', endpoint='server')
 
     app.register_blueprint(api.bp, url_prefix='/api')
 

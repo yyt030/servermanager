@@ -39,25 +39,7 @@
 
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script type="text/javascript">
-        function del(id) {
-            alert("this is test")
-            $.ajax({
-                url: "{{ url_for('api.servers')}}",
-                //在后台接受id这个参数
-                data: {
-                    id: id
-                },
-                type: 'DELETE',
-                success: function (data) {
-                    if (data.flag) {
-                        //如果后台删除成功，则刷新表格，并提示用户删除成功
-                        //保留分页信息
-                        table.ajax.reload(null, false);
-                        alert(name + data.msg);
-                    }
-                }
-            })
-        }
+        var del_server;
         $(document).ready(function () {
             var table = $('#serverlist').DataTable({
                 responsive: true,
@@ -80,11 +62,10 @@
                     {"data": "ip", "title": "ip", "defaultContent": ""},
                     {"data": "oslevel", "title": "操作系统版本", "defaultContent": ""},
                     {"data": "owner", "title": "机器所属人", "defaultContent": ""},
-                    {#                    {#}
+                    {#                    defaultContent{#}
                     {#                        "data": null,#}
-                    {#                        "title": "操作",#}
-                    {#                        "defaultContent": '<a class="icon" href="#" > <span class="glyphicon glyphicon-pencil"></span>' +#}
-                    {#                        '<a class="icon" href="#" onclick=""> <span class="glyphicon glyphicon-trash"></span ></a>'#}
+                    {#                        "defaultContent": '<a type="button" id="delete_server" ' +#}
+                    {#                        ' href="#"><span class="glyphicon glyphicon-trash"></a>'#}
                     {#                    }#}
                 ],
                 "columnDefs": [
@@ -104,7 +85,10 @@
                         //指定第最后一列
                         targets: -1,
                         render: function (data, type, row, meta) {
-                            return '<a type="button"  href="#" onclick="return del("' + row.ip + '")" ><span class="glyphicon glyphicon-trash"></a>';
+                            return '<a type="button" href="#" onclick="del_server(\'' + row.ip + '\')" >' +
+                                '<span class="glyphicon glyphicon-trash"></a> ' +
+                                '<a type="button" href="#" onclick="edit_server(\'' + row.ip + '\')" >' +
+                                '<span class="glyphicon glyphicon-pencil"></a>';
                         }
                     }
                 ],
@@ -160,7 +144,17 @@
             {#                });#}
             {#            });#}
             //删除方法
+            del_server = function (ip) {
+                $.ajax({
+                    url: '/api/servers/' + ip,
+                    type: 'delete',
+                    success: function (data) {
+                        table.ajax.reload(null, false);
+                    }
+                })
+            }
 
-        });
+        })
+        ;
     </script>
 {% endblock %}

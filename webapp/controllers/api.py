@@ -8,6 +8,7 @@ from flask_restful import Resource
 bp = Blueprint('api', __name__)
 
 from webapp.models.server import Server
+from webapp import db
 
 
 class ServerListApi(Resource):
@@ -31,8 +32,12 @@ class ServerListApi(Resource):
 
 class ServerApi(Resource):
     def get(self, id):
+        id = request.args.get('id')
         pass
 
-    def delete(self, id):
-        id = request.args.get('id')
-        print('>>>' * 10, id)
+    def delete(self, ip):
+        # /api/servers/96.141.235.232
+        server = Server.query.filter(Server.ip == ip).first()
+        if server:
+            db.session.delete(server)
+            db.session.commit()

@@ -63,7 +63,8 @@ class Server(db.Model):
             'envinfo': ' '.join([self.envinfo.location, self.envinfo.envname]),
             'ip': self.ip,
             'oslevel': self.oslevel,
-            'owner': self.owner
+            'owner': self.owner,
+            'id':self.id
         }
         return json_server
 
