@@ -19,8 +19,26 @@
                 <div class="panel panel-default">
                     <!-- /.panel-heading -->
                     <div class="panel-body">
+                        <form name="frm-example" id="frm-example">
+                            <p class="form-group">
+                                <button id="button" class="btn btn-primary">删除选中行</button>
+                            </p>
+                        </form>
                         <table width="100%" class="table table-bordered table-hover" id="serverlist"
                                data-toggle="table">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    <input type="checkbox" id="checkAll">
+                                </th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            </thead>
                         </table>
                         <!-- /.table-responsive -->
                     </div>
@@ -56,34 +74,28 @@
                     }
                 },
                 "columns": [
-                    {"data": null, "title": "", "defaultContent": ""},
-                    {"data": "subprojects", "title": "所属项目组", "defaultContent": ""},
-                    {"data": "envinfo", "title": "环境", "defaultContent": ""},
-                    {"data": "ip", "title": "ip", "defaultContent": ""},
-                    {"data": "oslevel", "title": "操作系统版本", "defaultContent": ""},
-                    {"data": "owner", "title": "机器所属人", "defaultContent": ""},
-                    {#                    defaultContent{#}
-                    {#                        "data": null,#}
-                    {#                        "defaultContent": '<a type="button" id="delete_server" ' +#}
-                    {#                        ' href="#"><span class="glyphicon glyphicon-trash"></a>'#}
-                    {#                    }#}
+                    {"data": null, "class": "text-center"},
+                    {
+                        "data": null,
+                        "class": "text-center",
+                        "defaultContent": '<input type="checkbox" name="checkList"></td>'
+                    },
+                    {"data": "subprojects", "title": "所属项目组", "defaultContent": "", "class": "text-center"},
+                    {"data": "envinfo", "title": "环境", "defaultContent": "", "class": "text-center"},
+                    {"data": "ip", "title": "ip", "defaultContent": "", "class": "text-center"},
+                    {"data": "oslevel", "title": "操作系统版本", "defaultContent": "", "class": "text-center"},
+                    {"data": "owner", "title": "机器所属人", "defaultContent": "", "class": "text-center"}
                 ],
                 "columnDefs": [
                     {
-                        "searchable": false,
-                        "orderable": false,
-                        "targets": 0
+                        'targets': [0, 1],//第1，2列禁止搜索排序
+                        'searchable': false,
+                        'orderable': false
                     },
                     {
-                        //指定第一列，从0开始，0表示第一列，1表示第二列……
-                        targets: 0,
-                        render: function (data, type, row, meta) {
-                            return '<input type="checkbox" name="checklist" value="' + row.id + '" />'
-                        }
-                    },
-                    {
-                        //指定第最后一列
+                        //指定第最后一列 操作内容
                         targets: -1,
+                        class: 'text-center',
                         render: function (data, type, row, meta) {
                             return '<a type="button" href="#" onclick="del_server(\'' + row.ip + '\')" >' +
                                 '<span class="glyphicon glyphicon-trash"></a> ' +
@@ -92,7 +104,7 @@
                         }
                     }
                 ],
-                "order": [[1, 'asc']],
+                "order": [[2, 'asc']],
                 "language": {
                     "sProcessing": "处理中...",
                     "sLengthMenu": "显示 _MENU_ 项结果",
@@ -120,30 +132,27 @@
                 //改变每页显示的条数
                 "lengthMenu": [10, 20, 30, 40, 50, 100],
             });
-            //选择行
-            $('#serverlist tbody').on('click', 'tr', function () {
-                $(this).toggleClass('bg-info');
-            });
-            //添加序号
+            //首列添加序号
             //不管是排序，还是分页，还是搜索最后都会重画，这里监听draw事件即可
-            {#            table.on('draw.dt', function () {#}
-            {#                table.column(0, {#}
-            {#                    search: 'applied',#}
-            {#                    order: 'applied'#}
-            {#                }).nodes().each(function (cell, i) {#}
-            {#                    //i 从0开始，所以这里先加1#}
-            {#                    i = i + 1;#}
-            {#                    //服务器模式下获取分页信息，使用 DT 提供的 API 直接获取分页信息#}
-            {#                    var page = table.page.info();#}
-            {#                    //当前第几页，从0开始#}
-            {#                    var pageno = page.page;#}
-            {#                    //每页数据#}
-            {#                    var length = page.length;#}
-            {#                    //行号等于 页数*每页数据长度+行号#}
-            {#                    cell.innerHTML = (i + pageno * length);#}
-            {#                });#}
-            {#            });#}
-            //删除方法
+            table.on('draw.dt', function () {
+                table.column(0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).nodes().each(function (cell, i) {
+                    //i 从0开始，所以这里先加1
+                    i = i + 1;
+                    //服务器模式下获取分页信息，使用 DT 提供的 API 直接获取分页信息
+                    var page = table.page.info();
+                    //当前第几页，从0开始
+                    var pageno = page.page;
+                    //每页数据
+                    var length = page.length;
+                    //行号等于 页数*每页数据长度+行号
+                    cell.innerHTML = (i + pageno * length);
+                });
+            });
+
+            //单server删除
             del_server = function (ip) {
                 $.ajax({
                     url: '/api/servers/' + ip,
@@ -152,9 +161,21 @@
                         table.ajax.reload(null, false);
                     }
                 })
-            }
-
-        })
-        ;
+            };
+            //checkbox全选
+            $("#checkAll").on("click", function () {
+                if ($(this).prop("checked") === true) {
+                    $("input[name='checkList']").prop("checked", $(this).prop("checked"));
+                    $('#serverlist tbody tr').addClass('selected');
+                } else {
+                    $("input[name='checkList']").prop("checked", false);
+                    $('#serverlist tbody tr').removeClass('selected');
+                }
+            });
+            //批量删除
+            $('#button').click(function () {
+                table.row('.selected').remove().draw(false);
+            });
+        });
     </script>
 {% endblock %}
