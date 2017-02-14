@@ -19,7 +19,7 @@
                 <a href="#host"><i class="fa fa-table fa-fw"></i> 主机管理<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ url_for('s.index') }}" {% if active_menu=='serverlist' %}
+                        <a href="{{ url_for('servers.index') }}" {% if active_menu=='serverlist' %}
                            class="active" {% endif %}> 主机列表</a>
                     </li>
                     <li>

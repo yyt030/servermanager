@@ -11,11 +11,13 @@ from webapp.forms.server import ServerForm, EditServerForm
 from webapp.models.server import Server, ServerUser
 from webapp.models.user import Subproject, Permission
 from webapp.utils.decorators import permission_required
+from webapp.utils.make_cache import make_cache_key
 
-bp = Blueprint('s', __name__)
+bp = Blueprint('servers', __name__)
 
 
 @bp.route('/')
+@cache.cached(key_prefix=make_cache_key)
 def index():
     return render_template('serverlist.html')
 

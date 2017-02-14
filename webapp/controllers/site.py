@@ -3,13 +3,14 @@
 
 __author__ = 'yueyt'
 from flask import (Blueprint, render_template, request, flash, redirect, url_for)
-from flask_login import login_user
+from flask_login import login_user, login_required, logout_user
 
 from webapp import db, cache
 from webapp.forms.server import ServerForm
 from webapp.forms.user import LoginForm
 from webapp.models.server import Server, Subproject
 from webapp.models.user import Permission, User
+from webapp.utils.make_cache import make_cache_key
 
 bp = Blueprint('site', __name__)
 
@@ -19,7 +20,13 @@ def inject_permissions():
     return dict(Permission=Permission)
 
 
-@bp.route('/login',methods=['GET','POST'])
+@bp.route('/')
+@login_required
+def index():
+    return render_template('base.html')
+
+
+@bp.route('/login', methods=['GET', 'POST'])
 def login():
     loginform = LoginForm()
     if loginform.validate_on_submit():
@@ -32,14 +39,18 @@ def login():
     return render_template('login.html', loginform=loginform)
 
 
-@bp.route('/')
-def index():
-    return render_template('base.html')
+@bp.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    cache.clear()
+    return redirect(url_for('.index'))
 
 
 @bp.route('/serverlist')
+@cache.cached(key_prefix=make_cache_key)
 def serverlist():
-    return redirect(url_for('s.index'))
+    return redirect(url_for('servers.index'))
 
 
 @bp.route('/serveradd')
