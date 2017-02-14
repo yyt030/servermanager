@@ -3,7 +3,6 @@
 
 __author__ = 'yueyt'
 from flask import Blueprint, render_template, flash, redirect, url_for, request
-from flask_login import current_user
 from flask_login import login_required
 from sqlalchemy import and_
 
@@ -14,6 +13,11 @@ from webapp.models.user import Subproject, Permission
 from webapp.utils.decorators import permission_required
 
 bp = Blueprint('s', __name__)
+
+
+@bp.route('/')
+def index():
+    return render_template('serverlist.html')
 
 
 @bp.route('/add', methods=['GET', 'POST'])
@@ -34,24 +38,6 @@ def add():
         return redirect(url_for('s.detail', id=server.id))
 
     return render_template('server_info.html', active_page='add', form=form)
-
-
-@bp.route('/delete', methods=['POST'])
-@login_required
-@permission_required(Permission.SERVER_DELETE)
-def delete():
-    rowids = request.form.getlist('rowid')
-    server_id = request.form.get('id')
-    if rowids:
-        db.session.query(Server).filter(Server.id.in_(rowids)).delete(synchronize_session='fetch')
-        cache.clear()
-        db.session.commit()
-    if server_id:
-        Server.query.filter_by(id=server_id).delete()
-        cache.clear()
-        db.session.commit()
-    flash('删除成功')
-    return redirect(url_for('site.index'))
 
 
 @bp.route('/deleteuser', methods=['GET', 'POST'])
@@ -96,7 +82,7 @@ def adduser():
 def detail(id):
     server = Server.query.get_or_404(id)
     form = EditServerForm()
-    if form.validate_on_submit() and current_user.can(Permission.SERVER_EDIT):
+    if form.validate_on_submit():
         sbs = Subproject.query.filter(Subproject.id.in_(form.subproject_id.data)).all()
         server.subprojects = []
         for sb in sbs:
@@ -120,8 +106,7 @@ def detail(id):
     form.owner.data = server.owner
     form.envinfo_id.data = server.envinfo_id
 
-    return render_template('server_info.html', active_page='info',
-                           server=server, form=form)
+    return render_template('serverinfo.html', server=server, form=form)
 
 
 @bp.route('/term/<int:id>', methods=['GET', 'POST'])

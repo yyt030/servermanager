@@ -44,8 +44,9 @@ def create_app(config_name):
     register_admin_view()
 
     # blueprint
-    from webapp.controllers import site
+    from webapp.controllers import site, server
     app.register_blueprint(site.bp)
+    app.register_blueprint(server.bp, url_prefix='/servers')
 
     # restful api
     from webapp.controllers import api

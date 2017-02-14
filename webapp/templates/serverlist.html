@@ -103,7 +103,7 @@
                         render: function (data, type, row, meta) {
                             return '<a type="button" href="#" onclick="del_server(\'' + row.ip + '\')" >' +
                                 '<span class="glyphicon glyphicon-trash"></a> ' +
-                                '<a type="button" href="#" onclick="edit_server(\'' + row.ip + '\')" >' +
+                                '<a type="button" href="/servers/'+row.id+'" onclick1="edit_server(\'' + row.id + '\')" >' +
                                 '<span class="glyphicon glyphicon-pencil"></a>';
                         }
                     }
@@ -167,7 +167,6 @@
             };
             //单server编辑
             edit_server = function (ip) {
-
                 $.ajax({
                     url: '/api/servers/' + ip,
                     type: 'get',
@@ -175,7 +174,7 @@
                         //table.ajax.reload(null, false);
                     }
                 })
-            }
+            };
 
             //checkbox全选
             $("#checkAll").on("click", function () {

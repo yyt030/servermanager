@@ -2,13 +2,19 @@
 # coding: utf-8
 
 __author__ = 'yueyt'
-from flask import (Blueprint, render_template, request, current_app, jsonify, flash, redirect, url_for)
+from flask import (Blueprint, render_template, request, flash, redirect, url_for)
 
 from webapp import db, cache
 from webapp.forms.server import ServerForm
 from webapp.models.server import Server, Subproject
+from webapp.models.user import Permission
 
 bp = Blueprint('site', __name__)
+
+
+@bp.app_context_processor
+def inject_permissions():
+    return dict(Permission=Permission)
 
 
 @bp.route('/login')
@@ -23,33 +29,7 @@ def index():
 
 @bp.route('/serverlist')
 def serverlist():
-    return render_template('serverlist.html')
-
-
-@bp.route('/api/serverlist')
-def serverlist_api():
-    draw = request.args.get('draw', 1, type=int)
-    start = request.args.get('start', 0, type=int)
-    length = request.args.get('length', current_app.config['FLASKY_POSTS_PER_PAGE'], type=int)
-    search_value = request.args.get('search[value]')
-
-    if search_value:
-        pass
-
-    query = Server.query.order_by(Server.envinfo_id)
-    pagination = query.paginate((start / length), per_page=length, error_out=False)
-
-    servers = pagination.items
-    record_total = query.count()
-    result = {
-        "draw": request.args.get('draw', 1, type=int),
-        "recordsTotal": record_total,
-        "recordsFiltered": record_total,
-        "data": [
-            [server.get_subproject_name, server.envinfo.location + server.envinfo.envname, server.ip, server.oslevel,
-             server.owner] for server in servers]
-    }
-    return jsonify(result)
+    return redirect(url_for('s.index'))
 
 
 @bp.route('/serveradd')
