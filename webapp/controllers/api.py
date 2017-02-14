@@ -16,7 +16,13 @@ class ServerListApi(Resource):
         start = request.args.get('start', 0, type=int)
         page_size = request.args.get('length', current_app.config['FLASKY_POSTS_PER_PAGE'], type=int)
 
-        query = Server.query.order_by(Server.envinfo_id)
+        search_value = request.args.get('search[value]')
+        if search_value:
+            query = Server.query.filter(
+                Server.ip.like('%{}%'.format(search_value))).order_by(Server.envinfo_id)
+        else:
+            query = Server.query.order_by(Server.envinfo_id)
+
         pagination = query.paginate((start + 1) / page_size, per_page=page_size, error_out=False)
         servers = pagination.items
         record_total = query.count()
