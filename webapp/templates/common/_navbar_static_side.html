@@ -12,15 +12,21 @@
                 </div>
                 <!-- /input-group -->
             </li>
-            <li class="active">
-                <a href="#dashbord"><i class="fa fa-dashboard fa-fw"></i> 仪表盘</a>
+            <li {% if active_menu == 'dashboard' %}class="active"{% endif %}>
+                <a href="{{ url_for('site.dashboard') }}"
+                   {% if active_menu == 'dashboard' %}class="active"{% endif %}>
+                    <i class="fa fa-dashboard fa-fw"></i>
+                    统计面板
+                </a>
             </li>
             <li>
                 <a href="#host"><i class="fa fa-table fa-fw"></i> 主机管理<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="{{ url_for('servers.index') }}" {% if active_menu=='serverlist' %}
-                           class="active" {% endif %}> 主机列表</a>
+                        <a href="{{ url_for('servers.index') }}"
+                                {% if active_menu=='serverlist' %}
+                           class="active" {% endif %}> 主机列表
+                        </a>
                     </li>
                     <li>
                         <a href="#batch"> 批量管理</a>

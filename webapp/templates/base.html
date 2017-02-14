@@ -34,8 +34,9 @@
             {% include 'common/_navbar_static_side.html' %}
         </nav>
         <!-- Page Content -->
-        {% block page_wrapper %}
-            <div id="page-wrapper">
+
+        <div id="page-wrapper">
+            {% block page_wrapper %}
                 <div class="row">
                     <div class="col-lg-12">
                         <h3 class="page-header"> {% block panel_title %}{% endblock %}</h3>
@@ -56,10 +57,11 @@
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>
-            </div>
+            {% endblock %}
             <!-- /#page-wrapper -->
-            </div>
-        {% endblock %}
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block scripts %}

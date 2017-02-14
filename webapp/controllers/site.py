@@ -23,7 +23,12 @@ def inject_permissions():
 @bp.route('/')
 @login_required
 def index():
-    return render_template('base.html')
+    return redirect(url_for('.dashboard'))
+
+
+@bp.route('/dashboard')
+def dashboard():
+    return render_template('serverdashboard.html')
 
 
 @bp.route('/login', methods=['GET', 'POST'])
