@@ -5,61 +5,99 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='vendor/select2/select2.min.css') }}">
 {% endblock %}
 
-{% block page_content %}
-    {% block content_table %}
-        <h1></h1>
-        <div class="container col-md-10">
-            <legend>服务器详情</legend>
-            <form action="" method="post" class="form form-horizontal" role="form">
-                {{ form.hidden_tag() }}
-                {{ wtf.form_errors(form,hiddens="only") }}
-
-                {{ wtf.form_field(form.ip,form_type='horizontal') }}
-                {{ wtf.form_field(form.subproject_id, form_type='horizontal') }}
-                {{ wtf.form_field(form.oslevel,form_type='horizontal') }}
-                {{ wtf.form_field(form.use,form_type='horizontal') }}
-                {{ wtf.form_field(form.owner,form_type='horizontal') }}
-                {{ wtf.form_field(form.envinfo_id,form_type='horizontal') }}
-                {{ wtf.form_field(form.status,form_type='horizontal') }}
-                {% if current_user.can(Permission.SERVER_ADD) or current_user.can(Permission.SERVER_EDIT) %}
-                    {{ wtf.form_field(form.submit,form_type='horizontal',button_map={'submit':'success'}) }}
-                {% endif %}
-            </form>
-            {% if (current_user.can(Permission.SERVER_ADD) or current_user.can(Permission.SERVER_EDIT)) and server %}
-                <h1 class=""></h1>
-                <legend>服务器登录用户信息 <span class="glyphicon glyphicon-plus btn" id="user_add"></span></legend>
-                <form class="form-inline">
-                    <input id="serverid" type="hidden" value="{{ server.id }}">
-                    <table id="userstable" class="table table-striped">
-                        <thead></thead>
-                        <tbody>
-                        {% for serveruser in server.serverusers %}
-                            <tr>
-                                <td class="list-buttons-column">
-                                    <input class="id" type="hidden" value="{{ serveruser.id }}">
-                                    <div class="form-group "><label class="control-label" for="username">用户名</label>
-                                        <input class="form-control" id="username" name="username" type="text"
-                                               value="{{ serveruser.username }}">
-                                    </div>
-                                </td>
-                                <td class="list-buttons-column">
-                                    <div class="form-group "><label class="control-label" for="password">密码</label>
-                                        <input class="form-control" id="password" name="password" type="password"
-                                               value="{{ serveruser.password }}">
-                                    </div>
-                                </td>
-                                <td class="list-buttons-column">
-                                    <button type='button' class='btn btn-success' onclick='addline(this)'>保存</button>
-                                    <button type='button' class='btn btn-warning' onclick='deleteline(this)'>删除</button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        {% endfor %}
-                    </table>
-                </form>
-            {% endif %}
+{% block page_wrapper %}
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="page-header">服务器详情</h3>
+            </div>
+            <!-- /.col-lg-12 -->
         </div>
-    {% endblock %}
+        <!-- /.row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <!-- /.panel-heading -->
+                    <div class="panel-body">
+                        <form action="" method="post" class="form form-horizontal" role="form">
+                            {{ form.hidden_tag() }}
+                            {{ wtf.form_errors(form,hiddens="only") }}
+
+                            {{ wtf.form_field(form.ip,form_type='horizontal') }}
+                            {{ wtf.form_field(form.subproject_id, form_type='horizontal') }}
+                            {{ wtf.form_field(form.oslevel,form_type='horizontal') }}
+                            {{ wtf.form_field(form.use,form_type='horizontal') }}
+                            {{ wtf.form_field(form.owner,form_type='horizontal') }}
+                            {{ wtf.form_field(form.envinfo_id,form_type='horizontal') }}
+                            {{ wtf.form_field(form.status,form_type='horizontal') }}
+                            {% if current_user.can(Permission.SERVER_ADD) or current_user.can(Permission.SERVER_EDIT) %}
+                                {{ wtf.form_field(form.submit,form_type='horizontal',button_map={'submit':'success'}) }}
+                            {% endif %}
+                        </form>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+    </div>
+{% endblock %}
+
+{% block page_content %}
+    <h1></h1>
+    <div class="container col-md-10">
+        <legend>服务器详情</legend>
+        <form action="" method="post" class="form form-horizontal" role="form">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_errors(form,hiddens="only") }}
+
+            {{ wtf.form_field(form.ip,form_type='horizontal') }}
+            {{ wtf.form_field(form.subproject_id, form_type='horizontal') }}
+            {{ wtf.form_field(form.oslevel,form_type='horizontal') }}
+            {{ wtf.form_field(form.use,form_type='horizontal') }}
+            {{ wtf.form_field(form.owner,form_type='horizontal') }}
+            {{ wtf.form_field(form.envinfo_id,form_type='horizontal') }}
+            {{ wtf.form_field(form.status,form_type='horizontal') }}
+            {% if current_user.can(Permission.SERVER_ADD) or current_user.can(Permission.SERVER_EDIT) %}
+                {{ wtf.form_field(form.submit,form_type='horizontal',button_map={'submit':'success'}) }}
+            {% endif %}
+        </form>
+        {% if (current_user.can(Permission.SERVER_ADD) or current_user.can(Permission.SERVER_EDIT)) and server %}
+            <h1 class=""></h1>
+            <legend>服务器登录用户信息 <span class="glyphicon glyphicon-plus btn" id="user_add"></span></legend>
+            <form class="form-inline">
+                <input id="serverid" type="hidden" value="{{ server.id }}">
+                <table id="userstable" class="table table-striped">
+                    <thead></thead>
+                    <tbody>
+                    {% for serveruser in server.serverusers %}
+                        <tr>
+                            <td class="list-buttons-column">
+                                <input class="id" type="hidden" value="{{ serveruser.id }}">
+                                <div class="form-group "><label class="control-label" for="username">用户名</label>
+                                    <input class="form-control" id="username" name="username" type="text"
+                                           value="{{ serveruser.username }}">
+                                </div>
+                            </td>
+                            <td class="list-buttons-column">
+                                <div class="form-group "><label class="control-label" for="password">密码</label>
+                                    <input class="form-control" id="password" name="password" type="password"
+                                           value="{{ serveruser.password }}">
+                                </div>
+                            </td>
+                            <td class="list-buttons-column">
+                                <button type='button' class='btn btn-success' onclick='addline(this)'>保存</button>
+                                <button type='button' class='btn btn-warning' onclick='deleteline(this)'>删除</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+            </form>
+        {% endif %}
+    </div>
 {% endblock %}
 {% block scripts_extend %}
     <script src="{{ url_for('static', filename='vendor/select2/select2.min.js') }}" type="text/javascript"></script>

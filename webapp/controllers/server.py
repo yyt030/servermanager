@@ -78,8 +78,7 @@ def adduser():
 
 
 @bp.route('/<int:id>', methods=['GET', 'POST'])
-@login_required
-def detail(id):
+def serverinfo(id):
     server = Server.query.get_or_404(id)
     form = EditServerForm()
     if form.validate_on_submit():
