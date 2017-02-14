@@ -3,11 +3,13 @@
 
 __author__ = 'yueyt'
 from flask import (Blueprint, render_template, request, flash, redirect, url_for)
+from flask_login import login_user
 
 from webapp import db, cache
 from webapp.forms.server import ServerForm
+from webapp.forms.user import LoginForm
 from webapp.models.server import Server, Subproject
-from webapp.models.user import Permission
+from webapp.models.user import Permission, User
 
 bp = Blueprint('site', __name__)
 
@@ -17,9 +19,17 @@ def inject_permissions():
     return dict(Permission=Permission)
 
 
-@bp.route('/login')
+@bp.route('/login',methods=['GET','POST'])
 def login():
-    return render_template('login.html')
+    loginform = LoginForm()
+    if loginform.validate_on_submit():
+        user = User.query.filter(User.username == loginform.username.data).first()
+        if user is not None and user.verify_password(loginform.password.data):
+            login_user(user, loginform.remember_me.data)
+            cache.clear()
+            return redirect(url_for('.index'))
+        flash('无效的用户名或密码')
+    return render_template('login.html', loginform=loginform)
 
 
 @bp.route('/')
