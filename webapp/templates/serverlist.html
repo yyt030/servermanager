@@ -187,16 +187,19 @@
                     $('.selected').each(function () {
                         ips.push(table.row($(this)).data()['ip'])
                     });
-                    //var ids_string = ids.toString();  // array to string conversion
-                    $.ajax({
-                        type: "DELETE",
-                        url: "/api/servers",
-                        data: {ips: ips.toString()},
-                        success: function (result) {
-                            table.ajax.reload(null, false);
-                        },
-                        async: false
-                    });
+                    if (ips.length > 0) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: "/api/servers",
+                            data: {ips: ips.toString()},
+                            success: function (result) {
+                                table.ajax.reload(null, false);
+                            },
+                            async: false
+                        });
+                    } else {
+                        alert('至少选择一条记录。。。');
+                    }
                 }
             })
             ;
