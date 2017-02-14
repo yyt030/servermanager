@@ -21,9 +21,10 @@
                     <div class="panel-body">
                         <form name="frm-example" id="frm-example">
                             <p class="form-group">
-                                <button id="button" class="btn btn-primary">删除选中行</button>
+                                <a id="delete_batch" class="btn btn-primary">删除选中行</a>
                             </p>
                         </form>
+                        {% include 'common/_modal.html' %}
                         <table width="100%" class="table table-bordered table-hover" id="serverlist"
                                data-toggle="table">
                             <thead>
@@ -32,6 +33,7 @@
                                 <th>
                                     <input type="checkbox" id="checkAll">
                                 </th>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -58,6 +60,7 @@
     <!-- Page-Level Demo Scripts - Tables - Use for reference -->
     <script type="text/javascript">
         var del_server;
+        var edit_server;
         $(document).ready(function () {
             var table = $('#serverlist').DataTable({
                 responsive: true,
@@ -84,11 +87,12 @@
                     {"data": "envinfo", "title": "环境", "defaultContent": "", "class": "text-center"},
                     {"data": "ip", "title": "ip", "defaultContent": "", "class": "text-center"},
                     {"data": "oslevel", "title": "操作系统版本", "defaultContent": "", "class": "text-center"},
-                    {"data": "owner", "title": "机器所属人", "defaultContent": "", "class": "text-center"}
+                    {"data": "owner", "title": "机器所属人", "defaultContent": "", "class": "text-center"},
+                    {"data": null, "class": "text-center"},
                 ],
                 "columnDefs": [
                     {
-                        'targets': [0, 1],//第1，2列禁止搜索排序
+                        'targets': [0, 1, 2, 3, -1],//第1，2列禁止搜索排序
                         'searchable': false,
                         'orderable': false
                     },
@@ -104,7 +108,7 @@
                         }
                     }
                 ],
-                "order": [[2, 'asc']],
+                "order": [[4, 'asc']],
                 "language": {
                     "sProcessing": "处理中...",
                     "sLengthMenu": "显示 _MENU_ 项结果",
@@ -161,6 +165,18 @@
                     }
                 })
             };
+            //单server编辑
+            edit_server = function (ip) {
+
+                $.ajax({
+                    url: '/api/servers/' + ip,
+                    type: 'get',
+                    success: function (data) {
+                        //table.ajax.reload(null, false);
+                    }
+                })
+            }
+
             //checkbox全选
             $("#checkAll").on("click", function () {
                 if ($(this).prop("checked") === true) {
@@ -179,7 +195,10 @@
                 $('#checkAll').prop('checked', $tmp.length == $tmp.filter(':checked').length);
             });
             //批量删除
-            $('#button').click(function () {
+            $('#delete_batch').click(function () {
+                var $m_btn = $('#delete_batch');
+                var $modal = $('#myModal');
+
                 records = table.row('.selected');
                 //批量删除
                 if ($('input[name="checkList"]').length > 0) {  // at-least one checkbox checked
@@ -194,15 +213,17 @@
                             data: {ips: ips.toString()},
                             success: function (result) {
                                 table.ajax.reload(null, false);
-                            },
-                            async: false
+                            }
                         });
                     } else {
-                        alert('至少选择一条记录。。。');
+                        //alert('至少选择一条记录。。。');
+                        $modal.modal({backdrop: 'static'});
+                        return false
                     }
                 }
-            })
-            ;
+            });
+
+
         });
     </script>
 {% endblock %}

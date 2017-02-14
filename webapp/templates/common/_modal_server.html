@@ -1,0 +1,36 @@
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container col-md-10">
+                    <legend>服务器详情</legend>
+                    <form action="" method="post" class="form form-horizontal" role="form">
+                        {{ form.hidden_tag() }}
+                        {{ wtf.form_errors(form,hiddens="only") }}
+
+                        {{ wtf.form_field(form.ip,form_type='horizontal') }}
+                        {{ wtf.form_field(form.subproject_id, form_type='horizontal') }}
+                        {{ wtf.form_field(form.oslevel,form_type='horizontal') }}
+                        {{ wtf.form_field(form.use,form_type='horizontal') }}
+                        {{ wtf.form_field(form.owner,form_type='horizontal') }}
+                        {{ wtf.form_field(form.envinfo_id,form_type='horizontal') }}
+                        {{ wtf.form_field(form.status,form_type='horizontal') }}
+                        {% if current_user.can(Permission.SERVER_ADD) or current_user.can(Permission.SERVER_EDIT) %}
+                            {{ wtf.form_field(form.submit,form_type='horizontal',button_map={'submit':'success'}) }}
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

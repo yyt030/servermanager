@@ -4,6 +4,7 @@
 __author__ = 'yueyt'
 from flask import Blueprint, request, current_app, jsonify
 from flask_restful import Resource
+from sqlalchemy import desc, asc
 
 bp = Blueprint('api', __name__)
 
@@ -16,12 +17,23 @@ class ServerListApi(Resource):
         start = request.args.get('start', 0, type=int)
         page_size = request.args.get('length', current_app.config['FLASKY_POSTS_PER_PAGE'], type=int)
 
+        # search
         search_value = request.args.get('search[value]')
         if search_value:
             query = Server.query.filter(
-                Server.ip.like('%{}%'.format(search_value))).order_by(Server.envinfo_id)
+                Server.ip.like('%{}%'.format(search_value)))
         else:
             query = Server.query.order_by(Server.envinfo_id)
+
+        # order by
+        order_col_num = request.args.get('order[0][column]', type=int)
+        if order_col_num:
+            order_dir = request.args.get('order[0][dir]', type=str, default='asc')
+            order_col = request.args.get('columns[{}][data]'.format(order_col_num))
+            if order_dir == 'desc':
+                query = query.order_by(desc('{}'.format(order_col)))
+            else:
+                query = query.order_by(asc('{}'.format(order_col)))
 
         pagination = query.paginate((start + 1) / page_size, per_page=page_size, error_out=False)
         servers = pagination.items
@@ -44,9 +56,9 @@ class ServerListApi(Resource):
 
 
 class ServerApi(Resource):
-    def get(self, id):
-        id = request.args.get('id')
-        pass
+    def get(self, ip):
+        server = Server.query.filter(Server.ip == ip).first()
+        return server.to_json()
 
     def delete(self, ip):
         # /api/servers/96.141.235.232
