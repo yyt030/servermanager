@@ -29,7 +29,7 @@ $(document).ready(function () {
     }
 
     function myHcharts2() {
-        $('#container').highcharts({
+        var charts = Highcharts.chart('container', {
             title: {
                 text: '机器占比'
             },
@@ -46,29 +46,30 @@ $(document).ready(function () {
                     }
                 }]
             },
+            credits: {text: 'this is test', enabled: false},
             series: [{
                 type: 'column',
                 name: 'P1',
                 data: [
                     {name: 'DEV', y: 3, drilldown: 'DEV'},
-                    {name: 'SIT', y: 3, drilldown: 'SIT'},
-                    {name: 'UAT', y: 3, drilldown: 'UAT'}
+                    {name: 'SIT', y: 5, drilldown: 'SIT'},
+                    {name: 'UAT', y: 8, drilldown: 'UAT'}
                 ]
             }, {
                 type: 'column',
                 name: 'P2',
                 data: [
-                    {name: 'DEV', y: 3, drilldown: 'DEV'},
-                    {name: 'SIT', y: 3, drilldown: 'SIT'},
+                    {name: 'DEV', y: 1, drilldown: 'DEV'},
+                    {name: 'SIT', y: 2, drilldown: 'SIT'},
                     {name: 'UAT', y: 3, drilldown: 'UAT'}
                 ]
             }, {
                 type: 'column',
                 name: 'P3',
                 data: [
-                    {name: 'DEV', y: 3, drilldown: 'DEV'},
-                    {name: 'SIT', y: 3, drilldown: 'SIT'},
-                    {name: 'UAT', y: 3, drilldown: 'UAT'}
+                    {name: 'DEV', y: 11, drilldown: 'DEV'},
+                    {name: 'SIT', y: 2, drilldown: 'SIT'},
+                    {name: 'UAT', y: 40, drilldown: 'UAT'}
                 ]
             }, {
                 type: 'pie',
@@ -95,29 +96,22 @@ $(document).ready(function () {
             }],
             drilldown: {
                 series: [{
-                    name: 'a1',
-                    id: 'a',
-                    data: [
-                        {y: 19}
-                    ]
+                    name: 'DEV',
+                    id: 'DEV',
+                    data: {y: 19}
+
                 }, {
-                    name: 'John',
-                    id: 'John',
-                    data: [
-                        [
-                            'v40.0',
-                            5
-                        ],
-                        [
-                            'v41.0',
-                            4.32
-                        ]
-                    ]
+                    name: 'DEV',
+                    id: 'DEV',
+                    data: {y: 19}
+
                 }]
             }
-
         });
-
+        $.get('/api/servers', function (data) {
+                console.log('this is test')
+            }
+        )
     }
 
     function myHcharts3() {
