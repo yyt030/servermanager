@@ -108,7 +108,20 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-bar-chart-o fa-fw"></i> Area Chart Example
+                    <i class="fa fa-bar-chart-o fa-fw"></i> 1 Area Chart Example
+                </div>
+                <!-- /.panel-heading -->
+                <div class="panel-body">
+                    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+                    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                    <div id="pie" style="width: 450px;height:350px;"></div>
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-bar-chart-o fa-fw"></i> 2 Area Chart Example
                 </div>
                 <!-- /.panel-heading -->
                 <div class="panel-body">
@@ -124,5 +137,8 @@
 {% endblock %}
 
 {% block scripts_extend %}
-
+    <script src="{{ url_for('static',filename='vendor/highcharts/highcharts.js') }}"></script>
+    <script src="{{ url_for('static',filename='vendor/highcharts/modules/exporting.js') }}"></script>
+    <script src="{{ url_for('static',filename='vendor/highcharts/modules/drilldown.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/mydashboard.js') }}"></script>
 {% endblock %}

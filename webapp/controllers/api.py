@@ -66,3 +66,13 @@ class ServerApi(Resource):
         if server:
             db.session.delete(server)
             db.session.commit()
+
+
+class DashBoardApi(Resource):
+    def get(self):
+        res = {
+            'categories':["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子",'a'],
+            'data':[5, 20, 36, 10, 10, 20,100]
+        }
+
+        return jsonify(res)
