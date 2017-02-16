@@ -53,7 +53,7 @@ def create_app(config_name):
     restful_api = Api(api.bp)
     restful_api.add_resource(api.ServerListApi, '/servers', endpoint='servers')
     restful_api.add_resource(api.ServerApi, '/servers/<string:ip>', endpoint='server')
-    restful_api.add_resource(api.DashBoardApi, '/dashboard', endpoint='dashboard')
+    restful_api.add_resource(api.ProjectServerDashboard, '/projectservers', endpoint='projectservers')
 
     app.register_blueprint(api.bp, url_prefix='/api')
 

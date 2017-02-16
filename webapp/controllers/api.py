@@ -68,11 +68,31 @@ class ServerApi(Resource):
             db.session.commit()
 
 
-class DashBoardApi(Resource):
+class ProjectServerDashboard(Resource):
     def get(self):
         res = {
-            'categories':["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子",'a'],
-            'data':[5, 20, 36, 10, 10, 20,100]
+            'categories': ['P1', 'P2', 'P3'],
+            'series': [{
+                'type': 'column',
+                'name': 'P1',
+                'data': [
+                    {'name': 'P1', 'y': 20, 'drilldown': 'P1'}
+                ]
+            }, {
+                'type': 'column',
+                'name': 'P2',
+                'data': [
+                    {'name': 'P2', 'y': 30, 'drilldown': 'P2'}
+                ]
+            },
+                {
+                    'type': 'column',
+                    'name': 'P3',
+                    'data': [
+                        {'name': 'P3', 'y': 40, 'drilldown': 'P2'}
+                    ]
+                }
+            ]
         }
-
+        print('>>>', res)
         return jsonify(res)
